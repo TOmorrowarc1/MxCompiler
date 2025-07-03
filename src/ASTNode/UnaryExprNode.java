@@ -2,7 +2,7 @@ package ASTNode;
 
 public class UnaryExprNode extends ExprNode {
     public enum UnaryOperator {
-        SELF_ADD, SELF_SUB, MINUS, LOGIC_NOT, NOT
+        SELF_ADD, SELF_SUB, ADD, MINUS, LOGIC_NOT, NOT
     }
 
     ;

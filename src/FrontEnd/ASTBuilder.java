@@ -1,0 +1,316 @@
+package FrontEnd;
+
+import ASTNode.*;
+import parser.YxBaseVisitor;
+import parser.YxParser;
+
+
+public class ASTBuilder extends YxBaseVisitor<ASTNode> {
+
+    @Override
+    public ASTNode visitProgram(YxParser.ProgramContext ctx) {
+        return super.visitProgram(ctx);
+    }
+
+    @Override
+    public ASTNode visitFunction(YxParser.FunctionContext ctx) {
+        return super.visitFunction(ctx);
+    }
+
+    @Override
+    public ASTNode visitBlock(YxParser.BlockContext ctx) {
+        return super.visitBlock(ctx);
+    }
+
+    @Override
+    public ASTNode visitBlockstmt(YxParser.BlockstmtContext ctx) {
+        return super.visitBlockstmt(ctx);
+    }
+
+    @Override
+    public ASTNode visitIfstmt(YxParser.IfstmtContext ctx) {
+        return super.visitIfstmt(ctx);
+    }
+
+    @Override
+    public ASTNode visitWhilestmt(YxParser.WhilestmtContext ctx) {
+        return super.visitWhilestmt(ctx);
+    }
+
+    @Override
+    public ASTNode visitForstmt(YxParser.ForstmtContext ctx) {
+        return super.visitForstmt(ctx);
+    }
+
+    @Override
+    public ASTNode visitReturnstmt(YxParser.ReturnstmtContext ctx) {
+        return super.visitReturnstmt(ctx);
+    }
+
+    @Override
+    public ASTNode visitJmpstmt(YxParser.JmpstmtContext ctx) {
+        return super.visitJmpstmt(ctx);
+    }
+
+    @Override
+    public ASTNode visitVarDefstmt(YxParser.VarDefstmtContext ctx) {
+        return super.visitVarDefstmt(ctx);
+    }
+
+    @Override
+    public ASTNode visitExpressionstmt(YxParser.ExpressionstmtContext ctx) {
+        return super.visitExpressionstmt(ctx);
+    }
+
+    @Override
+    public ASTNode visitEmptystmt(YxParser.EmptystmtContext ctx) {
+        return super.visitEmptystmt(ctx);
+    }
+
+    @Override
+    public ASTNode visitType(YxParser.TypeContext ctx) {
+        return super.visitType(ctx);
+    }
+
+    @Override
+    public ASTNode visitDef(YxParser.DefContext ctx) {
+        return super.visitDef(ctx);
+    }
+
+    @Override
+    public ASTNode visitExpr(YxParser.ExprContext ctx) {
+        return visit(ctx.assignmentExpr());
+    }
+
+    @Override
+    public ASTNode visitAssignOrExpr(YxParser.AssignOrExprContext ctx) {
+        return visit(ctx.logicOrExpr());
+    }
+
+    @Override
+    public ASTNode visitAssignExpr(YxParser.AssignExprContext ctx) {
+        ExprNode lhs = (ExprNode) visit(ctx.unaryExpr());
+        ExprNode rhs = (ExprNode) visit(ctx.assignmentExpr());
+        return new AssignExprNode(lhs, rhs);
+    }
+
+    @Override
+    public ASTNode visitLogicOrAndExpr(YxParser.LogicOrAndExprContext ctx) {
+        return visit(ctx.logicAndExpr());
+    }
+
+    @Override
+    public ASTNode visitLogicOrBinaryExpr(YxParser.LogicOrBinaryExprContext ctx) {
+        ExprNode lhs = (ExprNode) visit(ctx.lhs);
+        ExprNode rhs = (ExprNode) visit(ctx.rhs);
+        return new BinaryExprNode(BinaryExprNode.BinaryOperator.LOGIC_OR, lhs, rhs);
+    }
+
+    @Override
+    public ASTNode visitLogicAndbitExpr(YxParser.LogicAndbitExprContext ctx) {
+        return visit(ctx.bitOrExpr());
+    }
+
+    @Override
+    public ASTNode visitLogicAndBinaryExpr(YxParser.LogicAndBinaryExprContext ctx) {
+        ExprNode lhs = (ExprNode) visit(ctx.lhs);
+        ExprNode rhs = (ExprNode) visit(ctx.rhs);
+        return new BinaryExprNode(BinaryExprNode.BinaryOperator.LOGIC_AND, lhs, rhs);
+    }
+
+    @Override
+    public ASTNode visitBitOrAndExpr(YxParser.BitOrAndExprContext ctx) {
+        return visit(ctx.bitAndExpr());
+    }
+
+    @Override
+    public ASTNode visitBitOrBinaryExpr(YxParser.BitOrBinaryExprContext ctx) {
+        ExprNode lhs = (ExprNode) visit(ctx.lhs);
+        ExprNode rhs = (ExprNode) visit(ctx.rhs);
+        return new BinaryExprNode(BinaryExprNode.BinaryOperator.OR, lhs, rhs);
+    }
+
+    @Override
+    public ASTNode visitBitAndEqualExpr(YxParser.BitAndEqualExprContext ctx) {
+        return visit(ctx.equalExpr());
+    }
+
+    @Override
+    public ASTNode visitBitAndBinaryExpr(YxParser.BitAndBinaryExprContext ctx) {
+        ExprNode lhs = (ExprNode) visit(ctx.lhs);
+        ExprNode rhs = (ExprNode) visit(ctx.rhs);
+        return new BinaryExprNode(BinaryExprNode.BinaryOperator.AND, lhs, rhs);
+    }
+
+    @Override
+    public ASTNode visitEqualCompareExpr(YxParser.EqualCompareExprContext ctx) {
+        return visit(ctx.compareExpr());
+    }
+
+    @Override
+    public ASTNode visitEqualBinaryExpr(YxParser.EqualBinaryExprContext ctx) {
+        ExprNode lhs = (ExprNode) visit(ctx.lhs);
+        ExprNode rhs = (ExprNode) visit(ctx.rhs);
+        BinaryExprNode.BinaryOperator op = null;
+        if (ctx.op.getText().equals("==")) {
+            op = BinaryExprNode.BinaryOperator.EQUAL;
+        } else if (ctx.op.getText().equals("!=")) {
+            op = BinaryExprNode.BinaryOperator.N_EQUAL;
+        }
+        return new BinaryExprNode(op, lhs, rhs);
+    }
+
+    @Override
+    public ASTNode visitCompareShiftExpr(YxParser.CompareShiftExprContext ctx) {
+        return visit(ctx.shiftExpr());
+    }
+
+    @Override
+    public ASTNode visitCompareBinaryExpr(YxParser.CompareBinaryExprContext ctx) {
+        ExprNode lhs = (ExprNode) visit(ctx.lhs);
+        ExprNode rhs = (ExprNode) visit(ctx.rhs);
+        BinaryExprNode.BinaryOperator op = null;
+        if (ctx.op.getText().equals(">")) {
+            op = BinaryExprNode.BinaryOperator.G;
+        } else if (ctx.op.getText().equals(">=")) {
+            op = BinaryExprNode.BinaryOperator.GE;
+        } else if (ctx.op.getText().equals("<=")) {
+            op = BinaryExprNode.BinaryOperator.LE;
+        } else if (ctx.op.getText().equals("<")) {
+            op = BinaryExprNode.BinaryOperator.L;
+        }
+        return new BinaryExprNode(op, lhs, rhs);
+    }
+
+    @Override
+    public ASTNode visitShiftAddExpr(YxParser.ShiftAddExprContext ctx) {
+        return visit(ctx.addExpr());
+    }
+
+    @Override
+    public ASTNode visitShiftBinaryExpr(YxParser.ShiftBinaryExprContext ctx) {
+        ExprNode lhs = (ExprNode) visit(ctx.lhs);
+        ExprNode rhs = (ExprNode) visit(ctx.rhs);
+        BinaryExprNode.BinaryOperator op = null;
+        if (ctx.op.getText().equals("<<")) {
+            op = BinaryExprNode.BinaryOperator.LEFT_SHIFT;
+        } else if (ctx.op.getText().equals(">>")) {
+            op = BinaryExprNode.BinaryOperator.RIGHT_SHIFT;
+        }
+        return new BinaryExprNode(op, lhs, rhs);
+    }
+
+    @Override
+    public ASTNode visitAddMultExpr(YxParser.AddMultExprContext ctx) {
+        return visit(ctx.multExpr());
+    }
+
+    @Override
+    public ASTNode visitAddBinaryExpr(YxParser.AddBinaryExprContext ctx) {
+        ExprNode lhs = (ExprNode) visit(ctx.lhs);
+        ExprNode rhs = (ExprNode) visit(ctx.rhs);
+        BinaryExprNode.BinaryOperator op = null;
+        if (ctx.op.getText().equals("+")) {
+            op = BinaryExprNode.BinaryOperator.PLUS;
+        } else if (ctx.op.getText().equals("-")) {
+            op = BinaryExprNode.BinaryOperator.SUB;
+        }
+        return new BinaryExprNode(op, lhs, rhs);
+    }
+
+    @Override
+    public ASTNode visitMultUnaryExpr(YxParser.MultUnaryExprContext ctx) {
+        return visit(ctx.unaryExpr());
+    }
+
+    @Override
+    public ASTNode visitMultBinaryExpr(YxParser.MultBinaryExprContext ctx) {
+        ExprNode lhs = (ExprNode) visit(ctx.lhs);
+        ExprNode rhs = (ExprNode) visit(ctx.rhs);
+        BinaryExprNode.BinaryOperator op = null;
+        if (ctx.op.getText().equals("*")) {
+            op = BinaryExprNode.BinaryOperator.MUL;
+        } else if (ctx.op.getText().equals("/")) {
+            op = BinaryExprNode.BinaryOperator.DIV;
+        } else if (ctx.op.getText().equals("%")) {
+            op = BinaryExprNode.BinaryOperator.MOD;
+        }
+        return new BinaryExprNode(op, lhs, rhs);
+    }
+
+    @Override
+    public ASTNode visitUnaryPostfixExpr(YxParser.UnaryPostfixExprContext ctx) {
+        return visit(ctx.postfixExpr());
+    }
+
+    @Override
+    public ASTNode visitUnaryPrefixIncDecExpr(YxParser.UnaryPrefixIncDecExprContext ctx) {
+        ExprNode expr = (ExprNode) visit(ctx.postfixExpr());
+        UnaryExprNode.UnaryOperator op = null;
+        if (ctx.op.getText().equals("++")) {
+            op = UnaryExprNode.UnaryOperator.SELF_ADD;
+        } else if (ctx.op.getText().equals("--")) {
+            op = UnaryExprNode.UnaryOperator.SELF_SUB;
+        }
+        return new UnaryExprNode(op, expr);
+    }
+
+    @Override
+    public ASTNode visitUnaryOpExpr(YxParser.UnaryOpExprContext ctx) {
+        ExprNode expr = (ExprNode) visit(ctx.postfixExpr());
+        UnaryExprNode.UnaryOperator op = null;
+        if (ctx.op.getText().equals("-")) {
+            op = UnaryExprNode.UnaryOperator.MINUS;
+        } else if (ctx.op.getText().equals("+")) {
+            op = UnaryExprNode.UnaryOperator.ADD;
+        } else if (ctx.op.getText().equals("!")) {
+            op = UnaryExprNode.UnaryOperator.LOGIC_NOT;
+        } else if (ctx.op.getText().equals("~")) {
+            op = UnaryExprNode.UnaryOperator.NOT;
+        }
+        return new UnaryExprNode(op, expr);
+    }
+
+    @Override
+    public ASTNode visitPostfixPrimaryExpr(YxParser.PostfixPrimaryExprContext ctx) {
+        return visit(ctx.primary());
+    }
+
+    @Override
+    public ASTNode visitPostfixIncDecExpr(YxParser.PostfixIncDecExprContext ctx) {
+        ExprNode expr = (ExprNode) visit(ctx.primary());
+        UnaryExprNode.UnaryOperator op = null;
+        if (ctx.op.getText().equals("++")) {
+            op = UnaryExprNode.UnaryOperator.SELF_ADD;
+        } else if (ctx.op.getText().equals("--")) {
+            op = UnaryExprNode.UnaryOperator.SELF_SUB;
+        }
+        return new UnaryExprNode(op, expr);
+    }
+
+    @Override
+    public ASTNode visitPrimary(YxParser.PrimaryContext ctx) {
+        if (ctx.expr() != null) {
+            return visit(ctx.expr());
+        } else if (ctx.literal() != null) {
+            return visit(ctx.literal());
+        } else if (ctx.Identifier() != null) {
+            return new VarExprNode(ctx.Identifier().getText());
+        }
+        //Should not come.
+        return super.visitPrimary(ctx);
+    }
+
+    @Override
+    public ASTNode visitLiteral(YxParser.LiteralContext ctx) {
+        if (ctx.Integer() != null) {
+            return new IntLiteralExprNode(Integer.parseInt(ctx.Integer().getText()));
+        } else if (ctx.True() != null) {
+            return new BoolLiteralExprNode(true);
+        } else if (ctx.False() != null) {
+            return new BoolLiteralExprNode(false);
+        }
+        //The visitor should not come to here.
+        return super.visitLiteral(ctx);
+    }
+}
