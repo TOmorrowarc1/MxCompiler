@@ -1,7 +1,7 @@
 grammar Yx;
 
 // The gramma for the parser.
-program: function* EOF;
+program: function EOF;
 
 function: Int 'main()' block ;
 

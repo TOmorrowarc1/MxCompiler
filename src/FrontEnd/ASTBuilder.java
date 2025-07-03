@@ -4,77 +4,121 @@ import ASTNode.*;
 import parser.YxBaseVisitor;
 import parser.YxParser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitProgram(YxParser.ProgramContext ctx) {
-        return super.visitProgram(ctx);
+        return visit(ctx.function());
     }
 
     @Override
     public ASTNode visitFunction(YxParser.FunctionContext ctx) {
-        return super.visitFunction(ctx);
+        return visit(ctx.block());
     }
 
     @Override
     public ASTNode visitBlock(YxParser.BlockContext ctx) {
-        return super.visitBlock(ctx);
+        List<StmtNode> stmts = new ArrayList<StmtNode>();
+        for (YxParser.StatementContext statementContext : ctx.statement()) {
+            stmts.add((StmtNode) visit(statementContext));
+        }
+        return new BlockStmtNode(stmts);
     }
 
     @Override
     public ASTNode visitBlockstmt(YxParser.BlockstmtContext ctx) {
-        return super.visitBlockstmt(ctx);
+        return visit(ctx.block());
     }
 
     @Override
     public ASTNode visitIfstmt(YxParser.IfstmtContext ctx) {
-        return super.visitIfstmt(ctx);
+        ExprNode condition = (ExprNode) visit(ctx.expr());
+        StmtNode thenStmt = (StmtNode) visit(ctx.trueStmt);
+        StmtNode elseStmt = new EmptyStmtNode();
+        if (ctx.falseStmt != null) {
+            elseStmt = (StmtNode) visit(ctx.falseStmt);
+        }
+        return new IfStmtNode(condition, thenStmt, elseStmt);
     }
 
     @Override
     public ASTNode visitWhilestmt(YxParser.WhilestmtContext ctx) {
-        return super.visitWhilestmt(ctx);
+        ExprNode condition = (ExprNode) visit(ctx.expr());
+        StmtNode body = (StmtNode) visit(ctx.statement());
+        return new WhileStmtNode(condition, body);
     }
 
     @Override
     public ASTNode visitForstmt(YxParser.ForstmtContext ctx) {
-        return super.visitForstmt(ctx);
+        StmtNode init = new EmptyStmtNode();
+        ExprNode condition = new EmptyExprNode();
+        ExprNode step = new EmptyExprNode();
+        StmtNode body = (StmtNode) visit(ctx.bodyStatement);
+        if (ctx.initializationStatement != null) {
+            init = (StmtNode) visit(ctx.initializationStatement);
+        }
+        if (ctx.forConditionExpression != null) {
+            condition = (ExprNode) visit(ctx.forConditionExpression);
+        }
+        if (ctx.stepExpression != null) {
+            step = (ExprNode) visit(ctx.stepExpression);
+        }
+        return new ForStmtNode((VarDefStmtNode) init, condition, step, body);
     }
 
     @Override
     public ASTNode visitReturnstmt(YxParser.ReturnstmtContext ctx) {
-        return super.visitReturnstmt(ctx);
+        ExprNode expr = null;
+        if (ctx.expr() != null) {
+            expr = (ExprNode) visit(ctx.expr());
+        }
+        return new ReturnStmtNode(expr);
     }
 
     @Override
     public ASTNode visitJmpstmt(YxParser.JmpstmtContext ctx) {
-        return super.visitJmpstmt(ctx);
+        ASTNode.JmpStmtNode.JumpType jmpType = null;
+        if (ctx.getText().equals("break")) {
+            jmpType = JmpStmtNode.JumpType.BREAK;
+        } else if (ctx.getText().equals("continue")) {
+            jmpType = JmpStmtNode.JumpType.CONTINUE;
+        }
+        return new JmpStmtNode(jmpType);
     }
 
     @Override
     public ASTNode visitVarDefstmt(YxParser.VarDefstmtContext ctx) {
-        return super.visitVarDefstmt(ctx);
+        List<VarDefStmtNode.DefNode> defNodes = new ArrayList<>();
+        for (YxParser.DefContext defContext : ctx.def()) {
+            defNodes.add((ASTNode.VarDefStmtNode.DefNode) visit(defContext));
+        }
+        return new VarDefStmtNode(ctx.type().getText(), defNodes);
     }
 
     @Override
     public ASTNode visitExpressionstmt(YxParser.ExpressionstmtContext ctx) {
-        return super.visitExpressionstmt(ctx);
+        return new ExprStmtNode((ExprNode) visit(ctx.expr()));
     }
 
     @Override
     public ASTNode visitEmptystmt(YxParser.EmptystmtContext ctx) {
-        return super.visitEmptystmt(ctx);
+        return new EmptyStmtNode();
     }
 
     @Override
     public ASTNode visitType(YxParser.TypeContext ctx) {
+        //The function should not be executed.
         return super.visitType(ctx);
     }
 
     @Override
     public ASTNode visitDef(YxParser.DefContext ctx) {
-        return super.visitDef(ctx);
+        ExprNode expr = (ExprNode) visit(ctx.expr());
+        return new ASTNode.VarDefStmtNode.DefNode(ctx.Identifier().getText(), expr);
     }
 
     @Override
