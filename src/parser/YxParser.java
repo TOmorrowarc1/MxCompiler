@@ -129,12 +129,9 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_program; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterProgram(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitProgram(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitProgram(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -185,12 +182,9 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_function; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterFunction(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitFunction(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitFunction(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -234,12 +228,9 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_block; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterBlock(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitBlock(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBlock(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -306,12 +297,9 @@ public class YxParser extends Parser {
 		}
 		public WhilestmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterWhilestmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitWhilestmt(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitWhilestmt(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -340,12 +328,9 @@ public class YxParser extends Parser {
 		}
 		public ForstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterForstmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitForstmt(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitForstmt(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -356,12 +341,9 @@ public class YxParser extends Parser {
 		public TerminalNode Semi() { return getToken(YxParser.Semi, 0); }
 		public VarDefstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterVarDefstmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitVarDefstmt(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitVarDefstmt(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -383,12 +365,9 @@ public class YxParser extends Parser {
 		public TerminalNode Else() { return getToken(YxParser.Else, 0); }
 		public IfstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterIfstmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitIfstmt(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitIfstmt(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -399,12 +378,9 @@ public class YxParser extends Parser {
 		public TerminalNode Semi() { return getToken(YxParser.Semi, 0); }
 		public ExpressionstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterExpressionstmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitExpressionstmt(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitExpressionstmt(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -416,12 +392,9 @@ public class YxParser extends Parser {
 		public TerminalNode Semi() { return getToken(YxParser.Semi, 0); }
 		public ReturnstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterReturnstmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitReturnstmt(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitReturnstmt(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -430,12 +403,9 @@ public class YxParser extends Parser {
 		public TerminalNode Semi() { return getToken(YxParser.Semi, 0); }
 		public BreakstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterBreakstmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitBreakstmt(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBreakstmt(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -445,12 +415,9 @@ public class YxParser extends Parser {
 		}
 		public BlockstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterBlockstmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitBlockstmt(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBlockstmt(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -459,12 +426,9 @@ public class YxParser extends Parser {
 		public TerminalNode Semi() { return getToken(YxParser.Semi, 0); }
 		public ContinuestmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterContinuestmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitContinuestmt(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitContinuestmt(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -472,12 +436,9 @@ public class YxParser extends Parser {
 		public TerminalNode Semi() { return getToken(YxParser.Semi, 0); }
 		public EmptystmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterEmptystmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitEmptystmt(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitEmptystmt(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -681,12 +642,9 @@ public class YxParser extends Parser {
 		}
 		public IntvardefContext(VarDefContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterIntvardef(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitIntvardef(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitIntvardef(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -702,12 +660,9 @@ public class YxParser extends Parser {
 		public TerminalNode Comma() { return getToken(YxParser.Comma, 0); }
 		public BoolvardefContext(VarDefContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterBoolvardef(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitBoolvardef(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBoolvardef(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -792,12 +747,9 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_def; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterDef(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitDef(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitDef(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -845,12 +797,9 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_expr; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -896,12 +845,9 @@ public class YxParser extends Parser {
 		}
 		public AssignExprContext(AssignmentExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterAssignExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitAssignExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitAssignExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -911,12 +857,9 @@ public class YxParser extends Parser {
 		}
 		public LastLevelExprContext(AssignmentExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterLastLevelExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitLastLevelExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLastLevelExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -979,12 +922,9 @@ public class YxParser extends Parser {
 		}
 		public LogicOrUnaryExprContext(LogicOrExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterLogicOrUnaryExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitLogicOrUnaryExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLogicOrUnaryExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1000,12 +940,9 @@ public class YxParser extends Parser {
 		}
 		public LogicOrBinaryExprContext(LogicOrExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterLogicOrBinaryExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitLogicOrBinaryExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLogicOrBinaryExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1074,12 +1011,9 @@ public class YxParser extends Parser {
 		}
 		public LogicAndBinaryExprContext(LogicAndExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterLogicAndBinaryExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitLogicAndBinaryExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLogicAndBinaryExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1089,12 +1023,9 @@ public class YxParser extends Parser {
 		}
 		public LogicAndbitExprContext(LogicAndExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterLogicAndbitExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitLogicAndbitExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLogicAndbitExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1163,12 +1094,9 @@ public class YxParser extends Parser {
 		}
 		public BitOrBinaryExprContext(BitOrExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterBitOrBinaryExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitBitOrBinaryExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBitOrBinaryExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1178,12 +1106,9 @@ public class YxParser extends Parser {
 		}
 		public BitOrAndExprContext(BitOrExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterBitOrAndExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitBitOrAndExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBitOrAndExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1246,12 +1171,9 @@ public class YxParser extends Parser {
 		}
 		public BitAndEqualExprContext(BitAndExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterBitAndEqualExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitBitAndEqualExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBitAndEqualExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1267,12 +1189,9 @@ public class YxParser extends Parser {
 		}
 		public BitAndBinaryExprContext(BitAndExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterBitAndBinaryExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitBitAndBinaryExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBitAndBinaryExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1335,12 +1254,9 @@ public class YxParser extends Parser {
 		}
 		public EqualCompareExprContext(EqualExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterEqualCompareExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitEqualCompareExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitEqualCompareExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1358,12 +1274,9 @@ public class YxParser extends Parser {
 		public TerminalNode NEqual() { return getToken(YxParser.NEqual, 0); }
 		public EqualBinaryExprContext(EqualExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterEqualBinaryExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitEqualBinaryExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitEqualBinaryExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1446,12 +1359,9 @@ public class YxParser extends Parser {
 		public TerminalNode LessThan() { return getToken(YxParser.LessThan, 0); }
 		public CompareBinaryExprContext(CompareExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterCompareBinaryExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitCompareBinaryExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitCompareBinaryExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1461,12 +1371,9 @@ public class YxParser extends Parser {
 		}
 		public CompareShiftExprContext(CompareExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterCompareShiftExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitCompareShiftExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitCompareShiftExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1539,12 +1446,9 @@ public class YxParser extends Parser {
 		}
 		public ShiftAddExprContext(ShiftExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterShiftAddExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitShiftAddExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitShiftAddExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1562,12 +1466,9 @@ public class YxParser extends Parser {
 		public TerminalNode RightShift() { return getToken(YxParser.RightShift, 0); }
 		public ShiftBinaryExprContext(ShiftExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterShiftBinaryExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitShiftBinaryExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitShiftBinaryExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1640,12 +1541,9 @@ public class YxParser extends Parser {
 		}
 		public AddMultExprContext(AddExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterAddMultExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitAddMultExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitAddMultExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1663,12 +1561,9 @@ public class YxParser extends Parser {
 		public TerminalNode Minus() { return getToken(YxParser.Minus, 0); }
 		public AddBinaryExprContext(AddExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterAddBinaryExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitAddBinaryExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitAddBinaryExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1741,12 +1636,9 @@ public class YxParser extends Parser {
 		}
 		public MultUnaryExprContext(MultExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterMultUnaryExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitMultUnaryExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitMultUnaryExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1765,12 +1657,9 @@ public class YxParser extends Parser {
 		public TerminalNode Mod() { return getToken(YxParser.Mod, 0); }
 		public MultBinaryExprContext(MultExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterMultBinaryExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitMultBinaryExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitMultBinaryExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1847,12 +1736,9 @@ public class YxParser extends Parser {
 		public TerminalNode Not() { return getToken(YxParser.Not, 0); }
 		public UnaryOpExprContext(UnaryExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterUnaryOpExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitUnaryOpExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitUnaryOpExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1862,12 +1748,9 @@ public class YxParser extends Parser {
 		}
 		public UnaryPostfixExprContext(UnaryExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterUnaryPostfixExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitUnaryPostfixExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitUnaryPostfixExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1880,12 +1763,9 @@ public class YxParser extends Parser {
 		public TerminalNode SelfMinus() { return getToken(YxParser.SelfMinus, 0); }
 		public UnaryPrefixIncDecExprContext(UnaryExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterUnaryPrefixIncDecExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitUnaryPrefixIncDecExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitUnaryPrefixIncDecExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1987,12 +1867,9 @@ public class YxParser extends Parser {
 		public TerminalNode SelfMinus() { return getToken(YxParser.SelfMinus, 0); }
 		public PostfixIncDecExprContext(PostfixExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterPostfixIncDecExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitPostfixIncDecExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitPostfixIncDecExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -2002,12 +1879,9 @@ public class YxParser extends Parser {
 		}
 		public PostfixPrimaryExprContext(PostfixExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterPostfixPrimaryExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitPostfixPrimaryExpr(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitPostfixPrimaryExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2075,12 +1949,9 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_primary; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterPrimary(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitPrimary(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitPrimary(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2143,12 +2014,9 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_literal; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitLiteral(this);
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLiteral(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
