@@ -167,4 +167,17 @@ Break:'break';
 Continue:'continue';
 Return:'return';
 
-WS:     [ \t\r\n]+ -> skip; // 忽略空白字符
+WhiteSpace
+    :   [ \t\r\n]+
+        -> skip
+    ;
+
+BlockComment
+    : '/*' .*? '*/'
+    -> skip
+    ;
+
+LineComment
+    : '//' ~[\r\n]*
+    -> skip
+    ;
