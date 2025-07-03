@@ -110,12 +110,12 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpr(YxParser.ExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code lastLevelExpr}
+	 * Visit a parse tree produced by the {@code assignOrExpr}
 	 * labeled alternative in {@link YxParser#assignmentExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLastLevelExpr(YxParser.LastLevelExprContext ctx);
+	T visitAssignOrExpr(YxParser.AssignOrExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code assignExpr}
 	 * labeled alternative in {@link YxParser#assignmentExpr}.
@@ -124,12 +124,12 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignExpr(YxParser.AssignExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code logicOrUnaryExpr}
+	 * Visit a parse tree produced by the {@code logicOrAndExpr}
 	 * labeled alternative in {@link YxParser#logicOrExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLogicOrUnaryExpr(YxParser.LogicOrUnaryExprContext ctx);
+	T visitLogicOrAndExpr(YxParser.LogicOrAndExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code logicOrBinaryExpr}
 	 * labeled alternative in {@link YxParser#logicOrExpr}.

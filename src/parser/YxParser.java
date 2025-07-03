@@ -794,14 +794,14 @@ public class YxParser extends Parser {
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
-	public static class LastLevelExprContext extends AssignmentExprContext {
+	public static class AssignOrExprContext extends AssignmentExprContext {
 		public LogicOrExprContext logicOrExpr() {
 			return getRuleContext(LogicOrExprContext.class,0);
 		}
-		public LastLevelExprContext(AssignmentExprContext ctx) { copyFrom(ctx); }
+		public AssignOrExprContext(AssignmentExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLastLevelExpr(this);
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitAssignOrExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -814,7 +814,7 @@ public class YxParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
-				_localctx = new LastLevelExprContext(_localctx);
+				_localctx = new AssignOrExprContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(120);
@@ -859,14 +859,14 @@ public class YxParser extends Parser {
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
-	public static class LogicOrUnaryExprContext extends LogicOrExprContext {
+	public static class LogicOrAndExprContext extends LogicOrExprContext {
 		public LogicAndExprContext logicAndExpr() {
 			return getRuleContext(LogicAndExprContext.class,0);
 		}
-		public LogicOrUnaryExprContext(LogicOrExprContext ctx) { copyFrom(ctx); }
+		public LogicOrAndExprContext(LogicOrExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLogicOrUnaryExpr(this);
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLogicOrAndExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -897,7 +897,7 @@ public class YxParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
 			case 1:
-				_localctx = new LogicOrUnaryExprContext(_localctx);
+				_localctx = new LogicOrAndExprContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(127);

@@ -123,7 +123,7 @@ public class YxBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements YxV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLastLevelExpr(YxParser.LastLevelExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAssignOrExpr(YxParser.AssignOrExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -137,7 +137,7 @@ public class YxBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements YxV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLogicOrUnaryExpr(YxParser.LogicOrUnaryExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLogicOrAndExpr(YxParser.LogicOrAndExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

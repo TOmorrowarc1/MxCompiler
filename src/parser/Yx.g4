@@ -28,12 +28,12 @@ def: Identifier('=' expr)? ;
 expr:assignmentExpr;
 
 assignmentExpr
-    : logicOrExpr                                           #lastLevelExpr
+    : logicOrExpr                                           #assignOrExpr
     | <assoc=right> unaryExpr '=' assignmentExpr            #assignExpr
     ;
 
 logicOrExpr
-    : logicAndExpr                                          #logicOrUnaryExpr
+    : logicAndExpr                                          #logicOrAndExpr
     | lhs=logicAndExpr LogicOr rhs=logicAndExpr             #logicOrBinaryExpr
     ;
 
