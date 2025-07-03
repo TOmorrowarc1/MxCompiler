@@ -64,19 +64,12 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitReturnstmt(YxParser.ReturnstmtContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code breakstmt}
+	 * Visit a parse tree produced by the {@code jmpstmt}
 	 * labeled alternative in {@link YxParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBreakstmt(YxParser.BreakstmtContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code continuestmt}
-	 * labeled alternative in {@link YxParser#statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitContinuestmt(YxParser.ContinuestmtContext ctx);
+	T visitJmpstmt(YxParser.JmpstmtContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code varDefstmt}
 	 * labeled alternative in {@link YxParser#statement}.
@@ -99,19 +92,11 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEmptystmt(YxParser.EmptystmtContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code intvardef}
-	 * labeled alternative in {@link YxParser#varDef}.
+	 * Visit a parse tree produced by {@link YxParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIntvardef(YxParser.IntvardefContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code boolvardef}
-	 * labeled alternative in {@link YxParser#varDef}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBoolvardef(YxParser.BoolvardefContext ctx);
+	T visitType(YxParser.TypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link YxParser#def}.
 	 * @param ctx the parse tree

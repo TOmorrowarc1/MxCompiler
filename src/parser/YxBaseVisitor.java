@@ -74,14 +74,7 @@ public class YxBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements YxV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBreakstmt(YxParser.BreakstmtContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitContinuestmt(YxParser.ContinuestmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitJmpstmt(YxParser.JmpstmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -109,14 +102,7 @@ public class YxBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements YxV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIntvardef(YxParser.IntvardefContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitBoolvardef(YxParser.BoolvardefContext ctx) { return visitChildren(ctx); }
+	@Override public T visitType(YxParser.TypeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -15,17 +15,13 @@ statement
     | For '(' (initializationStatement=statement)';'(forConditionExpression=expr)';'(stepExpression=expr)
       bodyStatement=statement                   #forstmt
     | Return expr ';'                           #returnstmt
-    | Break ';'                                 #breakstmt
-    | Continue ';'                              #continuestmt
-    | varDef ';'                                #varDefstmt
+    | (Break|Continue)';'                       #jmpstmt
+    | type def (','def)* ';'                    #varDefstmt
     | expr';'                                   #expressionstmt
     |';'                                        #emptystmt
     ;
 
-varDef
-    : Int def (','def)* ';'                     #intvardef
-    | Bool def (',' def) ';'                    #boolvardef
-    ;
+type: Int|Bool;
 def: Identifier('=' expr)? ;
 
 
@@ -33,7 +29,7 @@ expr:assignmentExpr;
 
 assignmentExpr
     : logicOrExpr                                           #lastLevelExpr
-    | <assoc=right> Identifier '=' assignmentExpr           #assignExpr
+    | <assoc=right> unaryExpr '=' assignmentExpr            #assignExpr
     ;
 
 logicOrExpr

@@ -14,9 +14,6 @@ public class Main {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         // 3. 创建语法分析器
         YxParser parser = new YxParser(tokens);
-        // 4. 解析表达式
-        ParseTree tree = parser.yx();
-        // 5. 打印语法树
-        System.out.println(tree.toStringTree(parser));
+
     }
 }
