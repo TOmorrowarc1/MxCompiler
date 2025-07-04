@@ -6,7 +6,7 @@ program: (varDeclaration|funcDeclaration)* EOF;
 type: Int|Bool|Void|Str;
 
 varDeclaration
-    :type vardef(','vardef)* ;
+    :type vardef(','vardef)* ';' ;
 vardef: Identifier('=' expr)? ;
 
 funcDeclaration: type Identifier '('parameterList?')' block ;
@@ -26,7 +26,7 @@ statement
       bodyStatement=statement                   #forstmt
     | Return expr ';'                           #returnstmt
     | (Break|Continue)';'                       #jmpstmt
-    | varDeclaration ';'                        #varDefstmt
+    | varDeclaration                            #varDefstmt
     | expr';'                                   #expressionstmt
     |';'                                        #emptystmt
     ;

@@ -13,12 +13,29 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitProgram(YxParser.ProgramContext ctx) {
-        return visit(ctx.function());
+        List<VarDefStmtNode> defs = new ArrayList<>();
+        List<FunctionDeclarationNode> functions = new ArrayList<>();
+        for (YxParser.VarDeclarationContext varDeclCtx : ctx.varDeclaration()) {
+            defs.add((VarDefStmtNode) visit(varDeclCtx));
+        }
+        for (YxParser.FuncDeclarationContext funcDeclCtx : ctx.funcDeclaration()) {
+            functions.add((FunctionDeclarationNode) visit(funcDeclCtx));
+        }
+        return new ProgramNode(new Position(ctx), functions, defs);
     }
 
     @Override
-    public ASTNode visitFunction(YxParser.FunctionContext ctx) {
-        return visit(ctx.block());
+    public ASTNode.ASTNode visitFunction(YxParser.FunctionContext ctx) {
+        return super.visitFunction(ctx);
+    }
+
+    @Override
+    public ASTNode visitVarDeclaration(YxParser.VarDeclarationContext ctx) {
+        List<VarDefStmtNode.DefNode> defNodes = new ArrayList<>();
+        for (YxParser.DefContext defContext : ctx.def()) {
+            defNodes.add((ASTNode.VarDefStmtNode.DefNode) visit(defContext));
+        }
+        return new VarDefStmtNode(new Position(ctx), ctx.type().getText(), defNodes);
     }
 
     @Override
@@ -93,11 +110,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitVarDefstmt(YxParser.VarDefstmtContext ctx) {
-        List<VarDefStmtNode.DefNode> defNodes = new ArrayList<>();
-        for (YxParser.DefContext defContext : ctx.def()) {
-            defNodes.add((ASTNode.VarDefStmtNode.DefNode) visit(defContext));
-        }
-        return new VarDefStmtNode(new Position(ctx), ctx.type().getText(), defNodes);
+
     }
 
     @Override

@@ -18,15 +18,85 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitProgram(YxParser.ProgramContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link YxParser#function}.
+	 * Enter a parse tree produced by {@link YxParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunction(YxParser.FunctionContext ctx);
+	void enterType(YxParser.TypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link YxParser#function}.
+	 * Exit a parse tree produced by {@link YxParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunction(YxParser.FunctionContext ctx);
+	void exitType(YxParser.TypeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link YxParser#varDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterVarDeclaration(YxParser.VarDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link YxParser#varDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitVarDeclaration(YxParser.VarDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link YxParser#vardef}.
+	 * @param ctx the parse tree
+	 */
+	void enterVardef(YxParser.VardefContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link YxParser#vardef}.
+	 * @param ctx the parse tree
+	 */
+	void exitVardef(YxParser.VardefContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link YxParser#funcDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncDeclaration(YxParser.FuncDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link YxParser#funcDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncDeclaration(YxParser.FuncDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link YxParser#parameterList}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameterList(YxParser.ParameterListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link YxParser#parameterList}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameterList(YxParser.ParameterListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link YxParser#parameter}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameter(YxParser.ParameterContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link YxParser#parameter}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameter(YxParser.ParameterContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link YxParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionCall(YxParser.FunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link YxParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionCall(YxParser.FunctionCallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link YxParser#argumentList}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgumentList(YxParser.ArgumentListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link YxParser#argumentList}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgumentList(YxParser.ArgumentListContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link YxParser#block}.
 	 * @param ctx the parse tree
@@ -145,26 +215,6 @@ public interface YxListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEmptystmt(YxParser.EmptystmtContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link YxParser#type}.
-	 * @param ctx the parse tree
-	 */
-	void enterType(YxParser.TypeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link YxParser#type}.
-	 * @param ctx the parse tree
-	 */
-	void exitType(YxParser.TypeContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link YxParser#def}.
-	 * @param ctx the parse tree
-	 */
-	void enterDef(YxParser.DefContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link YxParser#def}.
-	 * @param ctx the parse tree
-	 */
-	void exitDef(YxParser.DefContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link YxParser#expr}.
 	 * @param ctx the parse tree

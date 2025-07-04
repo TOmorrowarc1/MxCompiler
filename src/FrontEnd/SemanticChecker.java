@@ -13,6 +13,16 @@ public class SemanticChecker implements ASTNodeVisitor {
     }
 
     @Override
+    public void visit(ProgramNode node) {
+
+    }
+
+    @Override
+    public void visit(FunctionDeclarationNode node) {
+
+    }
+
+    @Override
     public void visit(BlockStmtNode node) {
         scope = new Scope(scope);
         for (StmtNode statement : node.body) {
@@ -140,6 +150,11 @@ public class SemanticChecker implements ASTNodeVisitor {
         }
         node.nodeInfo.setType(node.left.nodeInfo.getType());
         node.nodeInfo.setIsLeftValue(false);
+    }
+
+    @Override
+    public void visit(FunctionCallExprNode node) {
+
     }
 
     @Override
