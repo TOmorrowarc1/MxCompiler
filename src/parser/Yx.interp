@@ -114,7 +114,7 @@ rule names:
 program
 type
 varDeclaration
-vardef
+varDef
 funcDeclaration
 parameterList
 parameter

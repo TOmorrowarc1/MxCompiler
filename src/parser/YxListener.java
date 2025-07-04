@@ -38,15 +38,15 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitVarDeclaration(YxParser.VarDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link YxParser#vardef}.
+	 * Enter a parse tree produced by {@link YxParser#varDef}.
 	 * @param ctx the parse tree
 	 */
-	void enterVardef(YxParser.VardefContext ctx);
+	void enterVarDef(YxParser.VarDefContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link YxParser#vardef}.
+	 * Exit a parse tree produced by {@link YxParser#varDef}.
 	 * @param ctx the parse tree
 	 */
-	void exitVardef(YxParser.VardefContext ctx);
+	void exitVarDef(YxParser.VarDefContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link YxParser#funcDeclaration}.
 	 * @param ctx the parse tree

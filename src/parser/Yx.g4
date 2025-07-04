@@ -6,8 +6,8 @@ program: (varDeclaration|funcDeclaration)* EOF;
 type: Int|Bool|Void|Str;
 
 varDeclaration
-    :type vardef(','vardef)* ';' ;
-vardef: Identifier('=' expr)? ;
+    :type varDef(','varDef)* ';' ;
+varDef: Identifier('=' expr)? ;
 
 funcDeclaration: type Identifier '('parameterList?')' block ;
 parameterList: parameter (',' parameter)*;

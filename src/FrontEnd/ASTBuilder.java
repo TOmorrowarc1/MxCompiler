@@ -25,17 +25,60 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     }
 
     @Override
-    public ASTNode.ASTNode visitFunction(YxParser.FunctionContext ctx) {
-        return super.visitFunction(ctx);
-    }
-
-    @Override
     public ASTNode visitVarDeclaration(YxParser.VarDeclarationContext ctx) {
         List<VarDefStmtNode.DefNode> defNodes = new ArrayList<>();
-        for (YxParser.DefContext defContext : ctx.def()) {
+        for (YxParser.VarDefContext defContext : ctx.varDef()) {
             defNodes.add((ASTNode.VarDefStmtNode.DefNode) visit(defContext));
         }
         return new VarDefStmtNode(new Position(ctx), ctx.type().getText(), defNodes);
+    }
+
+    @Override
+    public ASTNode visitVarDef(YxParser.VarDefContext ctx) {
+        ExprNode expr = (ExprNode) visit(ctx.expr());
+        return new VarDefStmtNode.DefNode(new Position(ctx), ctx.Identifier().getText(), expr);
+    }
+
+    @Override
+    public ASTNode visitFuncDeclaration(YxParser.FuncDeclarationContext ctx) {
+        List<ASTNode.FunctionDeclarationNode.ParameterNode> parameters = new ArrayList<>();
+        if (ctx.parameterList() != null) {
+            for (YxParser.ParameterContext paramCtx : ctx.parameterList().parameter()) {
+                parameters.add((FunctionDeclarationNode.ParameterNode) visit(paramCtx));
+            }
+        }
+        String returnType = ctx.type().getText();
+        String name = ctx.Identifier().getText();
+        return new FunctionDeclarationNode(new Position(ctx), returnType, name, parameters);
+    }
+
+    @Override
+    public ASTNode visitParameterList(YxParser.ParameterListContext ctx) {
+        //It should not be used.
+        return super.visitParameterList(ctx);
+    }
+
+    @Override
+    public ASTNode visitParameter(YxParser.ParameterContext ctx) {
+        return new ASTNode.FunctionDeclarationNode.ParameterNode(new Position(ctx), ctx.type().getText(), ctx.Identifier().getText());
+    }
+
+    @Override
+    public ASTNode visitFunctionCall(YxParser.FunctionCallContext ctx) {
+        String name = ctx.Identifier().getText();
+        List<ExprNode> parameters = new ArrayList<>();
+        if (ctx.argumentList() != null) {
+            for (YxParser.ExprContext paramCtx : ctx.argumentList().expr()) {
+                parameters.add((ExprNode) visit(paramCtx));
+            }
+        }
+        return new FunctionCallExprNode(new Position(ctx), name, parameters);
+    }
+
+    @Override
+    public ASTNode visitArgumentList(YxParser.ArgumentListContext ctx) {
+        //Should not enter.
+        return super.visitArgumentList(ctx);
     }
 
     @Override
@@ -110,7 +153,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitVarDefstmt(YxParser.VarDefstmtContext ctx) {
-
+        return visit(ctx.varDeclaration());
     }
 
     @Override
@@ -127,12 +170,6 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     public ASTNode visitType(YxParser.TypeContext ctx) {
         //The function should not be executed.
         return super.visitType(ctx);
-    }
-
-    @Override
-    public ASTNode visitDef(YxParser.DefContext ctx) {
-        ExprNode expr = (ExprNode) visit(ctx.expr());
-        return new ASTNode.VarDefStmtNode.DefNode(new Position(ctx), ctx.Identifier().getText(), expr);
     }
 
     @Override

@@ -53,13 +53,13 @@ public class YxBaseListener implements YxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVardef(YxParser.VardefContext ctx) { }
+	@Override public void enterVarDef(YxParser.VarDefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVardef(YxParser.VardefContext ctx) { }
+	@Override public void exitVarDef(YxParser.VarDefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

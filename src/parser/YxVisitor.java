@@ -17,11 +17,53 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(YxParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link YxParser#function}.
+	 * Visit a parse tree produced by {@link YxParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunction(YxParser.FunctionContext ctx);
+	T visitType(YxParser.TypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link YxParser#varDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVarDeclaration(YxParser.VarDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link YxParser#varDef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVarDef(YxParser.VarDefContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link YxParser#funcDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFuncDeclaration(YxParser.FuncDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link YxParser#parameterList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParameterList(YxParser.ParameterListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link YxParser#parameter}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParameter(YxParser.ParameterContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link YxParser#functionCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionCall(YxParser.FunctionCallContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link YxParser#argumentList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArgumentList(YxParser.ArgumentListContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link YxParser#block}.
 	 * @param ctx the parse tree
@@ -91,18 +133,6 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitEmptystmt(YxParser.EmptystmtContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link YxParser#type}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitType(YxParser.TypeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link YxParser#def}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDef(YxParser.DefContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link YxParser#expr}.
 	 * @param ctx the parse tree
