@@ -8,6 +8,6 @@ public class SemanticError extends CompileError {
     @Override
     public String getMessage() {
         String basicMessage = super.getMessage();
-        return "Semantic Error" + basicMessage + '\n';
+        return "Semantic Error" + basicMessage;
     }
 }

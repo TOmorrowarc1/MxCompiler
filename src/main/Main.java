@@ -1,5 +1,6 @@
 package main;
 
+import Utils.SemanticError;
 import parser.*;
 import ASTNode.*;
 import FrontEnd.*;
@@ -22,8 +23,8 @@ public class Main {
             ASTBuilder astBuilder = new ASTBuilder();
             mainNode = (BlockStmtNode) astBuilder.visit(parserTree);
             //Two times or more check, signing and build the IR.
-        } catch (Exception e) {
-            throw e;
+        } catch (SemanticError err) {
+            System.out.println(err.getMessage());
         }
     }
 }
