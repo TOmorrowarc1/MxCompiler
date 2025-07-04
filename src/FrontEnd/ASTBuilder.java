@@ -1,6 +1,7 @@
 package FrontEnd;
 
 import ASTNode.*;
+import Utils.Position;
 import parser.YxBaseVisitor;
 import parser.YxParser;
 
@@ -26,7 +27,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         for (YxParser.StatementContext statementContext : ctx.statement()) {
             stmts.add((StmtNode) visit(statementContext));
         }
-        return new BlockStmtNode(stmts);
+        return new BlockStmtNode(new Position(ctx), stmts);
     }
 
     @Override
@@ -38,25 +39,25 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     public ASTNode visitIfstmt(YxParser.IfstmtContext ctx) {
         ExprNode condition = (ExprNode) visit(ctx.expr());
         StmtNode thenStmt = (StmtNode) visit(ctx.trueStmt);
-        StmtNode elseStmt = new EmptyStmtNode();
+        StmtNode elseStmt = new EmptyStmtNode(new Position(ctx));
         if (ctx.falseStmt != null) {
             elseStmt = (StmtNode) visit(ctx.falseStmt);
         }
-        return new IfStmtNode(condition, thenStmt, elseStmt);
+        return new IfStmtNode(new Position(ctx), condition, thenStmt, elseStmt);
     }
 
     @Override
     public ASTNode visitWhilestmt(YxParser.WhilestmtContext ctx) {
         ExprNode condition = (ExprNode) visit(ctx.expr());
         StmtNode body = (StmtNode) visit(ctx.statement());
-        return new WhileStmtNode(condition, body);
+        return new WhileStmtNode(new Position(ctx), condition, body);
     }
 
     @Override
     public ASTNode visitForstmt(YxParser.ForstmtContext ctx) {
-        StmtNode init = new EmptyStmtNode();
-        ExprNode condition = new EmptyExprNode();
-        ExprNode step = new EmptyExprNode();
+        StmtNode init = new EmptyStmtNode(new Position(ctx));
+        ExprNode condition = new EmptyExprNode(new Position(ctx));
+        ExprNode step = new EmptyExprNode(new Position(ctx));
         StmtNode body = (StmtNode) visit(ctx.bodyStatement);
         if (ctx.initializationStatement != null) {
             init = (StmtNode) visit(ctx.initializationStatement);
@@ -67,7 +68,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         if (ctx.stepExpression != null) {
             step = (ExprNode) visit(ctx.stepExpression);
         }
-        return new ForStmtNode((VarDefStmtNode) init, condition, step, body);
+        return new ForStmtNode(new Position(ctx), (VarDefStmtNode) init, condition, step, body);
     }
 
     @Override
@@ -76,7 +77,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         if (ctx.expr() != null) {
             expr = (ExprNode) visit(ctx.expr());
         }
-        return new ReturnStmtNode(expr);
+        return new ReturnStmtNode(new Position(ctx), expr);
     }
 
     @Override
@@ -87,7 +88,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else if (ctx.getText().equals("continue")) {
             jmpType = JmpStmtNode.JumpType.CONTINUE;
         }
-        return new JmpStmtNode(jmpType);
+        return new JmpStmtNode(new Position(ctx), jmpType);
     }
 
     @Override
@@ -96,17 +97,17 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         for (YxParser.DefContext defContext : ctx.def()) {
             defNodes.add((ASTNode.VarDefStmtNode.DefNode) visit(defContext));
         }
-        return new VarDefStmtNode(ctx.type().getText(), defNodes);
+        return new VarDefStmtNode(new Position(ctx), ctx.type().getText(), defNodes);
     }
 
     @Override
     public ASTNode visitExpressionstmt(YxParser.ExpressionstmtContext ctx) {
-        return new ExprStmtNode((ExprNode) visit(ctx.expr()));
+        return new ExprStmtNode(new Position(ctx), (ExprNode) visit(ctx.expr()));
     }
 
     @Override
     public ASTNode visitEmptystmt(YxParser.EmptystmtContext ctx) {
-        return new EmptyStmtNode();
+        return new EmptyStmtNode(new Position(ctx));
     }
 
     @Override
@@ -135,7 +136,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     public ASTNode visitAssignExpr(YxParser.AssignExprContext ctx) {
         ExprNode lhs = (ExprNode) visit(ctx.unaryExpr());
         ExprNode rhs = (ExprNode) visit(ctx.assignmentExpr());
-        return new AssignExprNode(lhs, rhs);
+        return new AssignExprNode(new Position(ctx), lhs, rhs);
     }
 
     @Override
@@ -147,7 +148,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     public ASTNode visitLogicOrBinaryExpr(YxParser.LogicOrBinaryExprContext ctx) {
         ExprNode lhs = (ExprNode) visit(ctx.lhs);
         ExprNode rhs = (ExprNode) visit(ctx.rhs);
-        return new BinaryExprNode(BinaryExprNode.BinaryOperator.LOGIC_OR, lhs, rhs);
+        return new BinaryExprNode(new Position(ctx), BinaryExprNode.BinaryOperator.LOGIC_OR, lhs, rhs);
     }
 
     @Override
@@ -159,7 +160,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     public ASTNode visitLogicAndBinaryExpr(YxParser.LogicAndBinaryExprContext ctx) {
         ExprNode lhs = (ExprNode) visit(ctx.lhs);
         ExprNode rhs = (ExprNode) visit(ctx.rhs);
-        return new BinaryExprNode(BinaryExprNode.BinaryOperator.LOGIC_AND, lhs, rhs);
+        return new BinaryExprNode(new Position(ctx), BinaryExprNode.BinaryOperator.LOGIC_AND, lhs, rhs);
     }
 
     @Override
@@ -171,7 +172,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     public ASTNode visitBitOrBinaryExpr(YxParser.BitOrBinaryExprContext ctx) {
         ExprNode lhs = (ExprNode) visit(ctx.lhs);
         ExprNode rhs = (ExprNode) visit(ctx.rhs);
-        return new BinaryExprNode(BinaryExprNode.BinaryOperator.OR, lhs, rhs);
+        return new BinaryExprNode(new Position(ctx), BinaryExprNode.BinaryOperator.OR, lhs, rhs);
     }
 
     @Override
@@ -183,7 +184,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     public ASTNode visitBitAndBinaryExpr(YxParser.BitAndBinaryExprContext ctx) {
         ExprNode lhs = (ExprNode) visit(ctx.lhs);
         ExprNode rhs = (ExprNode) visit(ctx.rhs);
-        return new BinaryExprNode(BinaryExprNode.BinaryOperator.AND, lhs, rhs);
+        return new BinaryExprNode(new Position(ctx), BinaryExprNode.BinaryOperator.AND, lhs, rhs);
     }
 
     @Override
@@ -201,7 +202,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else if (ctx.op.getText().equals("!=")) {
             op = BinaryExprNode.BinaryOperator.N_EQUAL;
         }
-        return new BinaryExprNode(op, lhs, rhs);
+        return new BinaryExprNode(new Position(ctx), op, lhs, rhs);
     }
 
     @Override
@@ -223,7 +224,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else if (ctx.op.getText().equals("<")) {
             op = BinaryExprNode.BinaryOperator.L;
         }
-        return new BinaryExprNode(op, lhs, rhs);
+        return new BinaryExprNode(new Position(ctx), op, lhs, rhs);
     }
 
     @Override
@@ -241,7 +242,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else if (ctx.op.getText().equals(">>")) {
             op = BinaryExprNode.BinaryOperator.RIGHT_SHIFT;
         }
-        return new BinaryExprNode(op, lhs, rhs);
+        return new BinaryExprNode(new Position(ctx), op, lhs, rhs);
     }
 
     @Override
@@ -259,7 +260,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else if (ctx.op.getText().equals("-")) {
             op = BinaryExprNode.BinaryOperator.SUB;
         }
-        return new BinaryExprNode(op, lhs, rhs);
+        return new BinaryExprNode(new Position(ctx), op, lhs, rhs);
     }
 
     @Override
@@ -279,7 +280,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else if (ctx.op.getText().equals("%")) {
             op = BinaryExprNode.BinaryOperator.MOD;
         }
-        return new BinaryExprNode(op, lhs, rhs);
+        return new BinaryExprNode(new Position(ctx), op, lhs, rhs);
     }
 
     @Override
@@ -296,7 +297,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else if (ctx.op.getText().equals("--")) {
             op = UnaryExprNode.UnaryOperator.SELF_SUB;
         }
-        return new UnaryExprNode(op, expr);
+        return new UnaryExprNode(new Position(ctx), op, expr);
     }
 
     @Override
@@ -310,7 +311,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else if (ctx.op.getText().equals("~")) {
             op = UnaryExprNode.UnaryOperator.NOT;
         }
-        return new UnaryExprNode(op, expr);
+        return new UnaryExprNode(new Position(ctx), op, expr);
     }
 
     @Override
@@ -327,7 +328,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else if (ctx.op.getText().equals("--")) {
             op = UnaryExprNode.UnaryOperator.SELF_SUB;
         }
-        return new UnaryExprNode(op, expr);
+        return new UnaryExprNode(new Position(ctx), op, expr);
     }
 
     @Override
@@ -337,7 +338,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else if (ctx.literal() != null) {
             return visit(ctx.literal());
         } else if (ctx.Identifier() != null) {
-            return new VarExprNode(ctx.Identifier().getText());
+            return new VarExprNode(new Position(ctx), ctx.Identifier().getText());
         }
         //Should not come.
         return super.visitPrimary(ctx);
@@ -346,11 +347,11 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitLiteral(YxParser.LiteralContext ctx) {
         if (ctx.Integer() != null) {
-            return new IntLiteralExprNode(Integer.parseInt(ctx.Integer().getText()));
+            return new IntLiteralExprNode(new Position(ctx), Integer.parseInt(ctx.Integer().getText()));
         } else if (ctx.True() != null) {
-            return new BoolLiteralExprNode(true);
+            return new BoolLiteralExprNode(new Position(ctx), true);
         } else if (ctx.False() != null) {
-            return new BoolLiteralExprNode(false);
+            return new BoolLiteralExprNode(new Position(ctx), false);
         }
         //The visitor should not come to here.
         return super.visitLiteral(ctx);
