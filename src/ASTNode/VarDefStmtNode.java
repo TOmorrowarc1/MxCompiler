@@ -29,7 +29,6 @@ public class VarDefStmtNode extends StmtNode {
 
         @Override
         public void accept(ASTNodeVisitor visitor) {
-            visitor.visit(this);
-        }
+        };
     }
 }

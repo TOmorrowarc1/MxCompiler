@@ -305,8 +305,6 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         UnaryExprNode.UnaryOperator op = null;
         if (ctx.op.getText().equals("-")) {
             op = UnaryExprNode.UnaryOperator.MINUS;
-        } else if (ctx.op.getText().equals("+")) {
-            op = UnaryExprNode.UnaryOperator.ADD;
         } else if (ctx.op.getText().equals("!")) {
             op = UnaryExprNode.UnaryOperator.LOGIC_NOT;
         } else if (ctx.op.getText().equals("~")) {
