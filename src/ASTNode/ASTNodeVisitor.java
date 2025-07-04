@@ -1,6 +1,10 @@
 package ASTNode;
 
 public interface ASTNodeVisitor {
+    void visit(ProgramNode node);
+
+    void visit(FunctionDeclarationNode node);
+
     void visit(BlockStmtNode node);
 
     void visit(IfStmtNode node);
@@ -23,6 +27,8 @@ public interface ASTNodeVisitor {
 
     void visit(BinaryExprNode node);
 
+    void visit(FunctionCallExprNode node);
+
     void visit(UnaryExprNode node);
 
     void visit(IntLiteralExprNode node);
@@ -34,5 +40,4 @@ public interface ASTNodeVisitor {
     void visit(VarExprNode node);
 
     void visit(EmptyExprNode node);
-
 }

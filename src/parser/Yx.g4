@@ -1,9 +1,19 @@
 grammar Yx;
 
 // The gramma for the parser.
-program: function EOF;
+program: (varDeclaration|funcDeclaration)* EOF;
 
-function: Int 'main()' block ;
+type: Int|Bool|Void|Str;
+
+varDeclaration
+    :type vardef(','vardef)* ;
+vardef: Identifier('=' expr)? ;
+
+funcDeclaration: type Identifier '('parameterList?')' block ;
+parameterList: parameter (',' parameter)*;
+parameter: type Identifier;
+functionCall: Identifier'('argumentList?')';
+argumentList: expr(','expr)*;
 
 block:'{'statement*'}';
 
@@ -16,14 +26,10 @@ statement
       bodyStatement=statement                   #forstmt
     | Return expr ';'                           #returnstmt
     | (Break|Continue)';'                       #jmpstmt
-    | type def (','def)* ';'                    #varDefstmt
+    | varDeclaration ';'                        #varDefstmt
     | expr';'                                   #expressionstmt
     |';'                                        #emptystmt
     ;
-
-type: Int|Bool|Void|Str;
-def: Identifier('=' expr)? ;
-
 
 expr:assignmentExpr;
 
@@ -92,6 +98,7 @@ primary
     :'(' expr ')'
     | literal
     | Identifier
+    | functionCall
     ;
 
 literal
