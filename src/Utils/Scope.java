@@ -16,6 +16,7 @@ public class Scope {
             typeTable.put("int", PrimitiveType.INT);
             typeTable.put("bool", PrimitiveType.BOOL);
             typeTable.put("void", PrimitiveType.VOID);
+            typeTable.put("string", PrimitiveType.STRING);
         }
     }
 

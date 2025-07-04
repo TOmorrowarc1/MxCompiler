@@ -113,25 +113,13 @@ public class YxBaseListener implements YxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBreakstmt(YxParser.BreakstmtContext ctx) { }
+	@Override public void enterJmpstmt(YxParser.JmpstmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBreakstmt(YxParser.BreakstmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterContinuestmt(YxParser.ContinuestmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitContinuestmt(YxParser.ContinuestmtContext ctx) { }
+	@Override public void exitJmpstmt(YxParser.JmpstmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -173,25 +161,13 @@ public class YxBaseListener implements YxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIntvardef(YxParser.IntvardefContext ctx) { }
+	@Override public void enterType(YxParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIntvardef(YxParser.IntvardefContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBoolvardef(YxParser.BoolvardefContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBoolvardef(YxParser.BoolvardefContext ctx) { }
+	@Override public void exitType(YxParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -221,13 +197,13 @@ public class YxBaseListener implements YxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLastLevelExpr(YxParser.LastLevelExprContext ctx) { }
+	@Override public void enterAssignOrExpr(YxParser.AssignOrExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLastLevelExpr(YxParser.LastLevelExprContext ctx) { }
+	@Override public void exitAssignOrExpr(YxParser.AssignOrExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -245,13 +221,13 @@ public class YxBaseListener implements YxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLogicOrUnaryExpr(YxParser.LogicOrUnaryExprContext ctx) { }
+	@Override public void enterLogicOrAndExpr(YxParser.LogicOrAndExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLogicOrUnaryExpr(YxParser.LogicOrUnaryExprContext ctx) { }
+	@Override public void exitLogicOrAndExpr(YxParser.LogicOrAndExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

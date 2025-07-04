@@ -21,7 +21,7 @@ statement
     |';'                                        #emptystmt
     ;
 
-type: Int|Bool;
+type: Int|Bool|Void|Str;
 def: Identifier('=' expr)? ;
 
 
@@ -98,6 +98,7 @@ literal
     :Integer
     |True
     |False
+    |String
     ;
 // The gamma for the lexer.
 Identifier: [a-z][a-zA-Z_0-9]*;
@@ -105,12 +106,15 @@ Identifier: [a-z][a-zA-Z_0-9]*;
 Int:'int';
 Bool:'bool';
 Void:'void';
+Str:'string';
 
 Integer
     :[1-9][0-9]*
     |'0'
     ;
-
+String
+   : '"' ( '\\' . | ~[\\"] )* '"'
+   ;
 True:'true';
 False:'flase';
 

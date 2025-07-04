@@ -29,6 +29,8 @@ public interface ASTNodeVisitor {
 
     void visit(BoolLiteralExprNode node);
 
+    void visit(StringLiteralExprNode node);
+
     void visit(VarExprNode node);
 
     void visit(EmptyExprNode node);

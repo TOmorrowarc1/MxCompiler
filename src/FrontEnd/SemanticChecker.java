@@ -122,9 +122,15 @@ public class SemanticChecker implements ASTNodeVisitor {
                 }
                 break;
             }
-            case PLUS, SUB, MUL, DIV, MOD, OR, AND, LEFT_SHIFT, RIGHT_SHIFT, G, GE, L, LE: {
+            case PLUS, SUB, MUL, DIV, MOD, OR, AND, LEFT_SHIFT, RIGHT_SHIFT: {
                 if (!node.left.nodeInfo.getType().equals("int")) {
                     throw new SemanticError(node.position.toString() + "Types not match: the type should be int");
+                }
+                break;
+            }
+            case G, GE, L, LE: {
+                if (!node.left.nodeInfo.getType().equals("int") && !node.left.nodeInfo.getType().equals("string")) {
+                    throw new SemanticError(node.position.toString() + "Types  not match: the type should be int or string");
                 }
                 break;
             }
@@ -170,6 +176,12 @@ public class SemanticChecker implements ASTNodeVisitor {
     @Override
     public void visit(BoolLiteralExprNode node) {
         node.nodeInfo.setType("bool");
+        node.nodeInfo.setIsLeftValue(false);
+    }
+
+    @Override
+    public void visit(StringLiteralExprNode node) {
+        node.nodeInfo.setType("string");
         node.nodeInfo.setIsLeftValue(false);
     }
 

@@ -17,14 +17,14 @@ public class YxParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, Identifier=2, Int=3, Bool=4, Void=5, Integer=6, True=7, False=8, 
-		SelfAdd=9, SelfMinus=10, Plus=11, Minus=12, Mult=13, Div=14, Mod=15, GreatThan=16, 
-		LessThan=17, GEThan=18, LEThan=19, NEqual=20, Equal=21, LogicAnd=22, LogicOr=23, 
-		LogicNot=24, And=25, Or=26, Xor=27, Not=28, LeftShift=29, RightShift=30, 
-		Assign=31, LParen=32, RParen=33, LBracket=34, RBracket=35, LBrace=36, 
-		RBrace=37, Question=38, Colon=39, Semi=40, Comma=41, Dot=42, If=43, Else=44, 
-		For=45, While=46, Break=47, Continue=48, Return=49, WhiteSpace=50, BlockComment=51, 
-		LineComment=52;
+		T__0=1, Identifier=2, Int=3, Bool=4, Void=5, Str=6, Integer=7, String=8, 
+		True=9, False=10, SelfAdd=11, SelfMinus=12, Plus=13, Minus=14, Mult=15, 
+		Div=16, Mod=17, GreatThan=18, LessThan=19, GEThan=20, LEThan=21, NEqual=22, 
+		Equal=23, LogicAnd=24, LogicOr=25, LogicNot=26, And=27, Or=28, Xor=29, 
+		Not=30, LeftShift=31, RightShift=32, Assign=33, LParen=34, RParen=35, 
+		LBracket=36, RBracket=37, LBrace=38, RBrace=39, Question=40, Colon=41, 
+		Semi=42, Comma=43, Dot=44, If=45, Else=46, For=47, While=48, Break=49, 
+		Continue=50, Return=51, WhiteSpace=52, BlockComment=53, LineComment=54;
 	public static final int
 		RULE_program = 0, RULE_function = 1, RULE_block = 2, RULE_statement = 3, 
 		RULE_type = 4, RULE_def = 5, RULE_expr = 6, RULE_assignmentExpr = 7, RULE_logicOrExpr = 8, 
@@ -43,24 +43,25 @@ public class YxParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'main()'", null, "'int'", "'bool'", "'void'", null, "'true'", 
-			"'flase'", "'++'", "'--'", "'+'", "'-'", "'*'", "'/'", "'%'", "'>'", 
-			"'<'", "'>='", "'<='", "'!='", "'=='", "'&&'", "'||'", "'!'", "'&'", 
-			"'|'", "'^'", "'~'", "'<<'", "'>>'", "'='", "'('", "')'", "'['", "']'", 
-			"'{'", "'}'", "'?'", "':'", "';'", "','", "'.'", "'if'", "'else'", "'for'", 
-			"'while'", "'break'", "'continue'", "'return'"
+			null, "'main()'", null, "'int'", "'bool'", "'void'", "'string'", null, 
+			null, "'true'", "'flase'", "'++'", "'--'", "'+'", "'-'", "'*'", "'/'", 
+			"'%'", "'>'", "'<'", "'>='", "'<='", "'!='", "'=='", "'&&'", "'||'", 
+			"'!'", "'&'", "'|'", "'^'", "'~'", "'<<'", "'>>'", "'='", "'('", "')'", 
+			"'['", "']'", "'{'", "'}'", "'?'", "':'", "';'", "','", "'.'", "'if'", 
+			"'else'", "'for'", "'while'", "'break'", "'continue'", "'return'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, "Identifier", "Int", "Bool", "Void", "Integer", "True", "False", 
-			"SelfAdd", "SelfMinus", "Plus", "Minus", "Mult", "Div", "Mod", "GreatThan", 
-			"LessThan", "GEThan", "LEThan", "NEqual", "Equal", "LogicAnd", "LogicOr", 
-			"LogicNot", "And", "Or", "Xor", "Not", "LeftShift", "RightShift", "Assign", 
-			"LParen", "RParen", "LBracket", "RBracket", "LBrace", "RBrace", "Question", 
-			"Colon", "Semi", "Comma", "Dot", "If", "Else", "For", "While", "Break", 
-			"Continue", "Return", "WhiteSpace", "BlockComment", "LineComment"
+			null, null, "Identifier", "Int", "Bool", "Void", "Str", "Integer", "String", 
+			"True", "False", "SelfAdd", "SelfMinus", "Plus", "Minus", "Mult", "Div", 
+			"Mod", "GreatThan", "LessThan", "GEThan", "LEThan", "NEqual", "Equal", 
+			"LogicAnd", "LogicOr", "LogicNot", "And", "Or", "Xor", "Not", "LeftShift", 
+			"RightShift", "Assign", "LParen", "RParen", "LBracket", "RBracket", "LBrace", 
+			"RBrace", "Question", "Colon", "Semi", "Comma", "Dot", "If", "Else", 
+			"For", "While", "Break", "Continue", "Return", "WhiteSpace", "BlockComment", 
+			"LineComment"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -125,9 +126,12 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_program; }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitProgram(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterProgram(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitProgram(this);
 		}
 	}
 
@@ -165,9 +169,12 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_function; }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitFunction(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterFunction(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitFunction(this);
 		}
 	}
 
@@ -211,9 +218,12 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_block; }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBlock(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterBlock(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitBlock(this);
 		}
 	}
 
@@ -229,7 +239,7 @@ public class YxParser extends Parser {
 			setState(53);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1100684439066588L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4402737756266492L) != 0)) {
 				{
 				{
 				setState(50);
@@ -274,9 +284,12 @@ public class YxParser extends Parser {
 		public TerminalNode Continue() { return getToken(YxParser.Continue, 0); }
 		public JmpstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitJmpstmt(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterJmpstmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitJmpstmt(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -292,9 +305,12 @@ public class YxParser extends Parser {
 		}
 		public WhilestmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitWhilestmt(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterWhilestmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitWhilestmt(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -323,9 +339,12 @@ public class YxParser extends Parser {
 		}
 		public ForstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitForstmt(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterForstmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitForstmt(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -346,9 +365,12 @@ public class YxParser extends Parser {
 		}
 		public VarDefstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitVarDefstmt(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterVarDefstmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitVarDefstmt(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -370,9 +392,12 @@ public class YxParser extends Parser {
 		public TerminalNode Else() { return getToken(YxParser.Else, 0); }
 		public IfstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitIfstmt(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterIfstmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitIfstmt(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -383,9 +408,12 @@ public class YxParser extends Parser {
 		public TerminalNode Semi() { return getToken(YxParser.Semi, 0); }
 		public ExpressionstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitExpressionstmt(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterExpressionstmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitExpressionstmt(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -397,9 +425,12 @@ public class YxParser extends Parser {
 		public TerminalNode Semi() { return getToken(YxParser.Semi, 0); }
 		public ReturnstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitReturnstmt(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterReturnstmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitReturnstmt(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -409,9 +440,12 @@ public class YxParser extends Parser {
 		}
 		public BlockstmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBlockstmt(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterBlockstmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitBlockstmt(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -419,9 +453,12 @@ public class YxParser extends Parser {
 		public TerminalNode Semi() { return getToken(YxParser.Semi, 0); }
 		public EmptystmtContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitEmptystmt(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterEmptystmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitEmptystmt(this);
 		}
 	}
 
@@ -546,6 +583,8 @@ public class YxParser extends Parser {
 				break;
 			case Int:
 			case Bool:
+			case Void:
+			case Str:
 				_localctx = new VarDefstmtContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
@@ -575,6 +614,7 @@ public class YxParser extends Parser {
 				break;
 			case Identifier:
 			case Integer:
+			case String:
 			case True:
 			case False:
 			case SelfAdd:
@@ -619,14 +659,19 @@ public class YxParser extends Parser {
 	public static class TypeContext extends ParserRuleContext {
 		public TerminalNode Int() { return getToken(YxParser.Int, 0); }
 		public TerminalNode Bool() { return getToken(YxParser.Bool, 0); }
+		public TerminalNode Void() { return getToken(YxParser.Void, 0); }
+		public TerminalNode Str() { return getToken(YxParser.Str, 0); }
 		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type; }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitType(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitType(this);
 		}
 	}
 
@@ -639,7 +684,7 @@ public class YxParser extends Parser {
 			{
 			setState(106);
 			_la = _input.LA(1);
-			if ( !(_la==Int || _la==Bool) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 120L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -672,9 +717,12 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_def; }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitDef(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterDef(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitDef(this);
 		}
 	}
 
@@ -722,9 +770,12 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_expr; }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitExpr(this);
 		}
 	}
 
@@ -772,9 +823,12 @@ public class YxParser extends Parser {
 		}
 		public AssignExprContext(AssignmentExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitAssignExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterAssignExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitAssignExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -784,9 +838,12 @@ public class YxParser extends Parser {
 		}
 		public AssignOrExprContext(AssignmentExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitAssignOrExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterAssignOrExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitAssignOrExpr(this);
 		}
 	}
 
@@ -849,9 +906,12 @@ public class YxParser extends Parser {
 		}
 		public LogicOrAndExprContext(LogicOrExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLogicOrAndExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterLogicOrAndExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitLogicOrAndExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -867,9 +927,12 @@ public class YxParser extends Parser {
 		}
 		public LogicOrBinaryExprContext(LogicOrExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLogicOrBinaryExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterLogicOrBinaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitLogicOrBinaryExpr(this);
 		}
 	}
 
@@ -938,9 +1001,12 @@ public class YxParser extends Parser {
 		}
 		public LogicAndBinaryExprContext(LogicAndExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLogicAndBinaryExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterLogicAndBinaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitLogicAndBinaryExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -950,9 +1016,12 @@ public class YxParser extends Parser {
 		}
 		public LogicAndbitExprContext(LogicAndExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLogicAndbitExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterLogicAndbitExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitLogicAndbitExpr(this);
 		}
 	}
 
@@ -1021,9 +1090,12 @@ public class YxParser extends Parser {
 		}
 		public BitOrBinaryExprContext(BitOrExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBitOrBinaryExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterBitOrBinaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitBitOrBinaryExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1033,9 +1105,12 @@ public class YxParser extends Parser {
 		}
 		public BitOrAndExprContext(BitOrExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBitOrAndExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterBitOrAndExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitBitOrAndExpr(this);
 		}
 	}
 
@@ -1098,9 +1173,12 @@ public class YxParser extends Parser {
 		}
 		public BitAndEqualExprContext(BitAndExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBitAndEqualExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterBitAndEqualExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitBitAndEqualExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1116,9 +1194,12 @@ public class YxParser extends Parser {
 		}
 		public BitAndBinaryExprContext(BitAndExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitBitAndBinaryExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterBitAndBinaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitBitAndBinaryExpr(this);
 		}
 	}
 
@@ -1181,9 +1262,12 @@ public class YxParser extends Parser {
 		}
 		public EqualCompareExprContext(EqualExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitEqualCompareExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterEqualCompareExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitEqualCompareExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1201,9 +1285,12 @@ public class YxParser extends Parser {
 		public TerminalNode NEqual() { return getToken(YxParser.NEqual, 0); }
 		public EqualBinaryExprContext(EqualExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitEqualBinaryExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterEqualBinaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitEqualBinaryExpr(this);
 		}
 	}
 
@@ -1286,9 +1373,12 @@ public class YxParser extends Parser {
 		public TerminalNode LessThan() { return getToken(YxParser.LessThan, 0); }
 		public CompareBinaryExprContext(CompareExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitCompareBinaryExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterCompareBinaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitCompareBinaryExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1298,9 +1388,12 @@ public class YxParser extends Parser {
 		}
 		public CompareShiftExprContext(CompareExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitCompareShiftExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterCompareShiftExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitCompareShiftExpr(this);
 		}
 	}
 
@@ -1329,7 +1422,7 @@ public class YxParser extends Parser {
 				setState(159);
 				((CompareBinaryExprContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 983040L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 3932160L) != 0)) ) {
 					((CompareBinaryExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
@@ -1373,9 +1466,12 @@ public class YxParser extends Parser {
 		}
 		public ShiftAddExprContext(ShiftExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitShiftAddExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterShiftAddExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitShiftAddExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1393,9 +1489,12 @@ public class YxParser extends Parser {
 		public TerminalNode RightShift() { return getToken(YxParser.RightShift, 0); }
 		public ShiftBinaryExprContext(ShiftExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitShiftBinaryExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterShiftBinaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitShiftBinaryExpr(this);
 		}
 	}
 
@@ -1468,9 +1567,12 @@ public class YxParser extends Parser {
 		}
 		public AddMultExprContext(AddExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitAddMultExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterAddMultExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitAddMultExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1488,9 +1590,12 @@ public class YxParser extends Parser {
 		public TerminalNode Minus() { return getToken(YxParser.Minus, 0); }
 		public AddBinaryExprContext(AddExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitAddBinaryExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterAddBinaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitAddBinaryExpr(this);
 		}
 	}
 
@@ -1563,9 +1668,12 @@ public class YxParser extends Parser {
 		}
 		public MultUnaryExprContext(MultExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitMultUnaryExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterMultUnaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitMultUnaryExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1584,9 +1692,12 @@ public class YxParser extends Parser {
 		public TerminalNode Mod() { return getToken(YxParser.Mod, 0); }
 		public MultBinaryExprContext(MultExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitMultBinaryExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterMultBinaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitMultBinaryExpr(this);
 		}
 	}
 
@@ -1615,7 +1726,7 @@ public class YxParser extends Parser {
 				setState(180);
 				((MultBinaryExprContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 57344L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 229376L) != 0)) ) {
 					((MultBinaryExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
@@ -1663,9 +1774,12 @@ public class YxParser extends Parser {
 		public TerminalNode Not() { return getToken(YxParser.Not, 0); }
 		public UnaryOpExprContext(UnaryExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitUnaryOpExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterUnaryOpExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitUnaryOpExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1675,9 +1789,12 @@ public class YxParser extends Parser {
 		}
 		public UnaryPostfixExprContext(UnaryExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitUnaryPostfixExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterUnaryPostfixExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitUnaryPostfixExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1690,9 +1807,12 @@ public class YxParser extends Parser {
 		public TerminalNode SelfMinus() { return getToken(YxParser.SelfMinus, 0); }
 		public UnaryPrefixIncDecExprContext(UnaryExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitUnaryPrefixIncDecExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterUnaryPrefixIncDecExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitUnaryPrefixIncDecExpr(this);
 		}
 	}
 
@@ -1706,6 +1826,7 @@ public class YxParser extends Parser {
 			switch (_input.LA(1)) {
 			case Identifier:
 			case Integer:
+			case String:
 			case True:
 			case False:
 			case LParen:
@@ -1745,7 +1866,7 @@ public class YxParser extends Parser {
 				setState(188);
 				((UnaryOpExprContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 285216768L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1140867072L) != 0)) ) {
 					((UnaryOpExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 				}
 				else {
@@ -1794,9 +1915,12 @@ public class YxParser extends Parser {
 		public TerminalNode SelfMinus() { return getToken(YxParser.SelfMinus, 0); }
 		public PostfixIncDecExprContext(PostfixExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitPostfixIncDecExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterPostfixIncDecExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitPostfixIncDecExpr(this);
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -1806,9 +1930,12 @@ public class YxParser extends Parser {
 		}
 		public PostfixPrimaryExprContext(PostfixExprContext ctx) { copyFrom(ctx); }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitPostfixPrimaryExpr(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterPostfixPrimaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitPostfixPrimaryExpr(this);
 		}
 	}
 
@@ -1876,9 +2003,12 @@ public class YxParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_primary; }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitPrimary(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterPrimary(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitPrimary(this);
 		}
 	}
 
@@ -1901,6 +2031,7 @@ public class YxParser extends Parser {
 				}
 				break;
 			case Integer:
+			case String:
 			case True:
 			case False:
 				enterOuterAlt(_localctx, 2);
@@ -1936,14 +2067,18 @@ public class YxParser extends Parser {
 		public TerminalNode Integer() { return getToken(YxParser.Integer, 0); }
 		public TerminalNode True() { return getToken(YxParser.True, 0); }
 		public TerminalNode False() { return getToken(YxParser.False, 0); }
+		public TerminalNode String() { return getToken(YxParser.String, 0); }
 		public LiteralContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_literal; }
 		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitLiteral(this);
-			else return visitor.visitChildren(this);
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterLiteral(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitLiteral(this);
 		}
 	}
 
@@ -1956,7 +2091,7 @@ public class YxParser extends Parser {
 			{
 			setState(206);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 448L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1920L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1978,7 +2113,7 @@ public class YxParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u00014\u00d1\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u00016\u00d1\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -2012,100 +2147,100 @@ public class YxParser extends Parser {
 		"\u0001\u0013\u0001\u0013\u0001\u0013\u0003\u0013\u00cd\b\u0013\u0001\u0014"+
 		"\u0001\u0014\u0001\u0014\u0000\u0000\u0015\u0000\u0002\u0004\u0006\b\n"+
 		"\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \"$&(\u0000\n"+
-		"\u0001\u0000/0\u0001\u0000\u0003\u0004\u0001\u0000\u0014\u0015\u0001\u0000"+
-		"\u0010\u0013\u0001\u0000\u001d\u001e\u0001\u0000\u000b\f\u0001\u0000\r"+
-		"\u000f\u0001\u0000\t\n\u0003\u0000\f\f\u0018\u0018\u001c\u001c\u0001\u0000"+
-		"\u0006\b\u00d6\u0000*\u0001\u0000\u0000\u0000\u0002-\u0001\u0000\u0000"+
-		"\u0000\u00041\u0001\u0000\u0000\u0000\u0006h\u0001\u0000\u0000\u0000\b"+
-		"j\u0001\u0000\u0000\u0000\nl\u0001\u0000\u0000\u0000\fq\u0001\u0000\u0000"+
-		"\u0000\u000ex\u0001\u0000\u0000\u0000\u0010\u007f\u0001\u0000\u0000\u0000"+
-		"\u0012\u0086\u0001\u0000\u0000\u0000\u0014\u008d\u0001\u0000\u0000\u0000"+
-		"\u0016\u0094\u0001\u0000\u0000\u0000\u0018\u009b\u0001\u0000\u0000\u0000"+
-		"\u001a\u00a2\u0001\u0000\u0000\u0000\u001c\u00a9\u0001\u0000\u0000\u0000"+
-		"\u001e\u00b0\u0001\u0000\u0000\u0000 \u00b7\u0001\u0000\u0000\u0000\""+
-		"\u00be\u0001\u0000\u0000\u0000$\u00c4\u0001\u0000\u0000\u0000&\u00cc\u0001"+
-		"\u0000\u0000\u0000(\u00ce\u0001\u0000\u0000\u0000*+\u0003\u0002\u0001"+
-		"\u0000+,\u0005\u0000\u0000\u0001,\u0001\u0001\u0000\u0000\u0000-.\u0005"+
-		"\u0003\u0000\u0000./\u0005\u0001\u0000\u0000/0\u0003\u0004\u0002\u0000"+
-		"0\u0003\u0001\u0000\u0000\u000015\u0005$\u0000\u000024\u0003\u0006\u0003"+
-		"\u000032\u0001\u0000\u0000\u000047\u0001\u0000\u0000\u000053\u0001\u0000"+
-		"\u0000\u000056\u0001\u0000\u0000\u000068\u0001\u0000\u0000\u000075\u0001"+
-		"\u0000\u0000\u000089\u0005%\u0000\u00009\u0005\u0001\u0000\u0000\u0000"+
-		":i\u0003\u0004\u0002\u0000;<\u0005+\u0000\u0000<=\u0005 \u0000\u0000="+
-		">\u0003\f\u0006\u0000>?\u0005!\u0000\u0000?B\u0003\u0006\u0003\u0000@"+
-		"A\u0005,\u0000\u0000AC\u0003\u0006\u0003\u0000B@\u0001\u0000\u0000\u0000"+
-		"BC\u0001\u0000\u0000\u0000Ci\u0001\u0000\u0000\u0000DE\u0005.\u0000\u0000"+
-		"EF\u0005 \u0000\u0000FG\u0003\f\u0006\u0000GH\u0005!\u0000\u0000HI\u0003"+
-		"\u0006\u0003\u0000Ii\u0001\u0000\u0000\u0000JK\u0005-\u0000\u0000KL\u0005"+
-		" \u0000\u0000LM\u0003\u0006\u0003\u0000MN\u0005(\u0000\u0000NO\u0003\f"+
-		"\u0006\u0000OP\u0005(\u0000\u0000PQ\u0003\f\u0006\u0000QR\u0003\u0006"+
-		"\u0003\u0000Ri\u0001\u0000\u0000\u0000ST\u00051\u0000\u0000TU\u0003\f"+
-		"\u0006\u0000UV\u0005(\u0000\u0000Vi\u0001\u0000\u0000\u0000WX\u0007\u0000"+
-		"\u0000\u0000Xi\u0005(\u0000\u0000YZ\u0003\b\u0004\u0000Z_\u0003\n\u0005"+
-		"\u0000[\\\u0005)\u0000\u0000\\^\u0003\n\u0005\u0000][\u0001\u0000\u0000"+
-		"\u0000^a\u0001\u0000\u0000\u0000_]\u0001\u0000\u0000\u0000_`\u0001\u0000"+
-		"\u0000\u0000`b\u0001\u0000\u0000\u0000a_\u0001\u0000\u0000\u0000bc\u0005"+
-		"(\u0000\u0000ci\u0001\u0000\u0000\u0000de\u0003\f\u0006\u0000ef\u0005"+
-		"(\u0000\u0000fi\u0001\u0000\u0000\u0000gi\u0005(\u0000\u0000h:\u0001\u0000"+
-		"\u0000\u0000h;\u0001\u0000\u0000\u0000hD\u0001\u0000\u0000\u0000hJ\u0001"+
-		"\u0000\u0000\u0000hS\u0001\u0000\u0000\u0000hW\u0001\u0000\u0000\u0000"+
-		"hY\u0001\u0000\u0000\u0000hd\u0001\u0000\u0000\u0000hg\u0001\u0000\u0000"+
-		"\u0000i\u0007\u0001\u0000\u0000\u0000jk\u0007\u0001\u0000\u0000k\t\u0001"+
-		"\u0000\u0000\u0000lo\u0005\u0002\u0000\u0000mn\u0005\u001f\u0000\u0000"+
-		"np\u0003\f\u0006\u0000om\u0001\u0000\u0000\u0000op\u0001\u0000\u0000\u0000"+
-		"p\u000b\u0001\u0000\u0000\u0000qr\u0003\u000e\u0007\u0000r\r\u0001\u0000"+
-		"\u0000\u0000sy\u0003\u0010\b\u0000tu\u0003\"\u0011\u0000uv\u0005\u001f"+
-		"\u0000\u0000vw\u0003\u000e\u0007\u0000wy\u0001\u0000\u0000\u0000xs\u0001"+
-		"\u0000\u0000\u0000xt\u0001\u0000\u0000\u0000y\u000f\u0001\u0000\u0000"+
-		"\u0000z\u0080\u0003\u0012\t\u0000{|\u0003\u0012\t\u0000|}\u0005\u0017"+
-		"\u0000\u0000}~\u0003\u0012\t\u0000~\u0080\u0001\u0000\u0000\u0000\u007f"+
-		"z\u0001\u0000\u0000\u0000\u007f{\u0001\u0000\u0000\u0000\u0080\u0011\u0001"+
-		"\u0000\u0000\u0000\u0081\u0087\u0003\u0014\n\u0000\u0082\u0083\u0003\u0016"+
-		"\u000b\u0000\u0083\u0084\u0005\u0016\u0000\u0000\u0084\u0085\u0003\u0016"+
-		"\u000b\u0000\u0085\u0087\u0001\u0000\u0000\u0000\u0086\u0081\u0001\u0000"+
-		"\u0000\u0000\u0086\u0082\u0001\u0000\u0000\u0000\u0087\u0013\u0001\u0000"+
-		"\u0000\u0000\u0088\u008e\u0003\u0016\u000b\u0000\u0089\u008a\u0003\u0016"+
-		"\u000b\u0000\u008a\u008b\u0005\u001a\u0000\u0000\u008b\u008c\u0003\u0016"+
-		"\u000b\u0000\u008c\u008e\u0001\u0000\u0000\u0000\u008d\u0088\u0001\u0000"+
-		"\u0000\u0000\u008d\u0089\u0001\u0000\u0000\u0000\u008e\u0015\u0001\u0000"+
-		"\u0000\u0000\u008f\u0095\u0003\u0018\f\u0000\u0090\u0091\u0003\u0018\f"+
-		"\u0000\u0091\u0092\u0005\u0019\u0000\u0000\u0092\u0093\u0003\u0018\f\u0000"+
-		"\u0093\u0095\u0001\u0000\u0000\u0000\u0094\u008f\u0001\u0000\u0000\u0000"+
-		"\u0094\u0090\u0001\u0000\u0000\u0000\u0095\u0017\u0001\u0000\u0000\u0000"+
-		"\u0096\u009c\u0003\u001a\r\u0000\u0097\u0098\u0003\u001a\r\u0000\u0098"+
-		"\u0099\u0007\u0002\u0000\u0000\u0099\u009a\u0003\u001a\r\u0000\u009a\u009c"+
-		"\u0001\u0000\u0000\u0000\u009b\u0096\u0001\u0000\u0000\u0000\u009b\u0097"+
-		"\u0001\u0000\u0000\u0000\u009c\u0019\u0001\u0000\u0000\u0000\u009d\u00a3"+
-		"\u0003\u001c\u000e\u0000\u009e\u009f\u0003\u001c\u000e\u0000\u009f\u00a0"+
-		"\u0007\u0003\u0000\u0000\u00a0\u00a1\u0003\u001c\u000e\u0000\u00a1\u00a3"+
-		"\u0001\u0000\u0000\u0000\u00a2\u009d\u0001\u0000\u0000\u0000\u00a2\u009e"+
-		"\u0001\u0000\u0000\u0000\u00a3\u001b\u0001\u0000\u0000\u0000\u00a4\u00aa"+
-		"\u0003\u001e\u000f\u0000\u00a5\u00a6\u0003\u001e\u000f\u0000\u00a6\u00a7"+
-		"\u0007\u0004\u0000\u0000\u00a7\u00a8\u0003\u001e\u000f\u0000\u00a8\u00aa"+
-		"\u0001\u0000\u0000\u0000\u00a9\u00a4\u0001\u0000\u0000\u0000\u00a9\u00a5"+
-		"\u0001\u0000\u0000\u0000\u00aa\u001d\u0001\u0000\u0000\u0000\u00ab\u00b1"+
-		"\u0003 \u0010\u0000\u00ac\u00ad\u0003 \u0010\u0000\u00ad\u00ae\u0007\u0005"+
-		"\u0000\u0000\u00ae\u00af\u0003 \u0010\u0000\u00af\u00b1\u0001\u0000\u0000"+
-		"\u0000\u00b0\u00ab\u0001\u0000\u0000\u0000\u00b0\u00ac\u0001\u0000\u0000"+
-		"\u0000\u00b1\u001f\u0001\u0000\u0000\u0000\u00b2\u00b8\u0003\"\u0011\u0000"+
-		"\u00b3\u00b4\u0003\"\u0011\u0000\u00b4\u00b5\u0007\u0006\u0000\u0000\u00b5"+
-		"\u00b6\u0003\"\u0011\u0000\u00b6\u00b8\u0001\u0000\u0000\u0000\u00b7\u00b2"+
-		"\u0001\u0000\u0000\u0000\u00b7\u00b3\u0001\u0000\u0000\u0000\u00b8!\u0001"+
-		"\u0000\u0000\u0000\u00b9\u00bf\u0003$\u0012\u0000\u00ba\u00bb\u0007\u0007"+
-		"\u0000\u0000\u00bb\u00bf\u0003$\u0012\u0000\u00bc\u00bd\u0007\b\u0000"+
-		"\u0000\u00bd\u00bf\u0003$\u0012\u0000\u00be\u00b9\u0001\u0000\u0000\u0000"+
-		"\u00be\u00ba\u0001\u0000\u0000\u0000\u00be\u00bc\u0001\u0000\u0000\u0000"+
-		"\u00bf#\u0001\u0000\u0000\u0000\u00c0\u00c5\u0003&\u0013\u0000\u00c1\u00c2"+
-		"\u0003&\u0013\u0000\u00c2\u00c3\u0007\u0007\u0000\u0000\u00c3\u00c5\u0001"+
-		"\u0000\u0000\u0000\u00c4\u00c0\u0001\u0000\u0000\u0000\u00c4\u00c1\u0001"+
-		"\u0000\u0000\u0000\u00c5%\u0001\u0000\u0000\u0000\u00c6\u00c7\u0005 \u0000"+
-		"\u0000\u00c7\u00c8\u0003\f\u0006\u0000\u00c8\u00c9\u0005!\u0000\u0000"+
-		"\u00c9\u00cd\u0001\u0000\u0000\u0000\u00ca\u00cd\u0003(\u0014\u0000\u00cb"+
-		"\u00cd\u0005\u0002\u0000\u0000\u00cc\u00c6\u0001\u0000\u0000\u0000\u00cc"+
-		"\u00ca\u0001\u0000\u0000\u0000\u00cc\u00cb\u0001\u0000\u0000\u0000\u00cd"+
-		"\'\u0001\u0000\u0000\u0000\u00ce\u00cf\u0007\t\u0000\u0000\u00cf)\u0001"+
-		"\u0000\u0000\u0000\u00125B_hox\u007f\u0086\u008d\u0094\u009b\u00a2\u00a9"+
-		"\u00b0\u00b7\u00be\u00c4\u00cc";
+		"\u0001\u000012\u0001\u0000\u0003\u0006\u0001\u0000\u0016\u0017\u0001\u0000"+
+		"\u0012\u0015\u0001\u0000\u001f \u0001\u0000\r\u000e\u0001\u0000\u000f"+
+		"\u0011\u0001\u0000\u000b\f\u0003\u0000\u000e\u000e\u001a\u001a\u001e\u001e"+
+		"\u0001\u0000\u0007\n\u00d6\u0000*\u0001\u0000\u0000\u0000\u0002-\u0001"+
+		"\u0000\u0000\u0000\u00041\u0001\u0000\u0000\u0000\u0006h\u0001\u0000\u0000"+
+		"\u0000\bj\u0001\u0000\u0000\u0000\nl\u0001\u0000\u0000\u0000\fq\u0001"+
+		"\u0000\u0000\u0000\u000ex\u0001\u0000\u0000\u0000\u0010\u007f\u0001\u0000"+
+		"\u0000\u0000\u0012\u0086\u0001\u0000\u0000\u0000\u0014\u008d\u0001\u0000"+
+		"\u0000\u0000\u0016\u0094\u0001\u0000\u0000\u0000\u0018\u009b\u0001\u0000"+
+		"\u0000\u0000\u001a\u00a2\u0001\u0000\u0000\u0000\u001c\u00a9\u0001\u0000"+
+		"\u0000\u0000\u001e\u00b0\u0001\u0000\u0000\u0000 \u00b7\u0001\u0000\u0000"+
+		"\u0000\"\u00be\u0001\u0000\u0000\u0000$\u00c4\u0001\u0000\u0000\u0000"+
+		"&\u00cc\u0001\u0000\u0000\u0000(\u00ce\u0001\u0000\u0000\u0000*+\u0003"+
+		"\u0002\u0001\u0000+,\u0005\u0000\u0000\u0001,\u0001\u0001\u0000\u0000"+
+		"\u0000-.\u0005\u0003\u0000\u0000./\u0005\u0001\u0000\u0000/0\u0003\u0004"+
+		"\u0002\u00000\u0003\u0001\u0000\u0000\u000015\u0005&\u0000\u000024\u0003"+
+		"\u0006\u0003\u000032\u0001\u0000\u0000\u000047\u0001\u0000\u0000\u0000"+
+		"53\u0001\u0000\u0000\u000056\u0001\u0000\u0000\u000068\u0001\u0000\u0000"+
+		"\u000075\u0001\u0000\u0000\u000089\u0005\'\u0000\u00009\u0005\u0001\u0000"+
+		"\u0000\u0000:i\u0003\u0004\u0002\u0000;<\u0005-\u0000\u0000<=\u0005\""+
+		"\u0000\u0000=>\u0003\f\u0006\u0000>?\u0005#\u0000\u0000?B\u0003\u0006"+
+		"\u0003\u0000@A\u0005.\u0000\u0000AC\u0003\u0006\u0003\u0000B@\u0001\u0000"+
+		"\u0000\u0000BC\u0001\u0000\u0000\u0000Ci\u0001\u0000\u0000\u0000DE\u0005"+
+		"0\u0000\u0000EF\u0005\"\u0000\u0000FG\u0003\f\u0006\u0000GH\u0005#\u0000"+
+		"\u0000HI\u0003\u0006\u0003\u0000Ii\u0001\u0000\u0000\u0000JK\u0005/\u0000"+
+		"\u0000KL\u0005\"\u0000\u0000LM\u0003\u0006\u0003\u0000MN\u0005*\u0000"+
+		"\u0000NO\u0003\f\u0006\u0000OP\u0005*\u0000\u0000PQ\u0003\f\u0006\u0000"+
+		"QR\u0003\u0006\u0003\u0000Ri\u0001\u0000\u0000\u0000ST\u00053\u0000\u0000"+
+		"TU\u0003\f\u0006\u0000UV\u0005*\u0000\u0000Vi\u0001\u0000\u0000\u0000"+
+		"WX\u0007\u0000\u0000\u0000Xi\u0005*\u0000\u0000YZ\u0003\b\u0004\u0000"+
+		"Z_\u0003\n\u0005\u0000[\\\u0005+\u0000\u0000\\^\u0003\n\u0005\u0000]["+
+		"\u0001\u0000\u0000\u0000^a\u0001\u0000\u0000\u0000_]\u0001\u0000\u0000"+
+		"\u0000_`\u0001\u0000\u0000\u0000`b\u0001\u0000\u0000\u0000a_\u0001\u0000"+
+		"\u0000\u0000bc\u0005*\u0000\u0000ci\u0001\u0000\u0000\u0000de\u0003\f"+
+		"\u0006\u0000ef\u0005*\u0000\u0000fi\u0001\u0000\u0000\u0000gi\u0005*\u0000"+
+		"\u0000h:\u0001\u0000\u0000\u0000h;\u0001\u0000\u0000\u0000hD\u0001\u0000"+
+		"\u0000\u0000hJ\u0001\u0000\u0000\u0000hS\u0001\u0000\u0000\u0000hW\u0001"+
+		"\u0000\u0000\u0000hY\u0001\u0000\u0000\u0000hd\u0001\u0000\u0000\u0000"+
+		"hg\u0001\u0000\u0000\u0000i\u0007\u0001\u0000\u0000\u0000jk\u0007\u0001"+
+		"\u0000\u0000k\t\u0001\u0000\u0000\u0000lo\u0005\u0002\u0000\u0000mn\u0005"+
+		"!\u0000\u0000np\u0003\f\u0006\u0000om\u0001\u0000\u0000\u0000op\u0001"+
+		"\u0000\u0000\u0000p\u000b\u0001\u0000\u0000\u0000qr\u0003\u000e\u0007"+
+		"\u0000r\r\u0001\u0000\u0000\u0000sy\u0003\u0010\b\u0000tu\u0003\"\u0011"+
+		"\u0000uv\u0005!\u0000\u0000vw\u0003\u000e\u0007\u0000wy\u0001\u0000\u0000"+
+		"\u0000xs\u0001\u0000\u0000\u0000xt\u0001\u0000\u0000\u0000y\u000f\u0001"+
+		"\u0000\u0000\u0000z\u0080\u0003\u0012\t\u0000{|\u0003\u0012\t\u0000|}"+
+		"\u0005\u0019\u0000\u0000}~\u0003\u0012\t\u0000~\u0080\u0001\u0000\u0000"+
+		"\u0000\u007fz\u0001\u0000\u0000\u0000\u007f{\u0001\u0000\u0000\u0000\u0080"+
+		"\u0011\u0001\u0000\u0000\u0000\u0081\u0087\u0003\u0014\n\u0000\u0082\u0083"+
+		"\u0003\u0016\u000b\u0000\u0083\u0084\u0005\u0018\u0000\u0000\u0084\u0085"+
+		"\u0003\u0016\u000b\u0000\u0085\u0087\u0001\u0000\u0000\u0000\u0086\u0081"+
+		"\u0001\u0000\u0000\u0000\u0086\u0082\u0001\u0000\u0000\u0000\u0087\u0013"+
+		"\u0001\u0000\u0000\u0000\u0088\u008e\u0003\u0016\u000b\u0000\u0089\u008a"+
+		"\u0003\u0016\u000b\u0000\u008a\u008b\u0005\u001c\u0000\u0000\u008b\u008c"+
+		"\u0003\u0016\u000b\u0000\u008c\u008e\u0001\u0000\u0000\u0000\u008d\u0088"+
+		"\u0001\u0000\u0000\u0000\u008d\u0089\u0001\u0000\u0000\u0000\u008e\u0015"+
+		"\u0001\u0000\u0000\u0000\u008f\u0095\u0003\u0018\f\u0000\u0090\u0091\u0003"+
+		"\u0018\f\u0000\u0091\u0092\u0005\u001b\u0000\u0000\u0092\u0093\u0003\u0018"+
+		"\f\u0000\u0093\u0095\u0001\u0000\u0000\u0000\u0094\u008f\u0001\u0000\u0000"+
+		"\u0000\u0094\u0090\u0001\u0000\u0000\u0000\u0095\u0017\u0001\u0000\u0000"+
+		"\u0000\u0096\u009c\u0003\u001a\r\u0000\u0097\u0098\u0003\u001a\r\u0000"+
+		"\u0098\u0099\u0007\u0002\u0000\u0000\u0099\u009a\u0003\u001a\r\u0000\u009a"+
+		"\u009c\u0001\u0000\u0000\u0000\u009b\u0096\u0001\u0000\u0000\u0000\u009b"+
+		"\u0097\u0001\u0000\u0000\u0000\u009c\u0019\u0001\u0000\u0000\u0000\u009d"+
+		"\u00a3\u0003\u001c\u000e\u0000\u009e\u009f\u0003\u001c\u000e\u0000\u009f"+
+		"\u00a0\u0007\u0003\u0000\u0000\u00a0\u00a1\u0003\u001c\u000e\u0000\u00a1"+
+		"\u00a3\u0001\u0000\u0000\u0000\u00a2\u009d\u0001\u0000\u0000\u0000\u00a2"+
+		"\u009e\u0001\u0000\u0000\u0000\u00a3\u001b\u0001\u0000\u0000\u0000\u00a4"+
+		"\u00aa\u0003\u001e\u000f\u0000\u00a5\u00a6\u0003\u001e\u000f\u0000\u00a6"+
+		"\u00a7\u0007\u0004\u0000\u0000\u00a7\u00a8\u0003\u001e\u000f\u0000\u00a8"+
+		"\u00aa\u0001\u0000\u0000\u0000\u00a9\u00a4\u0001\u0000\u0000\u0000\u00a9"+
+		"\u00a5\u0001\u0000\u0000\u0000\u00aa\u001d\u0001\u0000\u0000\u0000\u00ab"+
+		"\u00b1\u0003 \u0010\u0000\u00ac\u00ad\u0003 \u0010\u0000\u00ad\u00ae\u0007"+
+		"\u0005\u0000\u0000\u00ae\u00af\u0003 \u0010\u0000\u00af\u00b1\u0001\u0000"+
+		"\u0000\u0000\u00b0\u00ab\u0001\u0000\u0000\u0000\u00b0\u00ac\u0001\u0000"+
+		"\u0000\u0000\u00b1\u001f\u0001\u0000\u0000\u0000\u00b2\u00b8\u0003\"\u0011"+
+		"\u0000\u00b3\u00b4\u0003\"\u0011\u0000\u00b4\u00b5\u0007\u0006\u0000\u0000"+
+		"\u00b5\u00b6\u0003\"\u0011\u0000\u00b6\u00b8\u0001\u0000\u0000\u0000\u00b7"+
+		"\u00b2\u0001\u0000\u0000\u0000\u00b7\u00b3\u0001\u0000\u0000\u0000\u00b8"+
+		"!\u0001\u0000\u0000\u0000\u00b9\u00bf\u0003$\u0012\u0000\u00ba\u00bb\u0007"+
+		"\u0007\u0000\u0000\u00bb\u00bf\u0003$\u0012\u0000\u00bc\u00bd\u0007\b"+
+		"\u0000\u0000\u00bd\u00bf\u0003$\u0012\u0000\u00be\u00b9\u0001\u0000\u0000"+
+		"\u0000\u00be\u00ba\u0001\u0000\u0000\u0000\u00be\u00bc\u0001\u0000\u0000"+
+		"\u0000\u00bf#\u0001\u0000\u0000\u0000\u00c0\u00c5\u0003&\u0013\u0000\u00c1"+
+		"\u00c2\u0003&\u0013\u0000\u00c2\u00c3\u0007\u0007\u0000\u0000\u00c3\u00c5"+
+		"\u0001\u0000\u0000\u0000\u00c4\u00c0\u0001\u0000\u0000\u0000\u00c4\u00c1"+
+		"\u0001\u0000\u0000\u0000\u00c5%\u0001\u0000\u0000\u0000\u00c6\u00c7\u0005"+
+		"\"\u0000\u0000\u00c7\u00c8\u0003\f\u0006\u0000\u00c8\u00c9\u0005#\u0000"+
+		"\u0000\u00c9\u00cd\u0001\u0000\u0000\u0000\u00ca\u00cd\u0003(\u0014\u0000"+
+		"\u00cb\u00cd\u0005\u0002\u0000\u0000\u00cc\u00c6\u0001\u0000\u0000\u0000"+
+		"\u00cc\u00ca\u0001\u0000\u0000\u0000\u00cc\u00cb\u0001\u0000\u0000\u0000"+
+		"\u00cd\'\u0001\u0000\u0000\u0000\u00ce\u00cf\u0007\t\u0000\u0000\u00cf"+
+		")\u0001\u0000\u0000\u0000\u00125B_hox\u007f\u0086\u008d\u0094\u009b\u00a2"+
+		"\u00a9\u00b0\u00b7\u00be\u00c4\u00cc";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

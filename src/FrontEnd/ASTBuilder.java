@@ -352,6 +352,8 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
             return new BoolLiteralExprNode(new Position(ctx), true);
         } else if (ctx.False() != null) {
             return new BoolLiteralExprNode(new Position(ctx), false);
+        } else if (ctx.String() != null) {
+            return new StringLiteralExprNode(new Position(ctx), ctx.String().getText());
         }
         //The visitor should not come to here.
         return super.visitLiteral(ctx);
