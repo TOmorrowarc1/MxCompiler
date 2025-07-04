@@ -1,5 +1,7 @@
 package ASTNode;
 
+import Utils.Position;
+
 public class JmpStmtNode extends StmtNode {
     public enum JumpType {
         BREAK, CONTINUE
@@ -8,8 +10,8 @@ public class JmpStmtNode extends StmtNode {
     ;
     public JumpType jumpType;
 
-    public JmpStmtNode(JumpType jumpType) {
-        super();
+    public JmpStmtNode(Position position, JumpType jumpType) {
+        super(position);
         this.jumpType = jumpType;
     }
 

@@ -1,12 +1,14 @@
 package ASTNode;
 
+import Utils.Position;
+
 import java.util.List;
 
-public class BlockStmtNode extends StmtNode{
+public class BlockStmtNode extends StmtNode {
     public List<StmtNode> body;
 
-    public BlockStmtNode(List<StmtNode> statements) {
-        super();
+    public BlockStmtNode(Position position, List<StmtNode> statements) {
+        super(position);
         this.body = statements;
     }
 

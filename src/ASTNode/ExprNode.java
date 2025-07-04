@@ -1,16 +1,17 @@
 package ASTNode;
 
 import Utils.ExprNodeInfo;
+import Utils.Position;
 
 abstract public class ExprNode extends ASTNode {
     public ExprNodeInfo nodeInfo;
 
-    public ExprNode() {
-        super();
-    };
+    public ExprNode(Position position) {
+        super(position);
+    }
 
-    public ExprNode(String type, boolean isLeftValue) {
-        super();
+    public ExprNode(Position position, String type, boolean isLeftValue) {
+        super(position);
         this.nodeInfo = new ExprNodeInfo(type, isLeftValue);
     }
 }

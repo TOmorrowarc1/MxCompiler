@@ -1,11 +1,13 @@
 package ASTNode;
 
+import Utils.Position;
+
 public class AssignExprNode extends ExprNode {
     public ExprNode left;
     public ExprNode right;
 
-    public AssignExprNode(ExprNode lhs, ExprNode rhs) {
-        super();
+    public AssignExprNode(Position position, ExprNode lhs, ExprNode rhs) {
+        super(position);
         this.left = lhs;
         this.right = rhs;
     }

@@ -1,13 +1,15 @@
 package ASTNode;
 
+import Utils.Position;
+
 import java.util.List;
 
 public class VarDefStmtNode extends StmtNode {
     public String type;
     public List<DefNode> defList;
 
-    public VarDefStmtNode(String type, List<DefNode> defList) {
-        super();
+    public VarDefStmtNode(Position position, String type, List<DefNode> defList) {
+        super(position);
         this.type = type;
         this.defList = defList;
     }

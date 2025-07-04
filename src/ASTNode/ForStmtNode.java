@@ -1,13 +1,15 @@
 package ASTNode;
 
+import Utils.Position;
+
 public class ForStmtNode extends StmtNode {
     public VarDefStmtNode varDefStmt;
     public ExprNode condition;
     public ExprNode step;
     public StmtNode body;
 
-    public  ForStmtNode(VarDefStmtNode varDefStmt, ExprNode condition, ExprNode step, StmtNode body) {
-        super();
+    public  ForStmtNode(Position position, VarDefStmtNode varDefStmt, ExprNode condition, ExprNode step, StmtNode body) {
+        super(position);
         this.varDefStmt = varDefStmt;
         this.condition = condition;
         this.step = step;

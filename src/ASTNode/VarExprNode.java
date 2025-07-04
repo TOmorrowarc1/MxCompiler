@@ -1,9 +1,12 @@
 package ASTNode;
 
+import Utils.Position;
+
 public class VarExprNode extends ExprNode {
     public String identifier;
 
-    public VarExprNode(String identifier) {
+    public VarExprNode(Position position, String identifier) {
+        super(position);
         this.identifier = identifier;
     }
 

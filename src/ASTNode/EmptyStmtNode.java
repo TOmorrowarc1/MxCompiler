@@ -1,8 +1,10 @@
 package ASTNode;
 
+import Utils.Position;
+
 public class EmptyStmtNode extends StmtNode {
-    public EmptyStmtNode() {
-        super();
+    public EmptyStmtNode(Position position) {
+        super(position);
     }
 
     @Override

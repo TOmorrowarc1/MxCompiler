@@ -1,16 +1,17 @@
 package ASTNode;
 
+import Utils.Position;
+
 public class UnaryExprNode extends ExprNode {
     public enum UnaryOperator {
         SELF_ADD, SELF_SUB, MINUS, LOGIC_NOT, NOT
     }
 
-    ;
     public UnaryOperator operator;
     public ExprNode expression;
 
-    public UnaryExprNode(UnaryOperator op, ExprNode expr) {
-        super();
+    public UnaryExprNode(Position position, UnaryOperator op, ExprNode expr) {
+        super(position);
         this.operator = op;
         this.expression = expr;
     }
