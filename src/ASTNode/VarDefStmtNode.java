@@ -23,14 +23,16 @@ public class VarDefStmtNode extends StmtNode {
         public final String identifier;
         public final ExprNode initValue;
 
-        public DefNode(String name, ExprNode initValue) {
-            super();
+        public DefNode(Position position, String name, ExprNode initValue) {
+            super(position);
             this.identifier = name;
             this.initValue = initValue;
         }
 
         @Override
         public void accept(ASTNodeVisitor visitor) {
-        };
+        }
+
+        ;
     }
 }

@@ -119,7 +119,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitDef(YxParser.DefContext ctx) {
         ExprNode expr = (ExprNode) visit(ctx.expr());
-        return new ASTNode.VarDefStmtNode.DefNode(ctx.Identifier().getText(), expr);
+        return new ASTNode.VarDefStmtNode.DefNode(new Position(ctx), ctx.Identifier().getText(), expr);
     }
 
     @Override
