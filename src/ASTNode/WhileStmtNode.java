@@ -8,4 +8,9 @@ public class WhileStmtNode extends StmtNode {
         this.condition = condition;
         this.body = body;
     }
+
+    @Override
+    public void accept(ASTNodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }

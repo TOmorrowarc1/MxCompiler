@@ -12,6 +12,11 @@ public class VarDefStmtNode extends StmtNode {
         this.defList = defList;
     }
 
+    @Override
+    public void accept(ASTNodeVisitor visitor) {
+        visitor.visit(this);
+    }
+
     public static class DefNode extends ASTNode {
         public final String identifier;
         public final ExprNode initValue;
@@ -20,6 +25,11 @@ public class VarDefStmtNode extends StmtNode {
             super();
             this.identifier = name;
             this.initValue = initValue;
+        }
+
+        @Override
+        public void accept(ASTNodeVisitor visitor) {
+            visitor.visit(this);
         }
     }
 }

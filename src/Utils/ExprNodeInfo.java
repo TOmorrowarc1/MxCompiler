@@ -1,10 +1,10 @@
 package Utils;
 
-public class NodeInfo {
-    Type type;
+public class ExprNodeInfo {
+    String type;
     boolean isLeftValue;
 
-    public NodeInfo(Type type, boolean isLeftValue) {
+    public ExprNodeInfo(String type, boolean isLeftValue) {
         this.type = type;
         this.isLeftValue = isLeftValue;
     }

@@ -6,4 +6,9 @@ public class VarExprNode extends ExprNode {
     public VarExprNode(String identifier) {
         this.identifier = identifier;
     }
+
+    @Override
+    public void accept(ASTNodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }

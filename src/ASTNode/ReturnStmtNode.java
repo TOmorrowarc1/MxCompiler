@@ -7,4 +7,9 @@ public class ReturnStmtNode extends StmtNode {
         super();
         this.expression = expression;
     }
+
+    @Override
+    public void accept(ASTNodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }

@@ -11,4 +11,9 @@ public class IfStmtNode extends StmtNode {
         this.thenStmt = thenStmt;
         this.elseStmt = elseStmt;
     }
+
+    @Override
+    public void accept(ASTNodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }

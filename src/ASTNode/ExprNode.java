@@ -1,12 +1,16 @@
 package ASTNode;
 
-abstract public class ExprNode extends ASTNode {
-    public String type;
-    public boolean isLeftValue;
+import Utils.ExprNodeInfo;
 
-    public ExprNode(){};
+abstract public class ExprNode extends ASTNode {
+    public ExprNodeInfo nodeInfo;
+
+    public ExprNode() {
+        super();
+    };
+
     public ExprNode(String type, boolean isLeftValue) {
-        this.type = type;
-        this.isLeftValue = isLeftValue;
+        super();
+        this.nodeInfo = new ExprNodeInfo(type, isLeftValue);
     }
 }

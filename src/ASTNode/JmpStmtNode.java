@@ -12,4 +12,9 @@ public class JmpStmtNode extends StmtNode {
         super();
         this.jumpType = jumpType;
     }
+
+    @Override
+    public void accept(ASTNodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }

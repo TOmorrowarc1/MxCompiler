@@ -9,4 +9,9 @@ public class AssignExprNode extends ExprNode {
         this.left = lhs;
         this.right = rhs;
     }
+
+    @Override
+    public void accept(ASTNodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }

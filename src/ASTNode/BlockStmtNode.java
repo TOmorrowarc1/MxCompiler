@@ -9,4 +9,9 @@ public class BlockStmtNode extends StmtNode{
         super();
         this.body = statements;
     }
+
+    @Override
+    public void accept(ASTNodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }
