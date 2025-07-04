@@ -12,6 +12,7 @@ import java.io.InputStream;
 public class Main {
     public static void main(String[] args) throws Exception {
         BlockStmtNode mainNode = null;
+        InputStream input = System.in;
         try {
             // 1. 创建词法分析器
             YxLexer lexer = new YxLexer(CharStreams.fromStream(input));
