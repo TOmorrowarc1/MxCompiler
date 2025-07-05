@@ -1,7 +1,7 @@
 grammar Yx;
 
 // The gramma for the parser.
-program: (varDeclaration|funcDeclaration)* EOF;
+program: (varDeclaration|funcDeclaration|classDeclaration)* EOF;
 
 type: Int|Bool|Void|Str;
 
@@ -15,7 +15,23 @@ parameter: type Identifier;
 functionCall: Identifier'('argumentList?')';
 argumentList: expr(','expr)*;
 
-block:'{'statement*'}';
+classDeclaration
+    : 'class' Identifier '{' classMember* '}'
+    ;
+
+classMember
+    : varDeclaration
+    | funcDeclaration
+    | constructorDeclaration
+    ;
+
+constructorDeclaration
+    :Identifier '(' parameterList? ')' block
+    ;
+
+block
+    :'{'statement*'}'
+    ;
 
 statement
     : block                                     #blockstmt
@@ -95,10 +111,12 @@ postfixExpr
     ;
 
 primary
-    :'(' expr ')'
-    | literal
-    | Identifier
-    | functionCall
+    :'(' expr ')'                       #primaryExpr
+    | literal                           #primaryLiteral
+    | Identifier                        #primaryIdentifier
+    | functionCall                      #primaryFunction
+    | primary '.' Identifier            #primaryMember
+    | primary '(' argumentList? ')'     #primaryMemberFunction
     ;
 
 literal

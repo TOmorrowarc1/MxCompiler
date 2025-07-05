@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ClassType implements Type {
-    String name;
-    Scope classScope;
+    private final String className;
+    private final Scope classScope;
 
     public ClassType(String className, Scope classScope) {
-        this.name = className;
+        this.className = className;
         this.classScope = classScope;
     }
 
@@ -23,11 +23,11 @@ public class ClassType implements Type {
 
     @Override
     public String typeName() {
-        return name;
+        return className;
     }
 
     @Override
     public boolean isEquivalent(Type other) {
-        return other instanceof ClassType && name.equals(other.typeName());
+        return other instanceof ClassType && className.equals(other.typeName());
     }
 }

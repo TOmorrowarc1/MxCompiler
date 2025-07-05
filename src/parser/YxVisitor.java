@@ -65,6 +65,24 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArgumentList(YxParser.ArgumentListContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link YxParser#classDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassDeclaration(YxParser.ClassDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link YxParser#classMember}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassMember(YxParser.ClassMemberContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link YxParser#constructorDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConstructorDeclaration(YxParser.ConstructorDeclarationContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link YxParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -315,11 +333,47 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPostfixIncDecExpr(YxParser.PostfixIncDecExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link YxParser#primary}.
+	 * Visit a parse tree produced by the {@code primaryMember}
+	 * labeled alternative in {@link YxParser#primary}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrimary(YxParser.PrimaryContext ctx);
+	T visitPrimaryMember(YxParser.PrimaryMemberContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code primaryMemberFunction}
+	 * labeled alternative in {@link YxParser#primary}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrimaryMemberFunction(YxParser.PrimaryMemberFunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code primaryExpr}
+	 * labeled alternative in {@link YxParser#primary}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrimaryExpr(YxParser.PrimaryExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code primaryFunction}
+	 * labeled alternative in {@link YxParser#primary}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrimaryFunction(YxParser.PrimaryFunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code primaryIdentifier}
+	 * labeled alternative in {@link YxParser#primary}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrimaryIdentifier(YxParser.PrimaryIdentifierContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code primaryLiteral}
+	 * labeled alternative in {@link YxParser#primary}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrimaryLiteral(YxParser.PrimaryLiteralContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link YxParser#literal}.
 	 * @param ctx the parse tree
