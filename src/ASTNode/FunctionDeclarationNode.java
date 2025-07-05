@@ -5,15 +5,17 @@ import Utils.Position;
 import java.util.List;
 
 public class FunctionDeclarationNode extends DeclarationNode {
-    String returnType;
-    String name;
-    List<ParameterNode> parameters;
+    public String returnType;
+    public String name;
+    public List<ParameterNode> parameters;
+    public BlockStmtNode body;
 
-    public FunctionDeclarationNode(Position position, String returnType, String name, List<ParameterNode> parameters) {
+    public FunctionDeclarationNode(Position position, String returnType, String name, List<ParameterNode> parameters, BlockStmtNode body) {
         super(position);
         this.returnType = returnType;
         this.name = name;
         this.parameters = parameters;
+        this.body = body;
     }
 
     @Override

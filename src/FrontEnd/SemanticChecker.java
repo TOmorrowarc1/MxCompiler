@@ -8,18 +8,34 @@ import java.util.Optional;
 public class SemanticChecker implements ASTNodeVisitor {
     private Scope scope;
 
-    public SemanticChecker(Scope scope) {
-        this.scope = scope;
+    public SemanticChecker(Scope globalscope) {
+        scope = globalscope;
     }
 
     @Override
     public void visit(ProgramNode node) {
-
+        for (VarDefStmtNode varDefNode : node.varDeclarations) {
+            varDefNode.accept(this);
+        }
+        for (FunctionDeclarationNode functionDeclarationNode : node.functions) {
+            functionDeclarationNode.accept(this);
+        }
     }
 
     @Override
     public void visit(FunctionDeclarationNode node) {
-
+        if (scope.getSymbol(node.returnType).isEmpty()) {
+            throw new SemanticError(node.position.toString() + "The return type is not existed.");
+        }
+        scope = new Scope(scope);
+        for (FunctionDeclarationNode.ParameterNode parameterNode : node.parameters) {
+            if (scope.getType(parameterNode.parameterType).isEmpty()) {
+                throw new SemanticError(node.position.toString() + "The parameter type is not existed.");
+            }
+            scope.declareSymbol(parameterNode.identifier, new VariableSymbolInfo(parameterNode.parameterType));
+        }
+        node.body.accept(this);
+        scope = scope.getParentScope();
     }
 
     @Override
@@ -58,6 +74,7 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(ForStmtNode node) {
+        //Bug:For statement should be block statement, and the loop depth should be rebuilt.
         node.varDefStmt.accept(this);
         node.condition.accept(this);
         if (!node.condition.nodeInfo.getType().equals("bool")) {
@@ -89,9 +106,9 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(VarDefStmtNode node) {
-        String type = node.type;
+        VariableSymbolInfo symbolInfo = new VariableSymbolInfo(node.type);
         for (VarDefStmtNode.DefNode defNode : node.defList) {
-            scope.declareSymbol(defNode.identifier, type);
+            scope.declareSymbol(defNode.identifier, symbolInfo);
         }
     }
 
@@ -154,7 +171,23 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(FunctionCallExprNode node) {
-
+        if (scope.getSymbol(node.name).isEmpty()) {
+            throw new SemanticError(node.position.toString() + " Function has not been declared");
+        }
+        FunctionSymbolInfo functionSymbolInfo = (FunctionSymbolInfo) scope.getSymbol(node.name).get();
+        if (node.parameters.size() != functionSymbolInfo.getParametersType().size()) {
+            throw new SemanticError(node.position.toString() + " The number of parameters not corresponds.");
+        }
+        for (ExprNode parameter : node.parameters) {
+            parameter.accept(this);
+        }
+        for (int i = 0; i < node.parameters.size(); i++) {
+            if (!node.parameters.get(i).nodeInfo.getType().equals(functionSymbolInfo.getParametersType().get(i))) {
+                throw new SemanticError(node.position.toString() + " The parameter type not match.");
+            }
+        }
+        node.nodeInfo.setType(functionSymbolInfo.getReturnType());
+        node.nodeInfo.setIsLeftValue(false);
     }
 
     @Override
@@ -202,11 +235,11 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(VarExprNode node) {
-        Optional<String> type = scope.getSymbol(node.identifier);
+        Optional<SymbolInfo> type = scope.getSymbol(node.identifier);
         if (type.isEmpty()) {
             throw new SemanticError(node.position.toString() + node.identifier + "has not been defined");
         }
-        node.nodeInfo = new ExprNodeInfo(type.get(), true);
+        node.nodeInfo = new ExprNodeInfo(((VariableSymbolInfo) type.get()).getType(), true);
     }
 
     @Override

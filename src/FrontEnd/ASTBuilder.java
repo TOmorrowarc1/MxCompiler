@@ -49,7 +49,8 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         }
         String returnType = ctx.type().getText();
         String name = ctx.Identifier().getText();
-        return new FunctionDeclarationNode(new Position(ctx), returnType, name, parameters);
+        BlockStmtNode body = (BlockStmtNode) visit(ctx.block());
+        return new FunctionDeclarationNode(new Position(ctx), returnType, name, parameters, body);
     }
 
     @Override
