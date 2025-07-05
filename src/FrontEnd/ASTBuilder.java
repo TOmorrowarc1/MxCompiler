@@ -381,8 +381,19 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     }
 
     @Override
+    public ASTNode visitPostfixMember(YxParser.PostfixMemberContext ctx) {
+
+        return super.visitPostfixMember(ctx);
+    }
+
+    @Override
     public ASTNode visitPostfixPrimaryExpr(YxParser.PostfixPrimaryExprContext ctx) {
         return visit(ctx.primary());
+    }
+
+    @Override
+    public ASTNode visitPostfixMemberFunction(YxParser.PostfixMemberFunctionContext ctx) {
+        return super.visitPostfixMemberFunction(ctx);
     }
 
     @Override
@@ -395,17 +406,6 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
             op = UnaryExprNode.UnaryOperator.SELF_SUB;
         }
         return new UnaryExprNode(new Position(ctx), op, expr);
-    }
-
-    @Override
-    public ASTNode visitPrimaryMember(YxParser.PrimaryMemberContext ctx) {
-
-        return ;
-    }
-
-    @Override
-    public ASTNode visitPrimaryMemberFunction(YxParser.PrimaryMemberFunctionContext ctx) {
-        return super.visitPrimaryMemberFunction(ctx);
     }
 
     @Override

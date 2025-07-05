@@ -3,10 +3,10 @@ package ASTNode;
 import Utils.Position;
 
 public class ClassAccessNode extends ExprNode {
-    public String className;
+    public ExprNode className;
     public ExprNode classAccess;
 
-    public ClassAccessNode(Position start, String className, ExprNode classAccess) {
+    public ClassAccessNode(Position start, ExprNode className, ExprNode classAccess) {
         super(start);
         this.className = className;
         this.classAccess = classAccess;

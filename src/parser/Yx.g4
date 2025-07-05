@@ -5,18 +5,16 @@ program: (varDeclaration|funcDeclaration|classDeclaration)* EOF;
 
 type: Int|Bool|Void|Str;
 
+varDef: Identifier('=' expr)? ;
 varDeclaration
     :type varDef(','varDef)* ';' ;
-varDef: Identifier('=' expr)? ;
 
-funcDeclaration: type Identifier '('parameterList?')' block ;
-parameterList: parameter (',' parameter)*;
 parameter: type Identifier;
-functionCall: Identifier'('argumentList?')';
-argumentList: expr(','expr)*;
+parameterList: parameter (',' parameter)*;
+funcDeclaration: type Identifier '('parameterList?')' block ;
 
-classDeclaration
-    : 'class' Identifier '{' classMember* '}'
+constructorDeclaration
+    :Identifier '(' parameterList? ')' block
     ;
 
 classMember
@@ -25,8 +23,8 @@ classMember
     | constructorDeclaration
     ;
 
-constructorDeclaration
-    :Identifier '(' parameterList? ')' block
+classDeclaration
+    : 'class' Identifier '{' classMember* '}'
     ;
 
 block
@@ -34,89 +32,17 @@ block
     ;
 
 statement
-    : block                                     #blockstmt
+    : block                                     # blockstmt
     | If '(' expr ')' trueStmt=statement
-      (Else falseStmt=statement)?               #ifstmt
-    | While '(' expr ')' statement              #whilestmt
+      (Else falseStmt=statement)?               # ifstmt
+    | While '(' expr ')' statement              # whilestmt
     | For '(' (initializationStatement=statement)';'(forConditionExpression=expr)';'(stepExpression=expr)
-      bodyStatement=statement                   #forstmt
-    | Return expr ';'                           #returnstmt
-    | (Break|Continue)';'                       #jmpstmt
-    | varDeclaration                            #varDefstmt
-    | expr';'                                   #expressionstmt
-    |';'                                        #emptystmt
-    ;
-
-expr:assignmentExpr;
-
-assignmentExpr
-    : logicOrExpr                                           #assignOrExpr
-    | <assoc=right> unaryExpr '=' assignmentExpr            #assignExpr
-    ;
-
-logicOrExpr
-    : logicAndExpr                                          #logicOrAndExpr
-    | lhs=logicAndExpr LogicOr rhs=logicAndExpr             #logicOrBinaryExpr
-    ;
-
-logicAndExpr
-    : bitOrExpr                                          #logicAndbitExpr
-    | lhs=bitAndExpr LogicAnd rhs=bitAndExpr             #logicAndBinaryExpr
-    ;
-
-bitOrExpr
-    : bitAndExpr                                   #bitOrAndExpr
-    | lhs=bitAndExpr Or rhs=bitAndExpr             #bitOrBinaryExpr
-    ;
-
-bitAndExpr
-    : equalExpr                                  #bitAndEqualExpr
-    | lhs=equalExpr And rhs=equalExpr            #bitAndBinaryExpr
-    ;
-
-equalExpr
-    : compareExpr                                           #equalCompareExpr
-    | lhs=compareExpr op=(Equal|NEqual) rhs=compareExpr     #equalBinaryExpr
-    ;
-
-compareExpr
-    : shiftExpr                                                             #compareShiftExpr
-    | lhs=shiftExpr op=(GreatThan|GEThan|LEThan|LessThan) rhs=shiftExpr     #compareBinaryExpr
-    ;
-
-shiftExpr
-    : addExpr                                               #shiftAddExpr
-    | lhs=addExpr op=(LeftShift|RightShift) rhs=addExpr     #shiftBinaryExpr
-    ;
-
-addExpr
-    : multExpr                                      #addMultExpr
-    | lhs=multExpr op=(Plus|Minus) rhs=multExpr     #addBinaryExpr
-    ;
-
-multExpr
-    : unaryExpr                                     #multUnaryExpr
-    | lhs=unaryExpr op=(Mult|Div|Mod) rhs=unaryExpr #multBinaryExpr
-    ;
-
-unaryExpr
-    : postfixExpr                               #unaryPostfixExpr
-    | op=(SelfAdd|SelfMinus) postfixExpr        #unaryPrefixIncDecExpr
-    | op=(Minus|LogicNot|Not) postfixExpr       #unaryOpExpr
-    ;
-
-postfixExpr
-    : primary                           #postfixPrimaryExpr
-    | primary op=(SelfAdd|SelfMinus)    #postfixIncDecExpr
-    | postfixExpr '.' Identifier        #postfixMember
-    | postfixExpr '(' argumentList? ')' #postfixMemberFunction
-    ;
-
-primary
-    :'(' expr ')'                       #primaryExpr
-    | literal                           #primaryLiteral
-    | Identifier                        #primaryIdentifier
-    | functionCall                      #primaryFunction
+      bodyStatement=statement                   # forstmt
+    | Return expr ';'                           # returnstmt
+    | (Break|Continue)';'                       # jmpstmt
+    | varDeclaration                            # varDefstmt
+    | expr';'                                   # expressionstmt
+    |';'                                        # emptystmt
     ;
 
 literal
@@ -125,6 +51,40 @@ literal
     |False
     |String
     ;
+
+argumentList
+    : expr(','expr)*
+    ;
+
+expr
+    :   '(' expr ')'                                        # subExpr
+
+    |   expr op=('++'|'--')                                 # postfix
+    |   expr '(' argumentList? ')'                          # functionCall
+    |   expr  '.' Identifier                                # memberAccess
+
+    |   <assoc=right> op=('++' | '--') expr                 # unaryExpr
+    |   <assoc=right> op=('+' | '-') expr                   # unaryExpr
+    |   <assoc=right> op=('!' | '~') expr                   # unaryExpr
+
+    |   lhs=expr op=('*' | '/' | '%') rhs=expr              # binaryExpr
+    |   lhs=expr op=('+' | '-') rhs=expr                    # binaryExpr
+    |   lhs=expr op=('<<' | '>>') rhs=expr                  # binaryExpr
+    |   lhs=expr op=('>=' | '>' | '<=' | '<') rhs=expr      # binaryExpr
+    |   lhs=expr op=('==' | '!=') rhs=expr                  # binaryExpr
+    |   lhs=expr op='&' rhs=expr                            # binaryExpr
+    |   lhs=expr op='^' rhs=expr                            # binaryExpr
+    |   lhs=expr op='|' rhs=expr                            # binaryExpr
+    |   lhs=expr op='&&' rhs=expr                           # binaryExpr
+    |   lhs=expr op='||' rhs=expr                           # binaryExpr
+
+    |   <assoc=right> expr '?' expr ':' expr                # ternary
+    |   expr '=' expr                                       # assignment
+
+    |   Identifier                                          # variable
+    |   literal                                             # constant
+    ;
+
 // The gamma for the lexer.
 Identifier: [a-z][a-zA-Z_0-9]*;
 
