@@ -1,10 +1,7 @@
 package FrontEnd;
 
 import ASTNode.*;
-import Utils.ClassType;
-import Utils.FunctionSymbolInfo;
-import Utils.Scope;
-import Utils.VariableSymbolInfo;
+import Utils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +9,7 @@ import java.util.List;
 public class SymbolCollector implements ASTNodeVisitor {
     private final Scope globalScope;
     private Scope currentScope;
+    private String currentClass = null;
 
     public SymbolCollector(Scope globalScope) {
         this.globalScope = globalScope;
@@ -115,10 +113,16 @@ public class SymbolCollector implements ASTNodeVisitor {
         for (FunctionDeclarationNode funcDeclarationNode : node.functions) {
             funcDeclarationNode.accept(this);
         }
+        for (ClassDeclarationNode classDeclarationNode : node.classDeclarations) {
+            classDeclarationNode.accept(this);
+        }
     }
 
     @Override
     public void visit(ConstructorDeclarationNode node) {
+        if (!node.constructorName.equals(currentClass)) {
+            throw new SemanticError(node.position.toString() + "The name of constructure should be the name of the class.");
+        }
         List<String> parameterType = new ArrayList<>();
         for (FunctionDeclarationNode.ParameterNode param : node.parameters) {
             parameterType.add(param.parameterType);
@@ -130,6 +134,7 @@ public class SymbolCollector implements ASTNodeVisitor {
     public void visit(ClassDeclarationNode node) {
         Scope classScope = new Scope(globalScope);
         currentScope = classScope;
+        currentClass = node.className;
         for (VarDefStmtNode varDefNode : node.varDefs) {
             varDefNode.accept(this);
         }
@@ -141,6 +146,7 @@ public class SymbolCollector implements ASTNodeVisitor {
         }
         ClassType classType = new ClassType(node.className, classScope);
         currentScope = globalScope;
+        currentClass = null;
         currentScope.declareType(node.className, classType);
     }
 }

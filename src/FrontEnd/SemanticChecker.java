@@ -20,16 +20,35 @@ public class SemanticChecker implements ASTNodeVisitor {
         for (FunctionDeclarationNode functionDeclarationNode : node.functions) {
             functionDeclarationNode.accept(this);
         }
+        for (ClassDeclarationNode classDeclarationNode : node.classDeclarations) {
+            classDeclarationNode.accept(this);
+        }
     }
 
     @Override
-    public void visit(ASTNode.ConstructorDeclarationNode node) {
-
+    public void visit(ConstructorDeclarationNode node) {
+        scope = new Scope(scope);
+        for (FunctionDeclarationNode.ParameterNode parameterNode : node.parameters) {
+            if (scope.getType(parameterNode.parameterType).isEmpty()) {
+                throw new SemanticError(node.position.toString() + "The parameter type is not existed.");
+            }
+            scope.declareSymbol(parameterNode.identifier, new VariableSymbolInfo(parameterNode.parameterType));
+        }
+        node.body.accept(this);
+        scope = scope.getParentScope();
     }
 
     @Override
-    public void visit(ASTNode.ClassDeclarationNode node) {
-
+    public void visit(ClassDeclarationNode node) {
+        for (VarDefStmtNode varDefs : node.varDefs) {
+            varDefs.accept(this);
+        }
+        for (FunctionDeclarationNode functionDeclarationNode : node.functionDefs) {
+            functionDeclarationNode.accept(this);
+        }
+        for (ConstructorDeclarationNode constructorDeclarationNode : node.constructors) {
+            constructorDeclarationNode.accept(this);
+        }
     }
 
     @Override
@@ -181,10 +200,25 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(FunctionCallExprNode node) {
-        if (scope.getSymbol(node.name).isEmpty()) {
-            throw new SemanticError(node.position.toString() + " Function has not been declared");
+        FunctionSymbolInfo functionSymbolInfo = null;
+        if (node.callee instanceof ClassAccessNode classAccessNode) {
+            classAccessNode.object.accept(this);
+            if (scope.getType(classAccessNode.object.nodeInfo.getType()).isEmpty()) {
+                throw new SemanticError(node.position.toString() + " Class has not been declared");
+            }
+            ClassType objectType = (ClassType) (scope.getType(classAccessNode.object.nodeInfo.getType()).get());
+            if (objectType.getSymbol(classAccessNode.classAccess).isEmpty()) {
+                throw new SemanticError(node.position.toString() + " No such method in the class.");
+            }
+            functionSymbolInfo = (FunctionSymbolInfo) objectType.getSymbol(classAccessNode.classAccess).get();
+        } else if (node.callee instanceof VarExprNode varExprNode) {
+            if (scope.getSymbol(varExprNode.identifier).isEmpty()) {
+                throw new SemanticError(node.position.toString() + " Function has not been declared");
+            }
+            functionSymbolInfo = (FunctionSymbolInfo) scope.getSymbol(varExprNode.identifier).get();
+        } else {
+            throw new SemanticError(node.position.toString() + " The callee is not correct.");
         }
-        FunctionSymbolInfo functionSymbolInfo = (FunctionSymbolInfo) scope.getSymbol(node.name).get();
         if (node.parameters.size() != functionSymbolInfo.getParametersType().size()) {
             throw new SemanticError(node.position.toString() + " The number of parameters not corresponds.");
         }
@@ -201,8 +235,19 @@ public class SemanticChecker implements ASTNodeVisitor {
     }
 
     @Override
-    public void visit(ASTNode.ClassAccessNode node) {
-
+    public void visit(ClassAccessNode node) {
+        //It only executes as a fieldAccessNode.
+        node.object.accept(this);
+        if (scope.getType(node.object.nodeInfo.getType()).isEmpty()) {
+            throw new SemanticError(node.position.toString() + " Class has not been declared");
+        }
+        ClassType objectType = (ClassType) (scope.getType(node.object.nodeInfo.getType()).get());
+        if (objectType.getSymbol(node.classAccess).isEmpty()) {
+            throw new SemanticError(node.position.toString() + " No such member in the class.");
+        }
+        String memberType = ((VariableSymbolInfo) (objectType.getSymbol(node.classAccess).get())).getType();
+        node.nodeInfo.setType(memberType);
+        node.nodeInfo.setIsLeftValue(true);
     }
 
     @Override

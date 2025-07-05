@@ -15,13 +15,17 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     public ASTNode visitProgram(YxParser.ProgramContext ctx) {
         List<VarDefStmtNode> defs = new ArrayList<>();
         List<FunctionDeclarationNode> functions = new ArrayList<>();
+        List<ClassDeclarationNode> classes = new ArrayList<>();
         for (YxParser.VarDeclarationContext varDeclCtx : ctx.varDeclaration()) {
             defs.add((VarDefStmtNode) visit(varDeclCtx));
         }
         for (YxParser.FuncDeclarationContext funcDeclCtx : ctx.funcDeclaration()) {
             functions.add((FunctionDeclarationNode) visit(funcDeclCtx));
         }
-        return new ProgramNode(new Position(ctx), functions, defs);
+        for (YxParser.ClassDeclarationContext classDeclCtx : ctx.classDeclaration()) {
+            classes.add((ClassDeclarationNode) visit(classDeclCtx));
+        }
+        return new ProgramNode(new Position(ctx), functions, defs, classes);
     }
 
     @Override
