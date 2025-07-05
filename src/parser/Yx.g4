@@ -108,6 +108,8 @@ unaryExpr
 postfixExpr
     : primary                           #postfixPrimaryExpr
     | primary op=(SelfAdd|SelfMinus)    #postfixIncDecExpr
+    | postfixExpr '.' Identifier        #postfixMember
+    | postfixExpr '(' argumentList? ')' #postfixMemberFunction
     ;
 
 primary
@@ -115,8 +117,6 @@ primary
     | literal                           #primaryLiteral
     | Identifier                        #primaryIdentifier
     | functionCall                      #primaryFunction
-    | primary '.' Identifier            #primaryMember
-    | primary '(' argumentList? ')'     #primaryMemberFunction
     ;
 
 literal

@@ -83,6 +83,21 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     }
 
     @Override
+    public ASTNode visitClassDeclaration(YxParser.ClassDeclarationContext ctx) {
+        return super.visitClassDeclaration(ctx);
+    }
+
+    @Override
+    public ASTNode visitClassMember(YxParser.ClassMemberContext ctx) {
+        return super.visitClassMember(ctx);
+    }
+
+    @Override
+    public ASTNode visitConstructorDeclaration(YxParser.ConstructorDeclarationContext ctx) {
+        return super.visitConstructorDeclaration(ctx);
+    }
+
+    @Override
     public ASTNode visitBlock(YxParser.BlockContext ctx) {
         List<StmtNode> stmts = new ArrayList<StmtNode>();
         for (YxParser.StatementContext statementContext : ctx.statement()) {
@@ -383,16 +398,34 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     }
 
     @Override
-    public ASTNode visitPrimary(YxParser.PrimaryContext ctx) {
-        if (ctx.expr() != null) {
-            return visit(ctx.expr());
-        } else if (ctx.literal() != null) {
-            return visit(ctx.literal());
-        } else if (ctx.Identifier() != null) {
-            return new VarExprNode(new Position(ctx), ctx.Identifier().getText());
-        }
-        //Should not come.
-        return super.visitPrimary(ctx);
+    public ASTNode visitPrimaryMember(YxParser.PrimaryMemberContext ctx) {
+
+        return ;
+    }
+
+    @Override
+    public ASTNode visitPrimaryMemberFunction(YxParser.PrimaryMemberFunctionContext ctx) {
+        return super.visitPrimaryMemberFunction(ctx);
+    }
+
+    @Override
+    public ASTNode visitPrimaryExpr(YxParser.PrimaryExprContext ctx) {
+        return visit(ctx.expr());
+    }
+
+    @Override
+    public ASTNode visitPrimaryFunction(YxParser.PrimaryFunctionContext ctx) {
+        return visit(ctx.functionCall());
+    }
+
+    @Override
+    public ASTNode visitPrimaryIdentifier(YxParser.PrimaryIdentifierContext ctx) {
+        return new VarExprNode(new Position(ctx), ctx.Identifier().getText());
+    }
+
+    @Override
+    public ASTNode visitPrimaryLiteral(YxParser.PrimaryLiteralContext ctx) {
+        return visit(ctx.literal());
     }
 
     @Override
