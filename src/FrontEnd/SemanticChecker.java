@@ -23,6 +23,16 @@ public class SemanticChecker implements ASTNodeVisitor {
     }
 
     @Override
+    public void visit(ASTNode.ConstructorDeclarationNode node) {
+
+    }
+
+    @Override
+    public void visit(ASTNode.ClassDeclarationNode node) {
+
+    }
+
+    @Override
     public void visit(FunctionDeclarationNode node) {
         if (scope.getSymbol(node.returnType).isEmpty()) {
             throw new SemanticError(node.position.toString() + "The return type is not existed.");
@@ -188,6 +198,11 @@ public class SemanticChecker implements ASTNodeVisitor {
         }
         node.nodeInfo.setType(functionSymbolInfo.getReturnType());
         node.nodeInfo.setIsLeftValue(false);
+    }
+
+    @Override
+    public void visit(ASTNode.ClassAccessNode node) {
+
     }
 
     @Override
