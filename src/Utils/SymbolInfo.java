@@ -1,5 +1,3 @@
 package Utils;
 
-public class SymbolInfo {
-    public String typeName;
-}
+public abstract class SymbolInfo {}

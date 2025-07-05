@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Scope {
-    private final Map<String, String> symbolTable = new HashMap<>();
+    private final Map<String, SymbolInfo> symbolTable = new HashMap<>();
     private final Map<String, Type> typeTable = new HashMap<>();
     private final Scope parentScope;
     private int loopDepth;
@@ -24,11 +24,11 @@ public class Scope {
         return parentScope;
     }
 
-    public void declareSymbol(String symbol, String typeName) {
+    public void declareSymbol(String symbol, SymbolInfo typeInfo) {
         if (symbolTable.containsKey(symbol)) {
             throw new SemanticError("Symbol " + symbol + " already exists");
         }
-        symbolTable.put(symbol, typeName);
+        symbolTable.put(symbol, typeInfo);
     }
 
     public void declareType(String typeName, Type type) {
@@ -46,7 +46,7 @@ public class Scope {
         this.loopDepth--;
     }
 
-    public Optional<String> getSymbol(String symbol) {
+    public Optional<SymbolInfo> getSymbol(String symbol) {
         Scope cursor = this;
         while (cursor != null) {
             if (cursor.symbolTable.containsKey(symbol)) {
