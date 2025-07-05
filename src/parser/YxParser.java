@@ -842,7 +842,7 @@ public class YxParser extends Parser {
 			setState(106);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4402737756274684L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4402737756266492L) != 0)) {
 				{
 				{
 				setState(103);
@@ -1236,7 +1236,6 @@ public class YxParser extends Parser {
 			case False:
 			case SelfAdd:
 			case SelfMinus:
-			case Plus:
 			case Minus:
 			case LogicNot:
 			case Not:
@@ -1410,28 +1409,6 @@ public class YxParser extends Parser {
 		}
 	}
 	@SuppressWarnings("CheckReturnValue")
-	public static class MemberAccessContext extends ExprContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
-		}
-		public TerminalNode Dot() { return getToken(YxParser.Dot, 0); }
-		public TerminalNode Identifier() { return getToken(YxParser.Identifier, 0); }
-		public MemberAccessContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).enterMemberAccess(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof YxListener ) ((YxListener)listener).exitMemberAccess(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitMemberAccess(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class UnaryExprContext extends ExprContext {
 		public Token op;
 		public ExprContext expr() {
@@ -1439,7 +1416,6 @@ public class YxParser extends Parser {
 		}
 		public TerminalNode SelfAdd() { return getToken(YxParser.SelfAdd, 0); }
 		public TerminalNode SelfMinus() { return getToken(YxParser.SelfMinus, 0); }
-		public TerminalNode Plus() { return getToken(YxParser.Plus, 0); }
 		public TerminalNode Minus() { return getToken(YxParser.Minus, 0); }
 		public TerminalNode LogicNot() { return getToken(YxParser.LogicNot, 0); }
 		public TerminalNode Not() { return getToken(YxParser.Not, 0); }
@@ -1480,13 +1456,15 @@ public class YxParser extends Parser {
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AssignmentContext extends ExprContext {
+		public ExprContext lhs;
+		public ExprContext rhs;
+		public TerminalNode Assign() { return getToken(YxParser.Assign, 0); }
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
-		public TerminalNode Assign() { return getToken(YxParser.Assign, 0); }
 		public AssignmentContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1524,6 +1502,28 @@ public class YxParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitFunctionCall(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class ClassAccessContext extends ExprContext {
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public TerminalNode Dot() { return getToken(YxParser.Dot, 0); }
+		public TerminalNode Identifier() { return getToken(YxParser.Identifier, 0); }
+		public ClassAccessContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).enterClassAccess(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof YxListener ) ((YxListener)listener).exitClassAccess(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof YxVisitor ) return ((YxVisitor<? extends T>)visitor).visitClassAccess(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1714,23 +1714,13 @@ public class YxParser extends Parser {
 				expr(17);
 				}
 				break;
-			case Plus:
 			case Minus:
 				{
 				_localctx = new UnaryExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(166);
-				((UnaryExprContext)_localctx).op = _input.LT(1);
-				_la = _input.LA(1);
-				if ( !(_la==Plus || _la==Minus) ) {
-					((UnaryExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-				}
-				else {
-					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-					_errHandler.reportMatch(this);
-					consume();
-				}
+				((UnaryExprContext)_localctx).op = match(Minus);
 				setState(167);
 				expr(16);
 				}
@@ -1986,13 +1976,14 @@ public class YxParser extends Parser {
 					case 12:
 						{
 						_localctx = new AssignmentContext(new ExprContext(_parentctx, _parentState));
+						((AssignmentContext)_localctx).lhs = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(210);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
 						setState(211);
 						match(Assign);
 						setState(212);
-						expr(4);
+						((AssignmentContext)_localctx).rhs = expr(4);
 						}
 						break;
 					case 13:
@@ -2025,7 +2016,7 @@ public class YxParser extends Parser {
 						setState(218);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 18320752516L) != 0)) {
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 18320744324L) != 0)) {
 							{
 							setState(217);
 							argumentList();
@@ -2038,7 +2029,7 @@ public class YxParser extends Parser {
 						break;
 					case 15:
 						{
-						_localctx = new MemberAccessContext(new ExprContext(_parentctx, _parentState));
+						_localctx = new ClassAccessContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(221);
 						if (!(precpred(_ctx, 18))) throw new FailedPredicateException(this, "precpred(_ctx, 18)");
@@ -2149,8 +2140,8 @@ public class YxParser extends Parser {
 		"\u0001\u000e\u0005\u000e\u00e1\b\u000e\n\u000e\f\u000e\u00e4\t\u000e\u0001"+
 		"\u000e\u0000\u0001\u001c\u000f\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010"+
 		"\u0012\u0014\u0016\u0018\u001a\u001c\u0000\n\u0001\u0000\u0003\u0006\u0001"+
-		"\u000012\u0001\u0000\u0007\n\u0001\u0000\u000b\f\u0001\u0000\r\u000e\u0002"+
-		"\u0000\u001a\u001a\u001e\u001e\u0001\u0000\u000f\u0011\u0001\u0000\u001f"+
+		"\u000012\u0001\u0000\u0007\n\u0001\u0000\u000b\f\u0002\u0000\u001a\u001a"+
+		"\u001e\u001e\u0001\u0000\u000f\u0011\u0001\u0000\r\u000e\u0001\u0000\u001f"+
 		" \u0001\u0000\u0012\u0015\u0001\u0000\u0016\u0017\u0101\u0000#\u0001\u0000"+
 		"\u0000\u0000\u0002(\u0001\u0000\u0000\u0000\u0004*\u0001\u0000\u0000\u0000"+
 		"\u0006/\u0001\u0000\u0000\u0000\b:\u0001\u0000\u0000\u0000\n=\u0001\u0000"+
@@ -2221,15 +2212,15 @@ public class YxParser extends Parser {
 		"\u00a0\u00a1\u0005\"\u0000\u0000\u00a1\u00a2\u0003\u001c\u000e\u0000\u00a2"+
 		"\u00a3\u0005#\u0000\u0000\u00a3\u00ad\u0001\u0000\u0000\u0000\u00a4\u00a5"+
 		"\u0007\u0003\u0000\u0000\u00a5\u00ad\u0003\u001c\u000e\u0011\u00a6\u00a7"+
-		"\u0007\u0004\u0000\u0000\u00a7\u00ad\u0003\u001c\u000e\u0010\u00a8\u00a9"+
-		"\u0007\u0005\u0000\u0000\u00a9\u00ad\u0003\u001c\u000e\u000f\u00aa\u00ad"+
+		"\u0005\u000e\u0000\u0000\u00a7\u00ad\u0003\u001c\u000e\u0010\u00a8\u00a9"+
+		"\u0007\u0004\u0000\u0000\u00a9\u00ad\u0003\u001c\u000e\u000f\u00aa\u00ad"+
 		"\u0005\u0002\u0000\u0000\u00ab\u00ad\u0003\u0018\f\u0000\u00ac\u009f\u0001"+
 		"\u0000\u0000\u0000\u00ac\u00a4\u0001\u0000\u0000\u0000\u00ac\u00a6\u0001"+
 		"\u0000\u0000\u0000\u00ac\u00a8\u0001\u0000\u0000\u0000\u00ac\u00aa\u0001"+
 		"\u0000\u0000\u0000\u00ac\u00ab\u0001\u0000\u0000\u0000\u00ad\u00e2\u0001"+
-		"\u0000\u0000\u0000\u00ae\u00af\n\u000e\u0000\u0000\u00af\u00b0\u0007\u0006"+
+		"\u0000\u0000\u0000\u00ae\u00af\n\u000e\u0000\u0000\u00af\u00b0\u0007\u0005"+
 		"\u0000\u0000\u00b0\u00e1\u0003\u001c\u000e\u000f\u00b1\u00b2\n\r\u0000"+
-		"\u0000\u00b2\u00b3\u0007\u0004\u0000\u0000\u00b3\u00e1\u0003\u001c\u000e"+
+		"\u0000\u00b2\u00b3\u0007\u0006\u0000\u0000\u00b3\u00e1\u0003\u001c\u000e"+
 		"\u000e\u00b4\u00b5\n\f\u0000\u0000\u00b5\u00b6\u0007\u0007\u0000\u0000"+
 		"\u00b6\u00e1\u0003\u001c\u000e\r\u00b7\u00b8\n\u000b\u0000\u0000\u00b8"+
 		"\u00b9\u0007\b\u0000\u0000\u00b9\u00e1\u0003\u001c\u000e\f\u00ba\u00bb"+

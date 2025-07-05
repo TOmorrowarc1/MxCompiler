@@ -61,10 +61,10 @@ expr
 
     |   expr op=('++'|'--')                                 # postfix
     |   expr '(' argumentList? ')'                          # functionCall
-    |   expr  '.' Identifier                                # memberAccess
+    |   expr  '.' Identifier                                # classAccess
 
     |   <assoc=right> op=('++' | '--') expr                 # unaryExpr
-    |   <assoc=right> op=('+' | '-') expr                   # unaryExpr
+    |   <assoc=right> op='-' expr                           # unaryExpr
     |   <assoc=right> op=('!' | '~') expr                   # unaryExpr
 
     |   lhs=expr op=('*' | '/' | '%') rhs=expr              # binaryExpr
@@ -79,7 +79,7 @@ expr
     |   lhs=expr op='||' rhs=expr                           # binaryExpr
 
     |   <assoc=right> expr '?' expr ':' expr                # ternary
-    |   expr '=' expr                                       # assignment
+    |   lhs=expr '=' rhs=expr                               # assignment
 
     |   Identifier                                          # variable
     |   literal                                             # constant

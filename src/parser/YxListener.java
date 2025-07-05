@@ -246,18 +246,6 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitArgumentList(YxParser.ArgumentListContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code memberAccess}
-	 * labeled alternative in {@link YxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterMemberAccess(YxParser.MemberAccessContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code memberAccess}
-	 * labeled alternative in {@link YxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitMemberAccess(YxParser.MemberAccessContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code unaryExpr}
 	 * labeled alternative in {@link YxParser#expr}.
 	 * @param ctx the parse tree
@@ -305,6 +293,18 @@ public interface YxListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctionCall(YxParser.FunctionCallContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code classAccess}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterClassAccess(YxParser.ClassAccessContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code classAccess}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitClassAccess(YxParser.ClassAccessContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code variable}
 	 * labeled alternative in {@link YxParser#expr}.

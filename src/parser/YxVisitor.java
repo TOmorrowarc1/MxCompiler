@@ -152,13 +152,6 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArgumentList(YxParser.ArgumentListContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code memberAccess}
-	 * labeled alternative in {@link YxParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMemberAccess(YxParser.MemberAccessContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code unaryExpr}
 	 * labeled alternative in {@link YxParser#expr}.
 	 * @param ctx the parse tree
@@ -186,6 +179,13 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunctionCall(YxParser.FunctionCallContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code classAccess}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassAccess(YxParser.ClassAccessContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code variable}
 	 * labeled alternative in {@link YxParser#expr}.

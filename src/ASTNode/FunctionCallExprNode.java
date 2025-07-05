@@ -5,12 +5,12 @@ import Utils.Position;
 import java.util.List;
 
 public class FunctionCallExprNode extends ExprNode {
-    public String name;
+    public ExprNode callee;
     public List<ExprNode> parameters;
 
-    public FunctionCallExprNode(Position position, String name, List<ExprNode> parameters) {
+    public FunctionCallExprNode(Position position, ExprNode callee, List<ExprNode> parameters) {
         super(position);
-        this.name = name;
+        this.callee = callee;
         this.parameters = parameters;
     }
 

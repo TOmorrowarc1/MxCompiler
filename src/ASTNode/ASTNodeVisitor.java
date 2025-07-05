@@ -5,6 +5,8 @@ public interface ASTNodeVisitor {
 
     void visit(ClassDeclarationNode node);
 
+    void visit(ConstructorDeclarationNode node);
+
     void visit(FunctionDeclarationNode node);
 
     void visit(BlockStmtNode node);
