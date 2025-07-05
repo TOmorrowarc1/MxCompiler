@@ -532,17 +532,17 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitUnaryOpExpr(YxParser.UnaryOpExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code postfixPrimaryExpr}
+	 * Enter a parse tree produced by the {@code postfixMember}
 	 * labeled alternative in {@link YxParser#postfixExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterPostfixPrimaryExpr(YxParser.PostfixPrimaryExprContext ctx);
+	void enterPostfixMember(YxParser.PostfixMemberContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code postfixPrimaryExpr}
+	 * Exit a parse tree produced by the {@code postfixMember}
 	 * labeled alternative in {@link YxParser#postfixExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitPostfixPrimaryExpr(YxParser.PostfixPrimaryExprContext ctx);
+	void exitPostfixMember(YxParser.PostfixMemberContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code postfixIncDecExpr}
 	 * labeled alternative in {@link YxParser#postfixExpr}.
@@ -556,29 +556,29 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitPostfixIncDecExpr(YxParser.PostfixIncDecExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code primaryMember}
-	 * labeled alternative in {@link YxParser#primary}.
+	 * Enter a parse tree produced by the {@code postfixPrimaryExpr}
+	 * labeled alternative in {@link YxParser#postfixExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrimaryMember(YxParser.PrimaryMemberContext ctx);
+	void enterPostfixPrimaryExpr(YxParser.PostfixPrimaryExprContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code primaryMember}
-	 * labeled alternative in {@link YxParser#primary}.
+	 * Exit a parse tree produced by the {@code postfixPrimaryExpr}
+	 * labeled alternative in {@link YxParser#postfixExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrimaryMember(YxParser.PrimaryMemberContext ctx);
+	void exitPostfixPrimaryExpr(YxParser.PostfixPrimaryExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code primaryMemberFunction}
-	 * labeled alternative in {@link YxParser#primary}.
+	 * Enter a parse tree produced by the {@code postfixMemberFunction}
+	 * labeled alternative in {@link YxParser#postfixExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrimaryMemberFunction(YxParser.PrimaryMemberFunctionContext ctx);
+	void enterPostfixMemberFunction(YxParser.PostfixMemberFunctionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code primaryMemberFunction}
-	 * labeled alternative in {@link YxParser#primary}.
+	 * Exit a parse tree produced by the {@code postfixMemberFunction}
+	 * labeled alternative in {@link YxParser#postfixExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrimaryMemberFunction(YxParser.PrimaryMemberFunctionContext ctx);
+	void exitPostfixMemberFunction(YxParser.PostfixMemberFunctionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code primaryExpr}
 	 * labeled alternative in {@link YxParser#primary}.
@@ -592,17 +592,17 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitPrimaryExpr(YxParser.PrimaryExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code primaryFunction}
+	 * Enter a parse tree produced by the {@code primaryLiteral}
 	 * labeled alternative in {@link YxParser#primary}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrimaryFunction(YxParser.PrimaryFunctionContext ctx);
+	void enterPrimaryLiteral(YxParser.PrimaryLiteralContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code primaryFunction}
+	 * Exit a parse tree produced by the {@code primaryLiteral}
 	 * labeled alternative in {@link YxParser#primary}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrimaryFunction(YxParser.PrimaryFunctionContext ctx);
+	void exitPrimaryLiteral(YxParser.PrimaryLiteralContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code primaryIdentifier}
 	 * labeled alternative in {@link YxParser#primary}.
@@ -616,17 +616,17 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitPrimaryIdentifier(YxParser.PrimaryIdentifierContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code primaryLiteral}
+	 * Enter a parse tree produced by the {@code primaryFunction}
 	 * labeled alternative in {@link YxParser#primary}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrimaryLiteral(YxParser.PrimaryLiteralContext ctx);
+	void enterPrimaryFunction(YxParser.PrimaryFunctionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code primaryLiteral}
+	 * Exit a parse tree produced by the {@code primaryFunction}
 	 * labeled alternative in {@link YxParser#primary}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrimaryLiteral(YxParser.PrimaryLiteralContext ctx);
+	void exitPrimaryFunction(YxParser.PrimaryFunctionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link YxParser#literal}.
 	 * @param ctx the parse tree

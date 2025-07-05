@@ -340,7 +340,7 @@ public class YxBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements YxV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPostfixPrimaryExpr(YxParser.PostfixPrimaryExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPostfixMember(YxParser.PostfixMemberContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -354,14 +354,14 @@ public class YxBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements YxV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPrimaryMember(YxParser.PrimaryMemberContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPostfixPrimaryExpr(YxParser.PostfixPrimaryExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPrimaryMemberFunction(YxParser.PrimaryMemberFunctionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPostfixMemberFunction(YxParser.PostfixMemberFunctionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -375,7 +375,7 @@ public class YxBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements YxV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPrimaryFunction(YxParser.PrimaryFunctionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPrimaryLiteral(YxParser.PrimaryLiteralContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -389,7 +389,7 @@ public class YxBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements YxV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPrimaryLiteral(YxParser.PrimaryLiteralContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPrimaryFunction(YxParser.PrimaryFunctionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

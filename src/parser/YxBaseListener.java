@@ -569,13 +569,13 @@ public class YxBaseListener implements YxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPostfixPrimaryExpr(YxParser.PostfixPrimaryExprContext ctx) { }
+	@Override public void enterPostfixMember(YxParser.PostfixMemberContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPostfixPrimaryExpr(YxParser.PostfixPrimaryExprContext ctx) { }
+	@Override public void exitPostfixMember(YxParser.PostfixMemberContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -593,25 +593,25 @@ public class YxBaseListener implements YxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimaryMember(YxParser.PrimaryMemberContext ctx) { }
+	@Override public void enterPostfixPrimaryExpr(YxParser.PostfixPrimaryExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimaryMember(YxParser.PrimaryMemberContext ctx) { }
+	@Override public void exitPostfixPrimaryExpr(YxParser.PostfixPrimaryExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimaryMemberFunction(YxParser.PrimaryMemberFunctionContext ctx) { }
+	@Override public void enterPostfixMemberFunction(YxParser.PostfixMemberFunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimaryMemberFunction(YxParser.PrimaryMemberFunctionContext ctx) { }
+	@Override public void exitPostfixMemberFunction(YxParser.PostfixMemberFunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -629,13 +629,13 @@ public class YxBaseListener implements YxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimaryFunction(YxParser.PrimaryFunctionContext ctx) { }
+	@Override public void enterPrimaryLiteral(YxParser.PrimaryLiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimaryFunction(YxParser.PrimaryFunctionContext ctx) { }
+	@Override public void exitPrimaryLiteral(YxParser.PrimaryLiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -653,13 +653,13 @@ public class YxBaseListener implements YxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimaryLiteral(YxParser.PrimaryLiteralContext ctx) { }
+	@Override public void enterPrimaryFunction(YxParser.PrimaryFunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimaryLiteral(YxParser.PrimaryLiteralContext ctx) { }
+	@Override public void exitPrimaryFunction(YxParser.PrimaryFunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
