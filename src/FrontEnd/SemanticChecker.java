@@ -200,7 +200,7 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(FunctionCallExprNode node) {
-        FunctionSymbolInfo functionSymbolInfo = null;
+        FunctionSymbolInfo functionSymbolInfo;
         if (node.callee instanceof ClassAccessNode classAccessNode) {
             classAccessNode.object.accept(this);
             if (scope.getType(classAccessNode.object.nodeInfo.getType()).isEmpty()) {

@@ -2,6 +2,7 @@ package FrontEnd;
 
 import ASTNode.*;
 import Utils.Position;
+import Utils.SemanticError;
 import parser.YxBaseVisitor;
 import parser.YxParser;
 
@@ -157,7 +158,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitReturnstmt(YxParser.ReturnstmtContext ctx) {
-        ExprNode expr = null;
+        ExprNode expr = new EmptyExprNode(new Position(ctx));;
         if (ctx.expr() != null) {
             expr = (ExprNode) visit(ctx.expr());
         }
@@ -166,11 +167,13 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitJmpstmt(YxParser.JmpstmtContext ctx) {
-        ASTNode.JmpStmtNode.JumpType jmpType = null;
+        ASTNode.JmpStmtNode.JumpType jmpType;
         if (ctx.getText().equals("break")) {
             jmpType = JmpStmtNode.JumpType.BREAK;
         } else if (ctx.getText().equals("continue")) {
             jmpType = JmpStmtNode.JumpType.CONTINUE;
+        } else {
+            throw new SemanticError("Invalid JmpStmt");
         }
         return new JmpStmtNode(new Position(ctx), jmpType);
     }
@@ -204,11 +207,14 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitPostfix(YxParser.PostfixContext ctx) {
         ExprNode expr = (ExprNode) visit(ctx.expr());
-        UnaryExprNode.UnaryOperator unaryOperator = null;
+        UnaryExprNode.UnaryOperator unaryOperator;
         if (ctx.op.getText().equals("++")) {
             unaryOperator = UnaryExprNode.UnaryOperator.SELF_ADD;
         } else if (ctx.op.getText().equals("--")) {
             unaryOperator = UnaryExprNode.UnaryOperator.SELF_SUB;
+        } else {
+            throw new SemanticError("Invalid binary operator");
+
         }
         return new UnaryExprNode(new Position(ctx), unaryOperator, expr);
     }
@@ -240,7 +246,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitUnaryExpr(YxParser.UnaryExprContext ctx) {
         ExprNode expr = (ExprNode) visit(ctx.expr());
-        UnaryExprNode.UnaryOperator unaryOperator = null;
+        UnaryExprNode.UnaryOperator unaryOperator;
         switch (ctx.op.getText()) {
             case "++": {
                 unaryOperator = UnaryExprNode.UnaryOperator.SELF_ADD;
@@ -262,6 +268,9 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
                 unaryOperator = UnaryExprNode.UnaryOperator.NOT;
                 break;
             }
+            default: {
+                throw new SemanticError("Invalid unary operator");
+            }
         }
         return new UnaryExprNode(new Position(ctx), unaryOperator, expr);
     }
@@ -270,7 +279,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     public ASTNode visitBinaryExpr(YxParser.BinaryExprContext ctx) {
         ExprNode lhs = (ExprNode) visit(ctx.lhs);
         ExprNode rhs = (ExprNode) visit(ctx.rhs);
-        BinaryExprNode.BinaryOperator binaryOperator = null;
+        BinaryExprNode.BinaryOperator binaryOperator;
         switch (ctx.op.getText()) {
             case "*": {
                 binaryOperator = BinaryExprNode.BinaryOperator.MUL;
@@ -339,6 +348,9 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
             case "||": {
                 binaryOperator = BinaryExprNode.BinaryOperator.LOGIC_OR;
                 break;
+            }
+            default: {
+                throw new SemanticError("Invalid binary operator");
             }
         }
         return new BinaryExprNode(new Position(ctx), binaryOperator, lhs, rhs);
