@@ -41,7 +41,9 @@ public interface ASTNodeVisitor {
 
     void visit(UnaryExprNode node);
 
-    void visit(NewExprNode node);
+    void visit(NewArrayExprNode node);
+
+    void visit(NewClassExprNode node);
 
     void visit(IntLiteralExprNode node);
 

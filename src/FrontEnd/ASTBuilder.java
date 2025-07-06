@@ -1,8 +1,8 @@
 package FrontEnd;
 
 import ASTNode.*;
-import Utils.Position;
-import Utils.SemanticError;
+import Utils.*;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import parser.YxBaseVisitor;
 import parser.YxParser;
 
@@ -26,16 +26,52 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         for (YxParser.ClassDeclarationContext classDeclCtx : ctx.classDeclaration()) {
             classes.add((ClassDeclarationNode) visit(classDeclCtx));
         }
-        return new ProgramNode(new Position(ctx), functions, defs, classes);
+        return new ProgramNode(new Position(ctx), defs, functions, classes);
+    }
+
+    @Override
+    public ASTNode visitBaseType(YxParser.BaseTypeContext ctx) {
+        //Should not be executed.
+        return super.visitBaseType(ctx);
+    }
+
+    private Type analysisBaseType(YxParser.BaseTypeContext ctx) {
+        Type nodeType;
+        if (ctx.Int() != null) {
+            nodeType = PrimitiveType.INT;
+        } else if (ctx.Bool() != null) {
+            nodeType = PrimitiveType.BOOL;
+        } else if (ctx.Str() != null) {
+            nodeType = PrimitiveType.STRING;
+        } else if (ctx.Void() != null) {
+            nodeType = PrimitiveType.VOID;
+        } else if (ctx.Identifier() != null) {
+            nodeType = new ClassType(ctx.Identifier().getText());
+        } else {
+            throw new SemanticError("The Unknown basic type.");
+        }
+        return nodeType;
+    }
+
+    private Type analysisType(YxParser.TypeContext ctx) {
+        Type nodeType = analysisBaseType(ctx.baseType());
+        List<TerminalNode> brackets = ctx.LBRACK();
+        int dimensions = (brackets != null) ? brackets.size() : 0;
+        Type finalType = nodeType;
+        for (int i = 0; i < dimensions; i++) {
+            finalType = new ArrayType(finalType);
+        }
+        return finalType;
     }
 
     @Override
     public ASTNode visitVarDeclaration(YxParser.VarDeclarationContext ctx) {
+        Type varType = analysisType(ctx.type());
         List<VarDefStmtNode.DefNode> defNodes = new ArrayList<>();
         for (YxParser.VarDefContext defContext : ctx.varDef()) {
             defNodes.add((ASTNode.VarDefStmtNode.DefNode) visit(defContext));
         }
-        return new VarDefStmtNode(new Position(ctx), ctx.type().getText(), defNodes);
+        return new VarDefStmtNode(new Position(ctx), varType, defNodes);
     }
 
     @Override
@@ -52,7 +88,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
                 parameters.add((FunctionDeclarationNode.ParameterNode) visit(paramCtx));
             }
         }
-        String returnType = ctx.type().getText();
+        Type returnType = analysisType(ctx.type());
         String name = ctx.Identifier().getText();
         BlockStmtNode body = (BlockStmtNode) visit(ctx.block());
         return new FunctionDeclarationNode(new Position(ctx), returnType, name, parameters, body);
@@ -66,7 +102,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitParameter(YxParser.ParameterContext ctx) {
-        return new ASTNode.FunctionDeclarationNode.ParameterNode(new Position(ctx), ctx.type().getText(), ctx.Identifier().getText());
+        return new ASTNode.FunctionDeclarationNode.ParameterNode(new Position(ctx), analysisType(ctx.type()), ctx.Identifier().getText());
     }
 
     @Override
@@ -95,15 +131,9 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitConstructorDeclaration(YxParser.ConstructorDeclarationContext ctx) {
-        List<FunctionDeclarationNode.ParameterNode> parameters = new ArrayList<>();
-        if (ctx.parameterList() != null) {
-            for (YxParser.ParameterContext paramCtx : ctx.parameterList().parameter()) {
-                parameters.add((FunctionDeclarationNode.ParameterNode) visit(paramCtx));
-            }
-        }
         String name = ctx.Identifier().getText();
         BlockStmtNode body = (BlockStmtNode) visit(ctx.block());
-        return new ConstructorDeclarationNode(new Position(ctx), name, parameters, body);
+        return new ConstructorDeclarationNode(new Position(ctx), name, body);
     }
 
     @Override
@@ -254,6 +284,28 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     }
 
     @Override
+    public ASTNode visitNewClass(YxParser.NewClassContext ctx) {
+        Type classType = new ClassType(ctx.Identifier().getText());
+        return new NewClassExprNode(new Position(ctx), classType);
+    }
+
+    @Override
+    public ASTNode visitNewArray(YxParser.NewArrayContext ctx) {
+        Type arrayType = new ArrayType(analysisBaseType(ctx.baseType()));
+        List<ExprNode> dimensions = new ArrayList<>();
+        for (YxParser.ExprContext exprContext : ctx.expr()) {
+            dimensions.add((ExprNode) visit(exprContext));
+        }
+        return new NewArrayExprNode(new Position(ctx), arrayType, dimensions);
+    }
+
+
+    @Override
+    public ASTNode visitThisExpr(YxParser.ThisExprContext ctx) {
+        return new ThisNode(new Position(ctx));
+    }
+
+    @Override
     public ASTNode visitUnaryExpr(YxParser.UnaryExprContext ctx) {
         ExprNode expr = (ExprNode) visit(ctx.expr());
         UnaryExprNode.UnaryOperator unaryOperator;
@@ -387,6 +439,13 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitConstant(YxParser.ConstantContext ctx) {
         return visit(ctx.literal());
+    }
+
+    @Override
+    public ASTNode visitArrayVisit(YxParser.ArrayVisitContext ctx) {
+        ExprNode array = (ExprNode) visit(ctx.array);
+        ExprNode index = (ExprNode) visit(ctx.index);
+        return new ArrayVisitExprNode(new Position(ctx), array, index);
     }
 
     @Override
