@@ -1,59 +1,85 @@
 grammar Yx;
 
+//I jump the array constant for convinience, acturally it should distiguish from block statement.
 // The gramma for the parser.
-program: (varDeclaration|funcDeclaration|classDeclaration)* EOF;
+program
+    :   (varDeclaration|funcDeclaration|classDeclaration)* EOF
+    ;
 
-type: Int|Bool|Void|Str;
+baseType
+    :   Int|Bool|Void|Str|Identifier
+    ;
 
-varDef: Identifier('=' expr)? ;
+type
+    :   baseType                   # basicType
+    |   baseType('['']')+          # arrayType
+    ;
+
+varDef
+    :   Identifier('=' expr)?
+    ;
+
 varDeclaration
-    :type varDef(','varDef)* ';' ;
+    :   type varDef(','varDef)* ';'
+    ;
 
-parameter: type Identifier;
-parameterList: parameter (',' parameter)*;
-funcDeclaration: type Identifier '('parameterList?')' block ;
+parameter
+    :    type Identifier
+    ;
+parameterList
+    :   parameter (',' parameter)*
+    ;
+funcDeclaration
+    :   type Identifier '('parameterList?')' block
+    ;
 
 constructorDeclaration
-    :Identifier '(' parameterList? ')' block
+    :   Identifier '('')' block
     ;
 
 classMember
-    : varDeclaration
-    | funcDeclaration
-    | constructorDeclaration
+    :   varDeclaration
+    |   funcDeclaration
+    |   constructorDeclaration
     ;
 
 classDeclaration
-    : 'class' Identifier '{' classMember* '}'
+    :   'class' Identifier '{' classMember* '}'
     ;
 
 block
-    :'{'statement*'}'
+    :   '{'statement*'}'
     ;
 
 statement
-    : block                                     # blockstmt
-    | If '(' expr ')' trueStmt=statement
-      (Else falseStmt=statement)?               # ifstmt
-    | While '(' expr ')' statement              # whilestmt
-    | For '(' (initializationStatement=statement)';'(forConditionExpression=expr)';'(stepExpression=expr)
-      bodyStatement=statement                   # forstmt
-    | Return expr ';'                           # returnstmt
-    | (Break|Continue)';'                       # jmpstmt
-    | varDeclaration                            # varDefstmt
-    | expr';'                                   # expressionstmt
-    |';'                                        # emptystmt
+    :   block                                     # blockstmt
+    |   If '(' expr ')' trueStmt=statement
+        (Else falseStmt=statement)?               # ifstmt
+    |   While '(' expr ')' statement              # whilestmt
+    |   For '(' (initializationStatement=statement)';'(forConditionExpression=expr)';'(stepExpression=expr)
+        bodyStatement=statement                   # forstmt
+    |   Return expr ';'                           # returnstmt
+    |   (Break|Continue)';'                       # jmpstmt
+    |   varDeclaration                            # varDefstmt
+    |   expr';'                                   # expressionstmt
+    |   ';'                                        # emptystmt
     ;
 
 literal
-    :Integer
-    |True
-    |False
-    |String
+    :   Integer
+    |   True
+    |   False
+    |   String
+    |   Null
     ;
 
 argumentList
-    : expr(','expr)*
+    :   expr(','expr)*
+    ;
+
+newTarget
+    :   Identifier('()')?                                   # newClass
+    |   baseType('[' expr ']')*('['']')+                    # newArray
     ;
 
 expr
@@ -61,11 +87,13 @@ expr
 
     |   expr op=('++'|'--')                                 # postfix
     |   expr '(' argumentList? ')'                          # functionCall
+    |   expr '[' index=expr ']'                             # arrayVisit
     |   expr  '.' Identifier                                # classAccess
 
     |   <assoc=right> op=('++' | '--') expr                 # unaryExpr
     |   <assoc=right> op='-' expr                           # unaryExpr
     |   <assoc=right> op=('!' | '~') expr                   # unaryExpr
+    |   <assoc=right> New newTarget                         # newExpr
 
     |   lhs=expr op=('*' | '/' | '%') rhs=expr              # binaryExpr
     |   lhs=expr op=('+' | '-') rhs=expr                    # binaryExpr
@@ -81,6 +109,7 @@ expr
     |   <assoc=right> expr '?' expr ':' expr                # ternary
     |   lhs=expr '=' rhs=expr                               # assignment
 
+    |   This                                                # thisExpr
     |   Identifier                                          # variable
     |   literal                                             # constant
     ;
@@ -102,47 +131,7 @@ String
    ;
 True:'true';
 False:'flase';
-
-SelfAdd:'++';
-SelfMinus:'--';
-Plus:'+';
-Minus:'-';
-Mult:'*';
-Div:'/';
-Mod:'%';
-
-GreatThan:'>';
-LessThan:'<';
-GEThan:'>=';
-LEThan:'<=';
-NEqual:'!=';
-Equal:'==';
-
-LogicAnd:'&&';
-LogicOr:'||';
-LogicNot:'!';
-And:'&';
-Or:'|';
-Xor:'^';
-Not:'~';
-
-LeftShift:'<<';
-RightShift:'>>';
-
-Assign:'=';
-
-LParen:'(';
-RParen:')';
-LBracket:'[';
-RBracket:']';
-LBrace:'{';
-RBrace:'}';
-
-Question:'?';
-Colon:':';
-Semi:';';
-Comma:',';
-Dot:'.';
+Null:'null';
 
 If:'if';
 Else:'else';
@@ -151,6 +140,8 @@ While:'while';
 Break:'break';
 Continue:'continue';
 Return:'return';
+New:'new';
+This:'this';
 
 WhiteSpace
     :   [ \t\r\n]+

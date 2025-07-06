@@ -124,9 +124,11 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     public ASTNode visitIfstmt(YxParser.IfstmtContext ctx) {
         ExprNode condition = (ExprNode) visit(ctx.expr());
         StmtNode thenStmt = (StmtNode) visit(ctx.trueStmt);
-        StmtNode elseStmt = new EmptyStmtNode(new Position(ctx));
+        StmtNode elseStmt;
         if (ctx.falseStmt != null) {
             elseStmt = (StmtNode) visit(ctx.falseStmt);
+        } else {
+            elseStmt = new EmptyStmtNode(new Position(ctx));
         }
         return new IfStmtNode(new Position(ctx), condition, thenStmt, elseStmt);
     }
@@ -140,27 +142,35 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitForstmt(YxParser.ForstmtContext ctx) {
-        StmtNode init = new EmptyStmtNode(new Position(ctx));
-        ExprNode condition = new EmptyExprNode(new Position(ctx));
-        ExprNode step = new EmptyExprNode(new Position(ctx));
+        StmtNode init;
+        ExprNode condition;
+        ExprNode step;
         StmtNode body = (StmtNode) visit(ctx.bodyStatement);
         if (ctx.initializationStatement != null) {
             init = (StmtNode) visit(ctx.initializationStatement);
+        } else {
+            init = new EmptyStmtNode(new Position(ctx));
         }
         if (ctx.forConditionExpression != null) {
             condition = (ExprNode) visit(ctx.forConditionExpression);
+        } else {
+            condition = new EmptyExprNode(new Position(ctx));
         }
         if (ctx.stepExpression != null) {
             step = (ExprNode) visit(ctx.stepExpression);
+        } else {
+            step = new EmptyExprNode(new Position(ctx));
         }
         return new ForStmtNode(new Position(ctx), (VarDefStmtNode) init, condition, step, body);
     }
 
     @Override
     public ASTNode visitReturnstmt(YxParser.ReturnstmtContext ctx) {
-        ExprNode expr = new EmptyExprNode(new Position(ctx));;
+        ExprNode expr;
         if (ctx.expr() != null) {
             expr = (ExprNode) visit(ctx.expr());
+        } else {
+            expr = new EmptyExprNode(new Position(ctx));
         }
         return new ReturnStmtNode(new Position(ctx), expr);
     }
@@ -390,7 +400,6 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else if (ctx.String() != null) {
             return new StringLiteralExprNode(new Position(ctx), ctx.String().getText());
         }
-        //The visitor should not come to here.
-        return super.visitLiteral(ctx);
+        throw new SemanticError("Invalid literal type");
     }
 }
