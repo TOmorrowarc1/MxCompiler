@@ -25,6 +25,10 @@ public class SymbolCollector implements ASTNodeVisitor {
     }
 
     @Override
+    public void visit(ThisNode node) {
+    }
+
+    @Override
     public void visit(StringLiteralExprNode node) {
     }
 
@@ -41,7 +45,19 @@ public class SymbolCollector implements ASTNodeVisitor {
     }
 
     @Override
+    public void visit(NewArrayExprNode node) {
+    }
+
+    @Override
+    public void visit(NewClassExprNode node) {
+    }
+
+    @Override
     public void visit(FunctionCallExprNode node) {
+    }
+
+    @Override
+    public void visit(ArrayVisitExprNode node) {
     }
 
     @Override
@@ -57,6 +73,10 @@ public class SymbolCollector implements ASTNodeVisitor {
     }
 
     @Override
+    public void visit(TernaryExprNode node) {
+    }
+
+    @Override
     public void visit(EmptyStmtNode node) {
     }
 
@@ -66,7 +86,7 @@ public class SymbolCollector implements ASTNodeVisitor {
 
     @Override
     public void visit(VarDefStmtNode node) {
-        VariableSymbolInfo symbolInfo = new VariableSymbolInfo(node.type);
+        VariableSymbolInfo symbolInfo = new VariableSymbolInfo(node.varType);
         for (VarDefStmtNode.DefNode defNode : node.defList) {
             currentScope.declareSymbol(defNode.identifier, symbolInfo);
         }
@@ -98,7 +118,7 @@ public class SymbolCollector implements ASTNodeVisitor {
 
     @Override
     public void visit(FunctionDeclarationNode node) {
-        List<String> parameterType = new ArrayList<>();
+        List<Type> parameterType = new ArrayList<>();
         for (FunctionDeclarationNode.ParameterNode param : node.parameters) {
             parameterType.add(param.parameterType);
         }
@@ -123,11 +143,9 @@ public class SymbolCollector implements ASTNodeVisitor {
         if (!node.constructorName.equals(currentClass)) {
             throw new SemanticError(node.position.toString() + "The name of constructure should be the name of the class.");
         }
-        List<String> parameterType = new ArrayList<>();
-        for (FunctionDeclarationNode.ParameterNode param : node.parameters) {
-            parameterType.add(param.parameterType);
-        }
-        currentScope.declareSymbol(node.constructorName, new FunctionSymbolInfo("null", parameterType));
+        ClassType classType=new ClassType(node.constructorName);
+        List<Type> parameterType = new ArrayList<>();
+        currentScope.declareSymbol(node.constructorName, new FunctionSymbolInfo(classType, parameterType));
     }
 
     @Override

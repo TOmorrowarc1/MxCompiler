@@ -165,6 +165,11 @@ public class SemanticChecker implements ASTNodeVisitor {
     }
 
     @Override
+    public void visit(ASTNode.TernaryExprNode node) {
+
+    }
+
+    @Override
     public void visit(BinaryExprNode node) {
         node.left.accept(this);
         node.right.accept(this);
@@ -235,6 +240,11 @@ public class SemanticChecker implements ASTNodeVisitor {
     }
 
     @Override
+    public void visit(ASTNode.ArrayVisitExprNode node) {
+
+    }
+
+    @Override
     public void visit(ClassAccessNode node) {
         //It only executes as a fieldAccessNode.
         node.object.accept(this);
@@ -276,6 +286,16 @@ public class SemanticChecker implements ASTNodeVisitor {
     }
 
     @Override
+    public void visit(ASTNode.NewClassExprNode node) {
+
+    }
+
+    @Override
+    public void visit(ASTNode.NewArrayExprNode node) {
+
+    }
+
+    @Override
     public void visit(IntLiteralExprNode node) {
         node.nodeInfo.setType("int");
         node.nodeInfo.setIsLeftValue(false);
@@ -300,6 +320,11 @@ public class SemanticChecker implements ASTNodeVisitor {
             throw new SemanticError(node.position.toString() + node.identifier + "has not been defined");
         }
         node.nodeInfo = new ExprNodeInfo(((VariableSymbolInfo) type.get()).getType(), true);
+    }
+
+    @Override
+    public void visit(ASTNode.ThisNode node) {
+
     }
 
     @Override

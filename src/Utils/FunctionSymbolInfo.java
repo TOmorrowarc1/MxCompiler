@@ -3,27 +3,27 @@ package Utils;
 import java.util.List;
 
 public class FunctionSymbolInfo extends SymbolInfo {
-    private String returnType;
-    private List<String> parametersType;
+    private Type returnType;
+    private List<Type> parametersType;
 
-    public FunctionSymbolInfo(String returnType, List<String> parametersType) {
+    public FunctionSymbolInfo(Type returnType, List<Type> parametersType) {
         this.returnType = returnType;
         this.parametersType = parametersType;
     }
 
-    public void setReturnType(String returnType) {
+    public void setReturnType(Type returnType) {
         this.returnType = returnType;
     }
 
-    public String getReturnType() {
+    public Type getReturnType() {
         return returnType;
     }
 
-    public void setParametersType(List<String> parametersType) {
+    public void setParametersType(List<Type> parametersType) {
         this.parametersType = parametersType;
     }
 
-    public List<String> getParametersType() {
+    public List<Type> getParametersType() {
         return parametersType;
     }
 }
