@@ -1,17 +1,17 @@
 package Utils;
 
 public class VariableSymbolInfo extends SymbolInfo {
-    private String type;
+    private Type varType;
 
-    public VariableSymbolInfo(String type) {
-        this.type = type;
+    public VariableSymbolInfo(Type varType) {
+        this.varType = varType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(Type varType) {
+        this.varType = varType;
     }
 
-    public String getType() {
-        return this.type;
+    public Type getType() {
+        return this.varType;
     }
 }

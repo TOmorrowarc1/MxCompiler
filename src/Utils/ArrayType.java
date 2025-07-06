@@ -2,11 +2,9 @@ package Utils;
 
 public class ArrayType implements Type {
     Type elementType;
-    int length;
 
-    public ArrayType(Type elementType, int length) {
+    public ArrayType(Type elementType) {
         this.elementType = elementType;
-        this.length = length;
     }
 
     @Override
@@ -22,9 +20,5 @@ public class ArrayType implements Type {
 
     public Type getElementType() {
         return elementType;
-    }
-
-    public int getLength() {
-        return length;
     }
 }
