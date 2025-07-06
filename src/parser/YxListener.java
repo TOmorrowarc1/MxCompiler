@@ -18,15 +18,39 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitProgram(YxParser.ProgramContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link YxParser#type}.
+	 * Enter a parse tree produced by {@link YxParser#baseType}.
 	 * @param ctx the parse tree
 	 */
-	void enterType(YxParser.TypeContext ctx);
+	void enterBaseType(YxParser.BaseTypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link YxParser#type}.
+	 * Exit a parse tree produced by {@link YxParser#baseType}.
 	 * @param ctx the parse tree
 	 */
-	void exitType(YxParser.TypeContext ctx);
+	void exitBaseType(YxParser.BaseTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code basicType}
+	 * labeled alternative in {@link YxParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterBasicType(YxParser.BasicTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code basicType}
+	 * labeled alternative in {@link YxParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitBasicType(YxParser.BasicTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code arrayType}
+	 * labeled alternative in {@link YxParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayType(YxParser.ArrayTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arrayType}
+	 * labeled alternative in {@link YxParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayType(YxParser.ArrayTypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link YxParser#varDef}.
 	 * @param ctx the parse tree
@@ -246,17 +270,53 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitArgumentList(YxParser.ArgumentListContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code unaryExpr}
-	 * labeled alternative in {@link YxParser#expr}.
+	 * Enter a parse tree produced by the {@code newClass}
+	 * labeled alternative in {@link YxParser#newTarget}.
 	 * @param ctx the parse tree
 	 */
-	void enterUnaryExpr(YxParser.UnaryExprContext ctx);
+	void enterNewClass(YxParser.NewClassContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code unaryExpr}
+	 * Exit a parse tree produced by the {@code newClass}
+	 * labeled alternative in {@link YxParser#newTarget}.
+	 * @param ctx the parse tree
+	 */
+	void exitNewClass(YxParser.NewClassContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code newArray}
+	 * labeled alternative in {@link YxParser#newTarget}.
+	 * @param ctx the parse tree
+	 */
+	void enterNewArray(YxParser.NewArrayContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code newArray}
+	 * labeled alternative in {@link YxParser#newTarget}.
+	 * @param ctx the parse tree
+	 */
+	void exitNewArray(YxParser.NewArrayContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code newExpr}
 	 * labeled alternative in {@link YxParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void exitUnaryExpr(YxParser.UnaryExprContext ctx);
+	void enterNewExpr(YxParser.NewExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code newExpr}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitNewExpr(YxParser.NewExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code thisExpr}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterThisExpr(YxParser.ThisExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code thisExpr}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitThisExpr(YxParser.ThisExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code constant}
 	 * labeled alternative in {@link YxParser#expr}.
@@ -270,6 +330,18 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitConstant(YxParser.ConstantContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code arrayVisit}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayVisit(YxParser.ArrayVisitContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arrayVisit}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayVisit(YxParser.ArrayVisitContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code assignment}
 	 * labeled alternative in {@link YxParser#expr}.
 	 * @param ctx the parse tree
@@ -281,18 +353,6 @@ public interface YxListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssignment(YxParser.AssignmentContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code functionCall}
-	 * labeled alternative in {@link YxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionCall(YxParser.FunctionCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code functionCall}
-	 * labeled alternative in {@link YxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionCall(YxParser.FunctionCallContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code classAccess}
 	 * labeled alternative in {@link YxParser#expr}.
@@ -306,18 +366,6 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitClassAccess(YxParser.ClassAccessContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code variable}
-	 * labeled alternative in {@link YxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterVariable(YxParser.VariableContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code variable}
-	 * labeled alternative in {@link YxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitVariable(YxParser.VariableContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code binaryExpr}
 	 * labeled alternative in {@link YxParser#expr}.
 	 * @param ctx the parse tree
@@ -330,18 +378,6 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitBinaryExpr(YxParser.BinaryExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code postfix}
-	 * labeled alternative in {@link YxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterPostfix(YxParser.PostfixContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code postfix}
-	 * labeled alternative in {@link YxParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitPostfix(YxParser.PostfixContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code subExpr}
 	 * labeled alternative in {@link YxParser#expr}.
 	 * @param ctx the parse tree
@@ -353,6 +389,54 @@ public interface YxListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSubExpr(YxParser.SubExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code unaryExpr}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnaryExpr(YxParser.UnaryExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code unaryExpr}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnaryExpr(YxParser.UnaryExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code functionCall}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionCall(YxParser.FunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code functionCall}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionCall(YxParser.FunctionCallContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code variable}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariable(YxParser.VariableContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code variable}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariable(YxParser.VariableContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code postfix}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterPostfix(YxParser.PostfixContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code postfix}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitPostfix(YxParser.PostfixContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ternary}
 	 * labeled alternative in {@link YxParser#expr}.

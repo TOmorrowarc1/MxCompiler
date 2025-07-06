@@ -17,11 +17,25 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(YxParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link YxParser#type}.
+	 * Visit a parse tree produced by {@link YxParser#baseType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitType(YxParser.TypeContext ctx);
+	T visitBaseType(YxParser.BaseTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code basicType}
+	 * labeled alternative in {@link YxParser#type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBasicType(YxParser.BasicTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code arrayType}
+	 * labeled alternative in {@link YxParser#type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayType(YxParser.ArrayTypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link YxParser#varDef}.
 	 * @param ctx the parse tree
@@ -152,12 +166,33 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArgumentList(YxParser.ArgumentListContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code unaryExpr}
+	 * Visit a parse tree produced by the {@code newClass}
+	 * labeled alternative in {@link YxParser#newTarget}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNewClass(YxParser.NewClassContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code newArray}
+	 * labeled alternative in {@link YxParser#newTarget}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNewArray(YxParser.NewArrayContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code newExpr}
 	 * labeled alternative in {@link YxParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitUnaryExpr(YxParser.UnaryExprContext ctx);
+	T visitNewExpr(YxParser.NewExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code thisExpr}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitThisExpr(YxParser.ThisExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code constant}
 	 * labeled alternative in {@link YxParser#expr}.
@@ -166,19 +201,19 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConstant(YxParser.ConstantContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code arrayVisit}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayVisit(YxParser.ArrayVisitContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code assignment}
 	 * labeled alternative in {@link YxParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitAssignment(YxParser.AssignmentContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code functionCall}
-	 * labeled alternative in {@link YxParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionCall(YxParser.FunctionCallContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code classAccess}
 	 * labeled alternative in {@link YxParser#expr}.
@@ -187,13 +222,6 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitClassAccess(YxParser.ClassAccessContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code variable}
-	 * labeled alternative in {@link YxParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVariable(YxParser.VariableContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code binaryExpr}
 	 * labeled alternative in {@link YxParser#expr}.
 	 * @param ctx the parse tree
@@ -201,19 +229,40 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBinaryExpr(YxParser.BinaryExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code postfix}
-	 * labeled alternative in {@link YxParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPostfix(YxParser.PostfixContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code subExpr}
 	 * labeled alternative in {@link YxParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSubExpr(YxParser.SubExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code unaryExpr}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnaryExpr(YxParser.UnaryExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code functionCall}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionCall(YxParser.FunctionCallContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code variable}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariable(YxParser.VariableContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code postfix}
+	 * labeled alternative in {@link YxParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPostfix(YxParser.PostfixContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ternary}
 	 * labeled alternative in {@link YxParser#expr}.
