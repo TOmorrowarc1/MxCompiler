@@ -1,27 +1,27 @@
 package Utils;
 
 public class ExprNodeInfo {
-    private String type;
+    private Type exprType;
     private boolean isLeftValue;
 
-    public ExprNodeInfo(String type, boolean isLeftValue) {
-        this.type = type;
+    public ExprNodeInfo(Type exprType, boolean isLeftValue) {
+        this.exprType = exprType;
         this.isLeftValue = isLeftValue;
     }
 
-    public String getType(){
-        return this.type;
+    public Type getType() {
+        return this.exprType;
     }
 
-    public void setType(String type){
-        this.type = type;
+    public void setType(Type exprType) {
+        this.exprType = exprType;
     }
 
-    public boolean isLeftValue(){
+    public boolean isLeftValue() {
         return this.isLeftValue;
     }
 
-    public void setIsLeftValue(boolean isLeftValue){
+    public void setIsLeftValue(boolean isLeftValue) {
         this.isLeftValue = isLeftValue;
     }
 }

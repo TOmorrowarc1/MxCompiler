@@ -29,13 +29,19 @@ public interface ASTNodeVisitor {
 
     void visit(AssignExprNode node);
 
+    void visit(TernaryExprNode node);
+
     void visit(BinaryExprNode node);
 
     void visit(FunctionCallExprNode node);
 
+    void visit(ArrayVisitExprNode node);
+
     void visit(ClassAccessNode node);
 
     void visit(UnaryExprNode node);
+
+    void visit(NewExprNode node);
 
     void visit(IntLiteralExprNode node);
 
@@ -44,6 +50,8 @@ public interface ASTNodeVisitor {
     void visit(StringLiteralExprNode node);
 
     void visit(VarExprNode node);
+
+    void visit(ThisNode node);
 
     void visit(EmptyExprNode node);
 }

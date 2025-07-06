@@ -62,7 +62,7 @@ statement
     |   (Break|Continue)';'                       # jmpstmt
     |   varDeclaration                            # varDefstmt
     |   expr';'                                   # expressionstmt
-    |   ';'                                        # emptystmt
+    |   ';'                                       # emptystmt
     ;
 
 literal
