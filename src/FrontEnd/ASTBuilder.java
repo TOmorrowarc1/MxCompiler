@@ -420,8 +420,10 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitTernary(YxParser.TernaryContext ctx) {
-        //Has not done.
-        return super.visitTernary(ctx);
+        ExprNode conditionExpr = (ExprNode) visit(ctx.condition);
+        ExprNode trueExpr = (ExprNode) visit(ctx.trueExpr);
+        ExprNode falseExpr = (ExprNode) visit(ctx.falseExpr);
+        return new TernaryExprNode(new Position(ctx), conditionExpr, trueExpr, falseExpr);
     }
 
     @Override

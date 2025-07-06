@@ -1832,6 +1832,9 @@ public class YxParser extends Parser {
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class TernaryContext extends ExprContext {
+		public ExprContext condition;
+		public ExprContext trueExpr;
+		public ExprContext falseExpr;
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
@@ -2175,17 +2178,18 @@ public class YxParser extends Parser {
 					case 11:
 						{
 						_localctx = new TernaryContext(new ExprContext(_parentctx, _parentState));
+						((TernaryContext)_localctx).condition = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(238);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
 						setState(239);
 						match(T__32);
 						setState(240);
-						expr(0);
+						((TernaryContext)_localctx).trueExpr = expr(0);
 						setState(241);
 						match(T__33);
 						setState(242);
-						expr(5);
+						((TernaryContext)_localctx).falseExpr = expr(5);
 						}
 						break;
 					case 12:

@@ -105,7 +105,8 @@ expr
     |   lhs=expr op='&&' rhs=expr                           # binaryExpr
     |   lhs=expr op='||' rhs=expr                           # binaryExpr
 
-    |   <assoc=right> expr '?' expr ':' expr                # ternary
+    |   <assoc=right> condition=expr '?' trueExpr=expr ':' falseExpr=expr
+                                                            # ternary
     |   lhs=expr '=' rhs=expr                               # assignment
 
     |   This                                                # thisExpr
