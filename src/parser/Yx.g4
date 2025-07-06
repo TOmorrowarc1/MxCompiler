@@ -11,8 +11,7 @@ baseType
     ;
 
 type
-    :   baseType                   # basicType
-    |   baseType('['']')+          # arrayType
+    :   baseType(LBRACK']')*
     ;
 
 varDef
@@ -24,7 +23,7 @@ varDeclaration
     ;
 
 parameter
-    :    type Identifier
+    :   type Identifier
     ;
 parameterList
     :   parameter (',' parameter)*
@@ -87,7 +86,7 @@ expr
 
     |   expr op=('++'|'--')                                 # postfix
     |   expr '(' argumentList? ')'                          # functionCall
-    |   expr '[' index=expr ']'                             # arrayVisit
+    |   array=expr '[' index=expr ']'                       # arrayVisit
     |   expr  '.' Identifier                                # classAccess
 
     |   <assoc=right> op=('++' | '--') expr                 # unaryExpr
@@ -116,6 +115,8 @@ expr
 
 // The gamma for the lexer.
 Identifier: [a-z][a-zA-Z_0-9]*;
+LBRACK:'[';
+RBRACK:']';
 
 Int:'int';
 Bool:'bool';

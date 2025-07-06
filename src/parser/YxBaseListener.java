@@ -41,25 +41,13 @@ public class YxBaseListener implements YxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBasicType(YxParser.BasicTypeContext ctx) { }
+	@Override public void enterType(YxParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBasicType(YxParser.BasicTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayType(YxParser.ArrayTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayType(YxParser.ArrayTypeContext ctx) { }
+	@Override public void exitType(YxParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

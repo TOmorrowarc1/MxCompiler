@@ -28,29 +28,15 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitBaseType(YxParser.BaseTypeContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code basicType}
-	 * labeled alternative in {@link YxParser#type}.
+	 * Enter a parse tree produced by {@link YxParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void enterBasicType(YxParser.BasicTypeContext ctx);
+	void enterType(YxParser.TypeContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code basicType}
-	 * labeled alternative in {@link YxParser#type}.
+	 * Exit a parse tree produced by {@link YxParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void exitBasicType(YxParser.BasicTypeContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code arrayType}
-	 * labeled alternative in {@link YxParser#type}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayType(YxParser.ArrayTypeContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code arrayType}
-	 * labeled alternative in {@link YxParser#type}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayType(YxParser.ArrayTypeContext ctx);
+	void exitType(YxParser.TypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link YxParser#varDef}.
 	 * @param ctx the parse tree
