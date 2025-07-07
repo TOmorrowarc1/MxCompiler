@@ -256,33 +256,51 @@ public class SemanticChecker implements ASTNodeVisitor {
     public void visit(BinaryExprNode node) {
         node.left.accept(this);
         node.right.accept(this);
-        if (node.left.nodeInfo.getType().equals(node.right.nodeInfo.getType())) {
+        if (!node.left.nodeInfo.getType().equals(node.right.nodeInfo.getType()) && !(node.left.nodeInfo.getType() instanceof ArrayType || node.right.nodeInfo.getType().equals(PrimitiveType.NULL)) && !(node.right.nodeInfo.getType() instanceof ArrayType || node.left.nodeInfo.getType().equals(PrimitiveType.NULL))) {
             throw new SemanticError(node.position.toString() + "Types not match: types on sides of the binary operator is different.");
         }
         switch (node.operator) {
             case LOGIC_AND, LOGIC_OR: {
-                if (!node.left.nodeInfo.getType().equals("bool")) {
+                if (!node.left.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
                     throw new SemanticError(node.position.toString() + "Types not match: the type should be bool");
                 }
+                node.nodeInfo.setType(PrimitiveType.BOOL);
                 break;
             }
-            case PLUS, SUB, MUL, DIV, MOD, OR, AND, LEFT_SHIFT, RIGHT_SHIFT: {
-                if (!node.left.nodeInfo.getType().equals("int")) {
+            case SUB, MUL, DIV, MOD, OR, AND, LEFT_SHIFT, RIGHT_SHIFT: {
+                if (!node.left.nodeInfo.getType().equals(PrimitiveType.INT)) {
                     throw new SemanticError(node.position.toString() + "Types not match: the type should be int");
                 }
+                node.nodeInfo.setType(PrimitiveType.INT);
                 break;
             }
-            case G, GE, L, LE: {
-                if (!node.left.nodeInfo.getType().equals("int") && !node.left.nodeInfo.getType().equals("string")) {
+            case G, GE, L, LE, PLUS: {
+                if (!node.left.nodeInfo.getType().equals(PrimitiveType.INT) && !node.left.nodeInfo.getType().equals(PrimitiveType.STRING)) {
                     throw new SemanticError(node.position.toString() + "Types  not match: the type should be int or string");
                 }
+                node.nodeInfo.setType(node.left.nodeInfo.getType());
                 break;
             }
             case EQUAL, N_EQUAL: {
+                node.nodeInfo.setType(PrimitiveType.BOOL);
                 break;
             }
         }
-        node.nodeInfo.setType(node.left.nodeInfo.getType());
+        node.nodeInfo.setIsLeftValue(false);
+    }
+
+    @Override
+    public void visit(TernaryExprNode node) {
+        node.conditionExpr.accept(this);
+        node.trueExpr.accept(this);
+        node.falseExpr.accept(this);
+        if (!node.conditionExpr.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
+            throw new SemanticError(node.position.toString() + "Types not match: the conditional Expr type should be bool");
+        }
+        if (!node.trueExpr.nodeInfo.getType().equals(node.falseExpr.nodeInfo.getType())) {
+            throw new SemanticError(node.position.toString() + "Types not match: the lhs and rhs have different types");
+        }
+        node.nodeInfo.setType(node.trueExpr.nodeInfo.getType());
         node.nodeInfo.setIsLeftValue(false);
     }
 
@@ -301,8 +319,8 @@ public class SemanticChecker implements ASTNodeVisitor {
     }
 
     @Override
-    public void visit(ASTNode.TernaryExprNode node) {
-
+    public void visit(ThisNode node) {
+        node.nodeInfo = new ExprNodeInfo(currentClassType, false);
     }
 
     @Override
@@ -330,11 +348,6 @@ public class SemanticChecker implements ASTNodeVisitor {
             throw new SemanticError(node.position.toString() + " The variable has not been defined");
         }
         node.nodeInfo = new ExprNodeInfo(((VariableSymbolInfo) type.get()).getType(), true);
-    }
-
-    @Override
-    public void visit(ThisNode node) {
-        node.nodeInfo = new ExprNodeInfo(currentClassType, false);
     }
 
     @Override

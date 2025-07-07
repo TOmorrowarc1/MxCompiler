@@ -22,5 +22,6 @@ public class PrimitiveType implements Type {
     public static final PrimitiveType INT = new PrimitiveType("int");
     public static final PrimitiveType BOOL = new PrimitiveType("bool");
     public static final PrimitiveType VOID = new PrimitiveType("void");
+    public static final PrimitiveType NULL = new PrimitiveType("null");
     public static final PrimitiveType STRING = new PrimitiveType("string");
 }
