@@ -1,9 +1,6 @@
 package ASTNode;
 
 import Utils.Position;
-
-import java.util.List;
-
 public class ConstructorDeclarationNode extends DeclarationNode {
     public String constructorName;
     public BlockStmtNode body;
