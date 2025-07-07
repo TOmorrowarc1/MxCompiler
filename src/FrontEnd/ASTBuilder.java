@@ -69,7 +69,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         Type varType = analysisType(ctx.type());
         List<VarDefStmtNode.DefNode> defNodes = new ArrayList<>();
         for (YxParser.VarDefContext defContext : ctx.varDef()) {
-            defNodes.add((ASTNode.VarDefStmtNode.DefNode) visit(defContext));
+            defNodes.add((VarDefStmtNode.DefNode) visit(defContext));
         }
         return new VarDefStmtNode(new Position(ctx), varType, defNodes);
     }
@@ -82,7 +82,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitFuncDeclaration(YxParser.FuncDeclarationContext ctx) {
-        List<ASTNode.FunctionDeclarationNode.ParameterNode> parameters = new ArrayList<>();
+        List<FunctionDeclarationNode.ParameterNode> parameters = new ArrayList<>();
         if (ctx.parameterList() != null) {
             for (YxParser.ParameterContext paramCtx : ctx.parameterList().parameter()) {
                 parameters.add((FunctionDeclarationNode.ParameterNode) visit(paramCtx));
@@ -102,7 +102,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitParameter(YxParser.ParameterContext ctx) {
-        return new ASTNode.FunctionDeclarationNode.ParameterNode(new Position(ctx), analysisType(ctx.type()), ctx.Identifier().getText());
+        return new FunctionDeclarationNode.ParameterNode(new Position(ctx), analysisType(ctx.type()), ctx.Identifier().getText());
     }
 
     @Override
@@ -207,7 +207,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitJmpstmt(YxParser.JmpstmtContext ctx) {
-        ASTNode.JmpStmtNode.JumpType jmpType;
+        JmpStmtNode.JumpType jmpType;
         if (ctx.getText().equals("break")) {
             jmpType = JmpStmtNode.JumpType.BREAK;
         } else if (ctx.getText().equals("continue")) {
