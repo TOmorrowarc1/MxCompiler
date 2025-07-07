@@ -24,7 +24,7 @@ public class Main {
 
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-            YxParser parser = new YxParser(tokens);
+            YxParser parser = new YxParser (tokens);
             ParseTree parserTree = parser.program();
 
             ASTBuilder astBuilder = new ASTBuilder();
