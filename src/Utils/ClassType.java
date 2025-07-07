@@ -1,7 +1,5 @@
 package Utils;
 
-
-import java.util.Map;
 import java.util.Optional;
 
 public class ClassType implements Type {
@@ -16,12 +14,6 @@ public class ClassType implements Type {
     public ClassType(String className, Scope classScope) {
         this.className = className;
         this.classScope = classScope;
-    }
-
-    public void declareSymbol(String symbol, SymbolInfo symbolInfo) {
-        if (classScope != null) {
-            classScope.declareSymbol(symbol, symbolInfo);
-        }
     }
 
     public Optional<SymbolInfo> getSymbol(String symbol) {
