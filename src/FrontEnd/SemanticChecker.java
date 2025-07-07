@@ -31,14 +31,24 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(ConstructorDeclarationNode node) {
+        if (!node.constructorName.equals(currentClassType.typeName())) {
+            throw new SemanticError(node.position.toString() + " The name of constructor function is uncorresponding.");
+        }
+        scope = new Scope(scope);
         currentReturnType = null;
-        for (StmtNode statement : node.body)
-            node.body.accept(this);
+        node.body.accept(this);
         scope = scope.getParentScope();
     }
 
     @Override
     public void visit(ClassDeclarationNode node) {
+        Scope memoryScope = scope;
+        if (scope.getType(node.className).isEmpty()) {
+            throw new SemanticError(node.position.toString() + "Class " + node.className + " has not been declared??? ");
+        }
+        ClassType classType = (ClassType) scope.getType(node.className).get();
+        scope = classType.getClassScope();
+        currentClassType = classType;
         for (VarDefStmtNode varDefs : node.varDefs) {
             varDefs.accept(this);
         }
@@ -48,16 +58,18 @@ public class SemanticChecker implements ASTNodeVisitor {
         for (ConstructorDeclarationNode constructorDeclarationNode : node.constructors) {
             constructorDeclarationNode.accept(this);
         }
+        scope = memoryScope;
     }
 
     @Override
     public void visit(FunctionDeclarationNode node) {
-        if (scope.getSymbol(node.returnType).isEmpty()) {
+        if (scope.getType(node.returnType.typeName()).isEmpty()) {
             throw new SemanticError(node.position.toString() + "The return type is not existed.");
         }
         scope = new Scope(scope);
+        currentReturnType = scope.getType(node.returnType.typeName()).get();
         for (FunctionDeclarationNode.ParameterNode parameterNode : node.parameters) {
-            if (scope.getType(parameterNode.parameterType).isEmpty()) {
+            if (scope.getType(parameterNode.parameterType.typeName()).isEmpty()) {
                 throw new SemanticError(node.position.toString() + "The parameter type is not existed.");
             }
             scope.declareSymbol(parameterNode.identifier, new VariableSymbolInfo(parameterNode.parameterType));

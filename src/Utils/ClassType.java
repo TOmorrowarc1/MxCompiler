@@ -31,6 +31,10 @@ public class ClassType implements Type {
         return Optional.empty();
     }
 
+    public Scope getClassScope() {
+        return classScope;
+    }
+
     @Override
     public String typeName() {
         return className;
