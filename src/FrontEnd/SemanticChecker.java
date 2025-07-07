@@ -67,53 +67,20 @@ public class SemanticChecker implements ASTNodeVisitor {
     }
 
     @Override
-    public void visit(BlockStmtNode node) {
-        scope = new Scope(scope);
-        for (StmtNode statement : node.body) {
-            statement.accept(this);
-        }
-        scope = scope.getParentScope();
+    public void visit(EmptyStmtNode node) {
     }
 
     @Override
-    public void visit(IfStmtNode node) {
-        node.condition.accept(this);
-        if (!node.condition.nodeInfo.getType().equals("bool")) {
-            throw new SemanticError(node.position.toString() + " Type not match: condition judgement is not a bool");
-        }
-        scope = new Scope(scope);
-        node.thenStmt.accept(this);
-        node.elseStmt.accept(this);
-        scope = scope.getParentScope();
+    public void visit(ExprStmtNode node) {
+        node.expr.accept(this);
     }
 
     @Override
-    public void visit(WhileStmtNode node) {
-        node.condition.accept(this);
-        if (!node.condition.nodeInfo.getType().equals("bool")) {
-            throw new SemanticError(node.position.toString() + " Type not match: condition judgement is not a bool");
+    public void visit(VarDefStmtNode node) {
+        VariableSymbolInfo symbolInfo = new VariableSymbolInfo(node.varType);
+        for (VarDefStmtNode.DefNode defNode : node.defList) {
+            scope.declareSymbol(defNode.identifier, symbolInfo);
         }
-        scope = new Scope(scope);
-        scope.addLoopDepth();
-        node.body.accept(this);
-        scope.addLoopDepth();
-        scope = scope.getParentScope();
-    }
-
-    @Override
-    public void visit(ForStmtNode node) {
-        //Bug:For statement should be block statement, and the loop depth should be rebuilt.
-        node.varDefStmt.accept(this);
-        node.condition.accept(this);
-        if (!node.condition.nodeInfo.getType().equals("bool")) {
-            throw new SemanticError(node.position.toString() + " Type not match: condition judgement is not a bool");
-        }
-        node.step.accept(this);
-        scope = new Scope(scope);
-        scope.addLoopDepth();
-        node.body.accept(this);
-        scope.subLoopDepth();
-        scope = scope.getParentScope();
     }
 
     @Override
@@ -125,28 +92,57 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(ReturnStmtNode node) {
-        //The type should correspond to the function.
         node.expression.accept(this);
-        if (!node.expression.nodeInfo.getType().equals("int") || !node.expression.nodeInfo.getType().equals("void")) {
-            throw new SemanticError(node.position.toString() + " Type not match: return value should be int");
+        if (!node.expression.nodeInfo.getType().equals(currentReturnType)) {
+            throw new SemanticError(node.position.toString() + " Type not match: return value should be " + currentReturnType.toString() + ".");
         }
     }
 
     @Override
-    public void visit(VarDefStmtNode node) {
-        VariableSymbolInfo symbolInfo = new VariableSymbolInfo(node.type);
-        for (VarDefStmtNode.DefNode defNode : node.defList) {
-            scope.declareSymbol(defNode.identifier, symbolInfo);
+    public void visit(ForStmtNode node) {
+        scope = new Scope(scope);
+        node.varDefStmt.accept(this);
+        node.condition.accept(this);
+        node.step.accept(this);
+        if (!node.condition.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
+            throw new SemanticError(node.position.toString() + " Type not match: condition judgement is not a bool");
         }
+        scope.addLoopDepth();
+        node.body.accept(this);
+        scope.subLoopDepth();
+        scope = scope.getParentScope();
     }
 
     @Override
-    public void visit(ExprStmtNode node) {
-        node.expr.accept(this);
+    public void visit(WhileStmtNode node) {
+        node.condition.accept(this);
+        if (!node.condition.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
+            throw new SemanticError(node.position.toString() + " Type not match: condition judgement is not a bool");
+        }
+        scope.addLoopDepth();
+        node.body.accept(this);
+        scope.addLoopDepth();
     }
 
     @Override
-    public void visit(EmptyStmtNode node) {
+    public void visit(IfStmtNode node) {
+        node.condition.accept(this);
+        if (!node.condition.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
+            throw new SemanticError(node.position.toString() + " Type not match: condition judgement should be a bool Expr.");
+        }
+        scope = new Scope(scope);
+        node.thenStmt.accept(this);
+        node.elseStmt.accept(this);
+        scope = scope.getParentScope();
+    }
+
+    @Override
+    public void visit(BlockStmtNode node) {
+        scope = new Scope(scope);
+        for (StmtNode statement : node.body) {
+            statement.accept(this);
+        }
+        scope = scope.getParentScope();
     }
 
     @Override
@@ -352,5 +348,7 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(EmptyExprNode node) {
+        node.nodeInfo.setType(PrimitiveType.VOID);
+        node.nodeInfo.setIsLeftValue(false);
     }
 }
