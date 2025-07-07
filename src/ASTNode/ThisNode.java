@@ -2,7 +2,7 @@ package ASTNode;
 
 import Utils.Position;
 
-public class ThisNode extends ASTNode {
+public class ThisNode extends ExprNode {
 
     public ThisNode(Position pos) {
         super(pos);

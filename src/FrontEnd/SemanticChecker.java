@@ -7,9 +7,13 @@ import java.util.Optional;
 
 public class SemanticChecker implements ASTNodeVisitor {
     private Scope scope;
+    private Type currentClassType;
+    private Type currentReturnType;
 
     public SemanticChecker(Scope globalscope) {
         scope = globalscope;
+        currentClassType = null;
+        currentReturnType = null;
     }
 
     @Override
@@ -27,14 +31,9 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(ConstructorDeclarationNode node) {
-        scope = new Scope(scope);
-        for (FunctionDeclarationNode.ParameterNode parameterNode : node.parameters) {
-            if (scope.getType(parameterNode.parameterType).isEmpty()) {
-                throw new SemanticError(node.position.toString() + "The parameter type is not existed.");
-            }
-            scope.declareSymbol(parameterNode.identifier, new VariableSymbolInfo(parameterNode.parameterType));
-        }
-        node.body.accept(this);
+        currentReturnType = null;
+        for (StmtNode statement : node.body)
+            node.body.accept(this);
         scope = scope.getParentScope();
     }
 
@@ -151,22 +150,106 @@ public class SemanticChecker implements ASTNodeVisitor {
     }
 
     @Override
-    public void visit(AssignExprNode node) {
-        node.left.accept(this);
-        node.right.accept(this);
-        if (!node.left.nodeInfo.getType().equals(node.right.nodeInfo.getType())) {
-            throw new SemanticError(node.position.toString() + "Types not match: assign the wrong type to left.");
+    public void visit(FunctionCallExprNode node) {
+        FunctionSymbolInfo functionSymbolInfo;
+        if (node.callee instanceof ClassAccessNode classAccessNode) {
+            classAccessNode.object.accept(this);
+            if (scope.getType(classAccessNode.object.nodeInfo.getType().typeName()).isEmpty()) {
+                throw new SemanticError(node.position.toString() + " Class has not been declared");
+            }
+            ClassType objectType = (ClassType) (scope.getType(classAccessNode.object.nodeInfo.getType().typeName()).get());
+            if (objectType.getSymbol(classAccessNode.classAccess).isEmpty()) {
+                throw new SemanticError(node.position.toString() + " No such method in the class.");
+            }
+            functionSymbolInfo = (FunctionSymbolInfo) objectType.getSymbol(classAccessNode.classAccess).get();
+        } else if (node.callee instanceof VarExprNode varExprNode) {
+            if (scope.getSymbol(varExprNode.identifier).isEmpty()) {
+                throw new SemanticError(node.position.toString() + " Function has not been declared");
+            }
+            functionSymbolInfo = (FunctionSymbolInfo) scope.getSymbol(varExprNode.identifier).get();
+        } else {
+            throw new SemanticError(node.position.toString() + " The callee is not correct.");
         }
-        if (!node.left.nodeInfo.isLeftValue()) {
-            throw new SemanticError(node.position.toString() + "Types not match: the left is not assignable");
+        if (node.parameters.size() != functionSymbolInfo.getParametersType().size()) {
+            throw new SemanticError(node.position.toString() + " The number of parameters not corresponds.");
         }
-        node.nodeInfo.setType(node.left.nodeInfo.getType());
+        for (ExprNode parameter : node.parameters) {
+            parameter.accept(this);
+        }
+        for (int i = 0; i < node.parameters.size(); i++) {
+            if (!node.parameters.get(i).nodeInfo.getType().equals(functionSymbolInfo.getParametersType().get(i))) {
+                throw new SemanticError(node.position.toString() + " The parameter type not match.");
+            }
+        }
+        node.nodeInfo.setType(functionSymbolInfo.getReturnType());
         node.nodeInfo.setIsLeftValue(false);
     }
 
     @Override
-    public void visit(ASTNode.TernaryExprNode node) {
+    public void visit(ArrayVisitExprNode node) {
+        node.index.accept(this);
+        if (!node.index.nodeInfo.getType().equals(PrimitiveType.INT)) {
+            throw new SemanticError(node.position.toString() + " Index must be int. ");
+        }
+        node.array.accept(this);
+        if (!(node.array.nodeInfo.getType() instanceof ArrayType arrayType)) {
+            throw new SemanticError(node.position.toString() + " Array type not match.");
+        }
+        node.nodeInfo.setType(arrayType.getElementType());
+        node.nodeInfo.setIsLeftValue(true);
+    }
 
+    @Override
+    public void visit(ClassAccessNode node) {
+        //It only executes as a fieldAccessNode.
+        node.object.accept(this);
+        if (scope.getType(node.object.nodeInfo.getType().typeName()).isEmpty()) {
+            throw new SemanticError(node.position.toString() + " Class has not been declared");
+        }
+        ClassType objectType = (ClassType) (scope.getType(node.object.nodeInfo.getType().typeName()).get());
+        if (objectType.getSymbol(node.classAccess).isEmpty()) {
+            throw new SemanticError(node.position.toString() + " No such member in the class.");
+        }
+        Type memberType = ((VariableSymbolInfo) (objectType.getSymbol(node.classAccess).get())).getType();
+        node.nodeInfo.setType(memberType);
+        node.nodeInfo.setIsLeftValue(true);
+    }
+
+    @Override
+    public void visit(UnaryExprNode node) {
+        node.expression.accept(this);
+        if (node.operator == UnaryExprNode.UnaryOperator.LOGIC_NOT) {
+            if (!node.expression.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
+                throw new SemanticError(node.position.toString() + "Type not match: the type of the expression should be bool.");
+            }
+            node.nodeInfo.setType(PrimitiveType.BOOL);
+            node.nodeInfo.setIsLeftValue(false);
+        } else {
+            if (!node.expression.nodeInfo.getType().equals(PrimitiveType.INT)) {
+                throw new SemanticError(node.position.toString() + "Type not match: the type of the expression should be int.");
+            }
+            node.nodeInfo.setType(PrimitiveType.INT);
+            if (node.operator == UnaryExprNode.UnaryOperator.SELF_ADD || node.operator == UnaryExprNode.UnaryOperator.SELF_SUB) {
+                if (!node.expression.nodeInfo.isLeftValue()) {
+                    throw new SemanticError(node.position.toString() + "A right value should not be ++/--");
+                }
+                node.nodeInfo.setIsLeftValue(true);
+            } else {
+                node.nodeInfo.setIsLeftValue(false);
+            }
+        }
+    }
+
+    @Override
+    public void visit(NewClassExprNode node) {
+        node.nodeInfo.setType(node.classType);
+        node.nodeInfo.setIsLeftValue(false);
+    }
+
+    @Override
+    public void visit(NewArrayExprNode node) {
+        node.nodeInfo.setType(node.arrayType);
+        node.nodeInfo.setIsLeftValue(false);
     }
 
     @Override
@@ -204,112 +287,39 @@ public class SemanticChecker implements ASTNodeVisitor {
     }
 
     @Override
-    public void visit(FunctionCallExprNode node) {
-        FunctionSymbolInfo functionSymbolInfo;
-        if (node.callee instanceof ClassAccessNode classAccessNode) {
-            classAccessNode.object.accept(this);
-            if (scope.getType(classAccessNode.object.nodeInfo.getType()).isEmpty()) {
-                throw new SemanticError(node.position.toString() + " Class has not been declared");
-            }
-            ClassType objectType = (ClassType) (scope.getType(classAccessNode.object.nodeInfo.getType()).get());
-            if (objectType.getSymbol(classAccessNode.classAccess).isEmpty()) {
-                throw new SemanticError(node.position.toString() + " No such method in the class.");
-            }
-            functionSymbolInfo = (FunctionSymbolInfo) objectType.getSymbol(classAccessNode.classAccess).get();
-        } else if (node.callee instanceof VarExprNode varExprNode) {
-            if (scope.getSymbol(varExprNode.identifier).isEmpty()) {
-                throw new SemanticError(node.position.toString() + " Function has not been declared");
-            }
-            functionSymbolInfo = (FunctionSymbolInfo) scope.getSymbol(varExprNode.identifier).get();
-        } else {
-            throw new SemanticError(node.position.toString() + " The callee is not correct.");
+    public void visit(AssignExprNode node) {
+        node.left.accept(this);
+        node.right.accept(this);
+        if (!node.left.nodeInfo.getType().equals(node.right.nodeInfo.getType())) {
+            throw new SemanticError(node.position.toString() + "Types not match: assign the wrong type to left.");
         }
-        if (node.parameters.size() != functionSymbolInfo.getParametersType().size()) {
-            throw new SemanticError(node.position.toString() + " The number of parameters not corresponds.");
+        if (!node.left.nodeInfo.isLeftValue()) {
+            throw new SemanticError(node.position.toString() + "Types not match: the left is not assignable");
         }
-        for (ExprNode parameter : node.parameters) {
-            parameter.accept(this);
-        }
-        for (int i = 0; i < node.parameters.size(); i++) {
-            if (!node.parameters.get(i).nodeInfo.getType().equals(functionSymbolInfo.getParametersType().get(i))) {
-                throw new SemanticError(node.position.toString() + " The parameter type not match.");
-            }
-        }
-        node.nodeInfo.setType(functionSymbolInfo.getReturnType());
+        node.nodeInfo.setType(node.left.nodeInfo.getType());
         node.nodeInfo.setIsLeftValue(false);
     }
 
     @Override
-    public void visit(ASTNode.ArrayVisitExprNode node) {
-
-    }
-
-    @Override
-    public void visit(ClassAccessNode node) {
-        //It only executes as a fieldAccessNode.
-        node.object.accept(this);
-        if (scope.getType(node.object.nodeInfo.getType()).isEmpty()) {
-            throw new SemanticError(node.position.toString() + " Class has not been declared");
-        }
-        ClassType objectType = (ClassType) (scope.getType(node.object.nodeInfo.getType()).get());
-        if (objectType.getSymbol(node.classAccess).isEmpty()) {
-            throw new SemanticError(node.position.toString() + " No such member in the class.");
-        }
-        String memberType = ((VariableSymbolInfo) (objectType.getSymbol(node.classAccess).get())).getType();
-        node.nodeInfo.setType(memberType);
-        node.nodeInfo.setIsLeftValue(true);
-    }
-
-    @Override
-    public void visit(UnaryExprNode node) {
-        node.expression.accept(this);
-        if (node.operator == UnaryExprNode.UnaryOperator.LOGIC_NOT) {
-            if (!node.expression.nodeInfo.getType().equals("bool")) {
-                throw new SemanticError(node.position.toString() + "Type not match: the type of the expression should be bool.");
-            }
-            node.nodeInfo.setType("bool");
-            node.nodeInfo.setIsLeftValue(false);
-        } else {
-            if (!node.expression.nodeInfo.getType().equals("int")) {
-                throw new SemanticError(node.position.toString() + "Type not match: the type of the expression should be int.");
-            }
-            node.nodeInfo.setType("int");
-            if (node.operator == UnaryExprNode.UnaryOperator.SELF_ADD || node.operator == UnaryExprNode.UnaryOperator.SELF_SUB) {
-                if (!node.expression.nodeInfo.isLeftValue()) {
-                    throw new SemanticError(node.position.toString() + "A right value should not be ++/--");
-                }
-                node.nodeInfo.setIsLeftValue(true);
-            } else {
-                node.nodeInfo.setIsLeftValue(false);
-            }
-        }
-    }
-
-    @Override
-    public void visit(ASTNode.NewClassExprNode node) {
-
-    }
-
-    @Override
-    public void visit(ASTNode.NewArrayExprNode node) {
+    public void visit(ASTNode.TernaryExprNode node) {
 
     }
 
     @Override
     public void visit(IntLiteralExprNode node) {
-        node.nodeInfo.setType("int");
+        node.nodeInfo.setType(PrimitiveType.INT);
         node.nodeInfo.setIsLeftValue(false);
     }
 
     @Override
     public void visit(BoolLiteralExprNode node) {
-        node.nodeInfo.setType("bool");
+        node.nodeInfo.setType(PrimitiveType.BOOL);
         node.nodeInfo.setIsLeftValue(false);
     }
 
     @Override
     public void visit(StringLiteralExprNode node) {
-        node.nodeInfo.setType("string");
+        node.nodeInfo.setType(PrimitiveType.STRING);
         node.nodeInfo.setIsLeftValue(false);
     }
 
@@ -317,14 +327,14 @@ public class SemanticChecker implements ASTNodeVisitor {
     public void visit(VarExprNode node) {
         Optional<SymbolInfo> type = scope.getSymbol(node.identifier);
         if (type.isEmpty()) {
-            throw new SemanticError(node.position.toString() + node.identifier + "has not been defined");
+            throw new SemanticError(node.position.toString() + " The variable has not been defined");
         }
         node.nodeInfo = new ExprNodeInfo(((VariableSymbolInfo) type.get()).getType(), true);
     }
 
     @Override
-    public void visit(ASTNode.ThisNode node) {
-
+    public void visit(ThisNode node) {
+        node.nodeInfo = new ExprNodeInfo(currentClassType, false);
     }
 
     @Override
