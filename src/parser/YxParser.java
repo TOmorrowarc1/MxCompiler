@@ -21,10 +21,10 @@ public class YxParser extends Parser {
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
 		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
-		T__31=32, T__32=33, T__33=34, Identifier=35, LBRACK=36, RBRACK=37, Int=38, 
-		Bool=39, Void=40, Str=41, Integer=42, String=43, True=44, False=45, Null=46, 
-		If=47, Else=48, For=49, While=50, Break=51, Continue=52, Return=53, New=54, 
-		This=55, WhiteSpace=56, BlockComment=57, LineComment=58;
+		T__31=32, T__32=33, T__33=34, Int=35, Bool=36, Void=37, Str=38, True=39, 
+		False=40, Null=41, If=42, Else=43, For=44, While=45, Break=46, Continue=47, 
+		Return=48, New=49, This=50, Identifier=51, LBRACK=52, RBRACK=53, Integer=54, 
+		String=55, WhiteSpace=56, BlockComment=57, LineComment=58;
 	public static final int
 		RULE_program = 0, RULE_baseType = 1, RULE_type = 2, RULE_varDef = 3, RULE_varDeclaration = 4, 
 		RULE_parameter = 5, RULE_parameterList = 6, RULE_funcDeclaration = 7, 
@@ -46,10 +46,10 @@ public class YxParser extends Parser {
 			null, "'='", "','", "';'", "'('", "')'", "'class'", "'{'", "'}'", "'()'", 
 			"'++'", "'--'", "'.'", "'-'", "'!'", "'~'", "'*'", "'/'", "'%'", "'+'", 
 			"'<<'", "'>>'", "'>='", "'>'", "'<='", "'<'", "'=='", "'!='", "'&'", 
-			"'^'", "'|'", "'&&'", "'||'", "'?'", "':'", null, "'['", "']'", "'int'", 
-			"'bool'", "'void'", "'string'", null, null, "'true'", "'flase'", "'null'", 
-			"'if'", "'else'", "'for'", "'while'", "'break'", "'continue'", "'return'", 
-			"'new'", "'this'"
+			"'^'", "'|'", "'&&'", "'||'", "'?'", "':'", "'int'", "'bool'", "'void'", 
+			"'string'", "'true'", "'false'", "'null'", "'if'", "'else'", "'for'", 
+			"'while'", "'break'", "'continue'", "'return'", "'new'", "'this'", null, 
+			"'['", "']'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -57,10 +57,11 @@ public class YxParser extends Parser {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, null, null, null, "Identifier", 
-			"LBRACK", "RBRACK", "Int", "Bool", "Void", "Str", "Integer", "String", 
-			"True", "False", "Null", "If", "Else", "For", "While", "Break", "Continue", 
-			"Return", "New", "This", "WhiteSpace", "BlockComment", "LineComment"
+			null, null, null, null, null, null, null, null, null, null, null, "Int", 
+			"Bool", "Void", "Str", "True", "False", "Null", "If", "Else", "For", 
+			"While", "Break", "Continue", "Return", "New", "This", "Identifier", 
+			"LBRACK", "RBRACK", "Integer", "String", "WhiteSpace", "BlockComment", 
+			"LineComment"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -164,7 +165,7 @@ public class YxParser extends Parser {
 			setState(39);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4157528342592L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2252315209760832L) != 0)) {
 				{
 				setState(37);
 				_errHandler.sync(this);
@@ -243,7 +244,7 @@ public class YxParser extends Parser {
 			{
 			setState(44);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 4157528342528L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 2252315209760768L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -625,7 +626,7 @@ public class YxParser extends Parser {
 			setState(85);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4157528342528L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2252315209760768L) != 0)) {
 				{
 				setState(84);
 				parameterList();
@@ -816,7 +817,7 @@ public class YxParser extends Parser {
 			setState(106);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4157528342528L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2252315209760768L) != 0)) {
 				{
 				{
 				setState(103);
@@ -881,7 +882,7 @@ public class YxParser extends Parser {
 			setState(115);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 71775878543109272L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 58537964703116440L) != 0)) {
 				{
 				{
 				setState(112);
@@ -1317,7 +1318,7 @@ public class YxParser extends Parser {
 			{
 			setState(158);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 136339441844224L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 54047043819143168L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1972,11 +1973,11 @@ public class YxParser extends Parser {
 				match(Identifier);
 				}
 				break;
-			case Integer:
-			case String:
 			case True:
 			case False:
 			case Null:
+			case Integer:
+			case String:
 				{
 				_localctx = new ConstantContext(_localctx);
 				_ctx = _localctx;
@@ -2235,7 +2236,7 @@ public class YxParser extends Parser {
 						setState(252);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 54179569330088976L) != 0)) {
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 57987693493152784L) != 0)) {
 							{
 							setState(251);
 							argumentList();
@@ -2380,8 +2381,8 @@ public class YxParser extends Parser {
 		"\u0010\u0001\u0010\u0001\u0010\u0001\u0010\u0001\u0010\u0001\u0010\u0001"+
 		"\u0010\u0005\u0010\u0108\b\u0010\n\u0010\f\u0010\u010b\t\u0010\u0001\u0010"+
 		"\u0000\u0001 \u0011\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014"+
-		"\u0016\u0018\u001a\u001c\u001e \u0000\n\u0002\u0000##&)\u0001\u000034"+
-		"\u0001\u0000*.\u0001\u0000\n\u000b\u0001\u0000\u000e\u000f\u0001\u0000"+
+		"\u0016\u0018\u001a\u001c\u001e \u0000\n\u0002\u0000#&33\u0001\u0000./"+
+		"\u0002\u0000\')67\u0001\u0000\n\u000b\u0001\u0000\u000e\u000f\u0001\u0000"+
 		"\u0010\u0012\u0002\u0000\r\r\u0013\u0013\u0001\u0000\u0014\u0015\u0001"+
 		"\u0000\u0016\u0019\u0001\u0000\u001a\u001b\u012d\u0000\'\u0001\u0000\u0000"+
 		"\u0000\u0002,\u0001\u0000\u0000\u0000\u0004.\u0001\u0000\u0000\u0000\u0006"+
@@ -2397,29 +2398,29 @@ public class YxParser extends Parser {
 		"\'(\u0001\u0000\u0000\u0000(*\u0001\u0000\u0000\u0000)\'\u0001\u0000\u0000"+
 		"\u0000*+\u0005\u0000\u0000\u0001+\u0001\u0001\u0000\u0000\u0000,-\u0007"+
 		"\u0000\u0000\u0000-\u0003\u0001\u0000\u0000\u0000.3\u0003\u0002\u0001"+
-		"\u0000/0\u0005$\u0000\u000002\u0005%\u0000\u00001/\u0001\u0000\u0000\u0000"+
+		"\u0000/0\u00054\u0000\u000002\u00055\u0000\u00001/\u0001\u0000\u0000\u0000"+
 		"25\u0001\u0000\u0000\u000031\u0001\u0000\u0000\u000034\u0001\u0000\u0000"+
 		"\u00004\u0005\u0001\u0000\u0000\u000053\u0001\u0000\u0000\u000069\u0005"+
-		"#\u0000\u000078\u0005\u0001\u0000\u00008:\u0003 \u0010\u000097\u0001\u0000"+
+		"3\u0000\u000078\u0005\u0001\u0000\u00008:\u0003 \u0010\u000097\u0001\u0000"+
 		"\u0000\u00009:\u0001\u0000\u0000\u0000:\u0007\u0001\u0000\u0000\u0000"+
 		";<\u0003\u0004\u0002\u0000<A\u0003\u0006\u0003\u0000=>\u0005\u0002\u0000"+
 		"\u0000>@\u0003\u0006\u0003\u0000?=\u0001\u0000\u0000\u0000@C\u0001\u0000"+
 		"\u0000\u0000A?\u0001\u0000\u0000\u0000AB\u0001\u0000\u0000\u0000BD\u0001"+
 		"\u0000\u0000\u0000CA\u0001\u0000\u0000\u0000DE\u0005\u0003\u0000\u0000"+
-		"E\t\u0001\u0000\u0000\u0000FG\u0003\u0004\u0002\u0000GH\u0005#\u0000\u0000"+
+		"E\t\u0001\u0000\u0000\u0000FG\u0003\u0004\u0002\u0000GH\u00053\u0000\u0000"+
 		"H\u000b\u0001\u0000\u0000\u0000IN\u0003\n\u0005\u0000JK\u0005\u0002\u0000"+
 		"\u0000KM\u0003\n\u0005\u0000LJ\u0001\u0000\u0000\u0000MP\u0001\u0000\u0000"+
 		"\u0000NL\u0001\u0000\u0000\u0000NO\u0001\u0000\u0000\u0000O\r\u0001\u0000"+
 		"\u0000\u0000PN\u0001\u0000\u0000\u0000QR\u0003\u0004\u0002\u0000RS\u0005"+
-		"#\u0000\u0000SU\u0005\u0004\u0000\u0000TV\u0003\f\u0006\u0000UT\u0001"+
+		"3\u0000\u0000SU\u0005\u0004\u0000\u0000TV\u0003\f\u0006\u0000UT\u0001"+
 		"\u0000\u0000\u0000UV\u0001\u0000\u0000\u0000VW\u0001\u0000\u0000\u0000"+
 		"WX\u0005\u0005\u0000\u0000XY\u0003\u0016\u000b\u0000Y\u000f\u0001\u0000"+
-		"\u0000\u0000Z[\u0005#\u0000\u0000[\\\u0005\u0004\u0000\u0000\\]\u0005"+
+		"\u0000\u0000Z[\u00053\u0000\u0000[\\\u0005\u0004\u0000\u0000\\]\u0005"+
 		"\u0005\u0000\u0000]^\u0003\u0016\u000b\u0000^\u0011\u0001\u0000\u0000"+
 		"\u0000_c\u0003\b\u0004\u0000`c\u0003\u000e\u0007\u0000ac\u0003\u0010\b"+
 		"\u0000b_\u0001\u0000\u0000\u0000b`\u0001\u0000\u0000\u0000ba\u0001\u0000"+
 		"\u0000\u0000c\u0013\u0001\u0000\u0000\u0000de\u0005\u0006\u0000\u0000"+
-		"ef\u0005#\u0000\u0000fj\u0005\u0007\u0000\u0000gi\u0003\u0012\t\u0000"+
+		"ef\u00053\u0000\u0000fj\u0005\u0007\u0000\u0000gi\u0003\u0012\t\u0000"+
 		"hg\u0001\u0000\u0000\u0000il\u0001\u0000\u0000\u0000jh\u0001\u0000\u0000"+
 		"\u0000jk\u0001\u0000\u0000\u0000km\u0001\u0000\u0000\u0000lj\u0001\u0000"+
 		"\u0000\u0000mn\u0005\b\u0000\u0000n\u0015\u0001\u0000\u0000\u0000os\u0005"+
@@ -2427,18 +2428,18 @@ public class YxParser extends Parser {
 		"\u0000\u0000\u0000sq\u0001\u0000\u0000\u0000st\u0001\u0000\u0000\u0000"+
 		"tv\u0001\u0000\u0000\u0000us\u0001\u0000\u0000\u0000vw\u0005\b\u0000\u0000"+
 		"w\u0017\u0001\u0000\u0000\u0000x\u009d\u0003\u0016\u000b\u0000yz\u0005"+
-		"/\u0000\u0000z{\u0005\u0004\u0000\u0000{|\u0003 \u0010\u0000|}\u0005\u0005"+
-		"\u0000\u0000}\u0080\u0003\u0018\f\u0000~\u007f\u00050\u0000\u0000\u007f"+
+		"*\u0000\u0000z{\u0005\u0004\u0000\u0000{|\u0003 \u0010\u0000|}\u0005\u0005"+
+		"\u0000\u0000}\u0080\u0003\u0018\f\u0000~\u007f\u0005+\u0000\u0000\u007f"+
 		"\u0081\u0003\u0018\f\u0000\u0080~\u0001\u0000\u0000\u0000\u0080\u0081"+
 		"\u0001\u0000\u0000\u0000\u0081\u009d\u0001\u0000\u0000\u0000\u0082\u0083"+
-		"\u00052\u0000\u0000\u0083\u0084\u0005\u0004\u0000\u0000\u0084\u0085\u0003"+
+		"\u0005-\u0000\u0000\u0083\u0084\u0005\u0004\u0000\u0000\u0084\u0085\u0003"+
 		" \u0010\u0000\u0085\u0086\u0005\u0005\u0000\u0000\u0086\u0087\u0003\u0018"+
-		"\f\u0000\u0087\u009d\u0001\u0000\u0000\u0000\u0088\u0089\u00051\u0000"+
+		"\f\u0000\u0087\u009d\u0001\u0000\u0000\u0000\u0088\u0089\u0005,\u0000"+
 		"\u0000\u0089\u008a\u0005\u0004\u0000\u0000\u008a\u008b\u0003\u0018\f\u0000"+
 		"\u008b\u008c\u0005\u0003\u0000\u0000\u008c\u008d\u0003 \u0010\u0000\u008d"+
 		"\u008e\u0005\u0003\u0000\u0000\u008e\u008f\u0003 \u0010\u0000\u008f\u0090"+
 		"\u0003\u0018\f\u0000\u0090\u009d\u0001\u0000\u0000\u0000\u0091\u0092\u0005"+
-		"5\u0000\u0000\u0092\u0093\u0003 \u0010\u0000\u0093\u0094\u0005\u0003\u0000"+
+		"0\u0000\u0000\u0092\u0093\u0003 \u0010\u0000\u0093\u0094\u0005\u0003\u0000"+
 		"\u0000\u0094\u009d\u0001\u0000\u0000\u0000\u0095\u0096\u0007\u0001\u0000"+
 		"\u0000\u0096\u009d\u0005\u0003\u0000\u0000\u0097\u009d\u0003\b\u0004\u0000"+
 		"\u0098\u0099\u0003 \u0010\u0000\u0099\u009a\u0005\u0003\u0000\u0000\u009a"+
@@ -2453,15 +2454,15 @@ public class YxParser extends Parser {
 		"\u0000\u00a3\u00a1\u0001\u0000\u0000\u0000\u00a4\u00a7\u0001\u0000\u0000"+
 		"\u0000\u00a5\u00a3\u0001\u0000\u0000\u0000\u00a5\u00a6\u0001\u0000\u0000"+
 		"\u0000\u00a6\u001d\u0001\u0000\u0000\u0000\u00a7\u00a5\u0001\u0000\u0000"+
-		"\u0000\u00a8\u00aa\u0005#\u0000\u0000\u00a9\u00ab\u0005\t\u0000\u0000"+
+		"\u0000\u00a8\u00aa\u00053\u0000\u0000\u00a9\u00ab\u0005\t\u0000\u0000"+
 		"\u00aa\u00a9\u0001\u0000\u0000\u0000\u00aa\u00ab\u0001\u0000\u0000\u0000"+
 		"\u00ab\u00bd\u0001\u0000\u0000\u0000\u00ac\u00b3\u0003\u0002\u0001\u0000"+
-		"\u00ad\u00ae\u0005$\u0000\u0000\u00ae\u00af\u0003 \u0010\u0000\u00af\u00b0"+
-		"\u0005%\u0000\u0000\u00b0\u00b2\u0001\u0000\u0000\u0000\u00b1\u00ad\u0001"+
+		"\u00ad\u00ae\u00054\u0000\u0000\u00ae\u00af\u0003 \u0010\u0000\u00af\u00b0"+
+		"\u00055\u0000\u0000\u00b0\u00b2\u0001\u0000\u0000\u0000\u00b1\u00ad\u0001"+
 		"\u0000\u0000\u0000\u00b2\u00b5\u0001\u0000\u0000\u0000\u00b3\u00b1\u0001"+
 		"\u0000\u0000\u0000\u00b3\u00b4\u0001\u0000\u0000\u0000\u00b4\u00b8\u0001"+
 		"\u0000\u0000\u0000\u00b5\u00b3\u0001\u0000\u0000\u0000\u00b6\u00b7\u0005"+
-		"$\u0000\u0000\u00b7\u00b9\u0005%\u0000\u0000\u00b8\u00b6\u0001\u0000\u0000"+
+		"4\u0000\u0000\u00b7\u00b9\u00055\u0000\u0000\u00b8\u00b6\u0001\u0000\u0000"+
 		"\u0000\u00b9\u00ba\u0001\u0000\u0000\u0000\u00ba\u00b8\u0001\u0000\u0000"+
 		"\u0000\u00ba\u00bb\u0001\u0000\u0000\u0000\u00bb\u00bd\u0001\u0000\u0000"+
 		"\u0000\u00bc\u00a8\u0001\u0000\u0000\u0000\u00bc\u00ac\u0001\u0000\u0000"+
@@ -2471,8 +2472,8 @@ public class YxParser extends Parser {
 		"\u0000\u00c3\u00c4\u0007\u0003\u0000\u0000\u00c4\u00cf\u0003 \u0010\u0013"+
 		"\u00c5\u00c6\u0005\r\u0000\u0000\u00c6\u00cf\u0003 \u0010\u0012\u00c7"+
 		"\u00c8\u0007\u0004\u0000\u0000\u00c8\u00cf\u0003 \u0010\u0011\u00c9\u00ca"+
-		"\u00056\u0000\u0000\u00ca\u00cf\u0003\u001e\u000f\u0000\u00cb\u00cf\u0005"+
-		"7\u0000\u0000\u00cc\u00cf\u0005#\u0000\u0000\u00cd\u00cf\u0003\u001a\r"+
+		"\u00051\u0000\u0000\u00ca\u00cf\u0003\u001e\u000f\u0000\u00cb\u00cf\u0005"+
+		"2\u0000\u0000\u00cc\u00cf\u00053\u0000\u0000\u00cd\u00cf\u0003\u001a\r"+
 		"\u0000\u00ce\u00be\u0001\u0000\u0000\u0000\u00ce\u00c3\u0001\u0000\u0000"+
 		"\u0000\u00ce\u00c5\u0001\u0000\u0000\u0000\u00ce\u00c7\u0001\u0000\u0000"+
 		"\u0000\u00ce\u00c9\u0001\u0000\u0000\u0000\u00ce\u00cb\u0001\u0000\u0000"+
@@ -2499,10 +2500,10 @@ public class YxParser extends Parser {
 		"\u0000\u00fa\u00fc\u0005\u0004\u0000\u0000\u00fb\u00fd\u0003\u001c\u000e"+
 		"\u0000\u00fc\u00fb\u0001\u0000\u0000\u0000\u00fc\u00fd\u0001\u0000\u0000"+
 		"\u0000\u00fd\u00fe\u0001\u0000\u0000\u0000\u00fe\u0108\u0005\u0005\u0000"+
-		"\u0000\u00ff\u0100\n\u0015\u0000\u0000\u0100\u0101\u0005$\u0000\u0000"+
-		"\u0101\u0102\u0003 \u0010\u0000\u0102\u0103\u0005%\u0000\u0000\u0103\u0108"+
+		"\u0000\u00ff\u0100\n\u0015\u0000\u0000\u0100\u0101\u00054\u0000\u0000"+
+		"\u0101\u0102\u0003 \u0010\u0000\u0102\u0103\u00055\u0000\u0000\u0103\u0108"+
 		"\u0001\u0000\u0000\u0000\u0104\u0105\n\u0014\u0000\u0000\u0105\u0106\u0005"+
-		"\f\u0000\u0000\u0106\u0108\u0005#\u0000\u0000\u0107\u00d0\u0001\u0000"+
+		"\f\u0000\u0000\u0106\u0108\u00053\u0000\u0000\u0107\u00d0\u0001\u0000"+
 		"\u0000\u0000\u0107\u00d3\u0001\u0000\u0000\u0000\u0107\u00d6\u0001\u0000"+
 		"\u0000\u0000\u0107\u00d9\u0001\u0000\u0000\u0000\u0107\u00dc\u0001\u0000"+
 		"\u0000\u0000\u0107\u00df\u0001\u0000\u0000\u0000\u0107\u00e2\u0001\u0000"+

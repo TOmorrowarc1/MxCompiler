@@ -14,6 +14,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitProgram(YxParser.ProgramContext ctx) {
+        System.out.println("Program " + ctx.getText() + '\n');
         List<VarDefStmtNode> defs = new ArrayList<>();
         List<FunctionDeclarationNode> functions = new ArrayList<>();
         List<ClassDeclarationNode> classes = new ArrayList<>();
@@ -36,6 +37,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     }
 
     private Type analysisBaseType(YxParser.BaseTypeContext ctx) {
+        System.out.println("AnalysisBaseType " + ctx.getText() + '\n');
         Type nodeType;
         if (ctx.Int() != null) {
             nodeType = PrimitiveType.INT;
@@ -54,6 +56,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     }
 
     private Type analysisType(YxParser.TypeContext ctx) {
+        System.out.println("AnalysisType " + ctx.getText() + '\n');
         Type nodeType = analysisBaseType(ctx.baseType());
         List<TerminalNode> brackets = ctx.LBRACK();
         int dimensions = (brackets != null) ? brackets.size() : 0;
@@ -66,6 +69,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitVarDeclaration(YxParser.VarDeclarationContext ctx) {
+        System.out.println("VarDeclaration " + ctx.getText() + '\n');
         Type varType = analysisType(ctx.type());
         List<VarDefStmtNode.DefNode> defNodes = new ArrayList<>();
         for (YxParser.VarDefContext defContext : ctx.varDef()) {
@@ -76,12 +80,20 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitVarDef(YxParser.VarDefContext ctx) {
-        ExprNode expr = (ExprNode) visit(ctx.expr());
+        System.out.println("VarDef " + ctx.getText() + '\n');
+        ExprNode expr;
+        if (ctx.expr() != null) {
+            expr = (ExprNode) visit(ctx.expr());
+        } else {
+            expr = new EmptyExprNode(new Position(ctx));
+        }
+
         return new VarDefStmtNode.DefNode(new Position(ctx), ctx.Identifier().getText(), expr);
     }
 
     @Override
     public ASTNode visitFuncDeclaration(YxParser.FuncDeclarationContext ctx) {
+        System.out.println("FuncDeclaration " + ctx.getText() + '\n');
         List<FunctionDeclarationNode.ParameterNode> parameters = new ArrayList<>();
         if (ctx.parameterList() != null) {
             for (YxParser.ParameterContext paramCtx : ctx.parameterList().parameter()) {
@@ -102,11 +114,13 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitParameter(YxParser.ParameterContext ctx) {
+        System.out.println(ctx.getText() + '\n');
         return new FunctionDeclarationNode.ParameterNode(new Position(ctx), analysisType(ctx.type()), ctx.Identifier().getText());
     }
 
     @Override
     public ASTNode visitClassDeclaration(YxParser.ClassDeclarationContext ctx) {
+        System.out.println(ctx.getText() + '\n');
         String name = ctx.Identifier().getText();
         List<VarDefStmtNode> varDefs = new ArrayList<>();
         List<FunctionDeclarationNode> functionDefs = new ArrayList<>();
@@ -131,6 +145,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitConstructorDeclaration(YxParser.ConstructorDeclarationContext ctx) {
+        System.out.println(ctx.getText() + '\n');
         String name = ctx.Identifier().getText();
         BlockStmtNode body = (BlockStmtNode) visit(ctx.block());
         return new ConstructorDeclarationNode(new Position(ctx), name, body);
@@ -138,6 +153,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitBlock(YxParser.BlockContext ctx) {
+        System.out.println("Block " + ctx.getText() + '\n');
         List<StmtNode> stmts = new ArrayList<StmtNode>();
         for (YxParser.StatementContext statementContext : ctx.statement()) {
             stmts.add((StmtNode) visit(statementContext));
@@ -147,11 +163,13 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitBlockstmt(YxParser.BlockstmtContext ctx) {
+        System.out.println("BlockStmt " + ctx.getText() + '\n');
         return visit(ctx.block());
     }
 
     @Override
     public ASTNode visitIfstmt(YxParser.IfstmtContext ctx) {
+        System.out.println("IfStmt " + ctx.getText() + '\n');
         ExprNode condition = (ExprNode) visit(ctx.expr());
         StmtNode thenStmt = (StmtNode) visit(ctx.trueStmt);
         StmtNode elseStmt;
@@ -165,6 +183,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitWhilestmt(YxParser.WhilestmtContext ctx) {
+        System.out.println("WhileStmt " + ctx.getText() + '\n');
         ExprNode condition = (ExprNode) visit(ctx.expr());
         StmtNode body = (StmtNode) visit(ctx.statement());
         return new WhileStmtNode(new Position(ctx), condition, body);
@@ -172,6 +191,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitForstmt(YxParser.ForstmtContext ctx) {
+        System.out.println("ForStmt " + ctx.getText() + '\n');
         StmtNode init;
         ExprNode condition;
         ExprNode step;
@@ -196,6 +216,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitReturnstmt(YxParser.ReturnstmtContext ctx) {
+        System.out.println("ReturnStmt " + ctx.getText() + '\n');
         ExprNode expr;
         if (ctx.expr() != null) {
             expr = (ExprNode) visit(ctx.expr());
@@ -207,6 +228,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitJmpstmt(YxParser.JmpstmtContext ctx) {
+        System.out.println("JmpStmt " + ctx.getText() + '\n');
         JmpStmtNode.JumpType jmpType;
         if (ctx.getText().equals("break")) {
             jmpType = JmpStmtNode.JumpType.BREAK;
@@ -220,16 +242,19 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitVarDefstmt(YxParser.VarDefstmtContext ctx) {
+        System.out.println("VarDefStmt " + ctx.getText() + '\n');
         return visit(ctx.varDeclaration());
     }
 
     @Override
     public ASTNode visitExpressionstmt(YxParser.ExpressionstmtContext ctx) {
+        System.out.println("ExprStmt " + ctx.getText() + '\n');
         return new ExprStmtNode(new Position(ctx), (ExprNode) visit(ctx.expr()));
     }
 
     @Override
     public ASTNode visitEmptystmt(YxParser.EmptystmtContext ctx) {
+        System.out.println("EmptyStmt " + ctx.getText() + '\n');
         return new EmptyStmtNode(new Position(ctx));
     }
 
@@ -241,11 +266,13 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitSubExpr(YxParser.SubExprContext ctx) {
+        System.out.println("SubExprVisit " + ctx.getText() + '\n');
         return visit(ctx.expr());
     }
 
     @Override
     public ASTNode visitPostfix(YxParser.PostfixContext ctx) {
+        System.out.println("PostFixVisit " + ctx.getText() + '\n');
         ExprNode expr = (ExprNode) visit(ctx.expr());
         UnaryExprNode.UnaryOperator unaryOperator;
         if (ctx.op.getText().equals("++")) {
@@ -261,12 +288,14 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitClassAccess(YxParser.ClassAccessContext ctx) {
+        System.out.println("ClassAccessVisit " + ctx.getText() + '\n');
         ExprNode object = (ExprNode) visit(ctx.expr());
         return new ClassAccessNode(new Position(ctx), object, ctx.Identifier().getText());
     }
 
     @Override
     public ASTNode visitFunctionCall(YxParser.FunctionCallContext ctx) {
+        System.out.println("FunctionCallVisit " + ctx.getText() + '\n');
         ExprNode callee = (ExprNode) visit(ctx.expr());
         List<ExprNode> parameters = new ArrayList<>();
         if (ctx.argumentList() != null) {
@@ -285,12 +314,14 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitNewClass(YxParser.NewClassContext ctx) {
+        System.out.println("NewClass " + ctx.getText() + '\n');
         Type classType = new ClassType(ctx.Identifier().getText());
         return new NewClassExprNode(new Position(ctx), classType);
     }
 
     @Override
     public ASTNode visitNewArray(YxParser.NewArrayContext ctx) {
+        System.out.println("NewArray " + ctx.getText() + '\n');
         Type arrayType = new ArrayType(analysisBaseType(ctx.baseType()));
         List<ExprNode> dimensions = new ArrayList<>();
         for (YxParser.ExprContext exprContext : ctx.expr()) {
@@ -302,11 +333,13 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitThisExpr(YxParser.ThisExprContext ctx) {
+        System.out.println("ThisVisit " + ctx.getText() + '\n');
         return new ThisNode(new Position(ctx));
     }
 
     @Override
     public ASTNode visitUnaryExpr(YxParser.UnaryExprContext ctx) {
+        System.out.println("UnaryVisit " + ctx.getText() + '\n');
         ExprNode expr = (ExprNode) visit(ctx.expr());
         UnaryExprNode.UnaryOperator unaryOperator;
         switch (ctx.op.getText()) {
@@ -339,6 +372,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitBinaryExpr(YxParser.BinaryExprContext ctx) {
+        System.out.println("BinaryVisit " + ctx.getText() + '\n');
         ExprNode lhs = (ExprNode) visit(ctx.lhs);
         ExprNode rhs = (ExprNode) visit(ctx.rhs);
         BinaryExprNode.BinaryOperator binaryOperator;
@@ -420,6 +454,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitTernary(YxParser.TernaryContext ctx) {
+        System.out.println("TernaryVisit " + ctx.getText() + '\n');
         ExprNode conditionExpr = (ExprNode) visit(ctx.condition);
         ExprNode trueExpr = (ExprNode) visit(ctx.trueExpr);
         ExprNode falseExpr = (ExprNode) visit(ctx.falseExpr);
@@ -428,6 +463,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitAssignment(YxParser.AssignmentContext ctx) {
+        System.out.println("AssignmentVisit " + ctx.getText() + '\n');
         ExprNode lhs = (ExprNode) visit(ctx.lhs);
         ExprNode rhs = (ExprNode) visit(ctx.rhs);
         return new AssignExprNode(new Position(ctx), lhs, rhs);
@@ -435,16 +471,19 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitVariable(YxParser.VariableContext ctx) {
+        System.out.println("VarVisit " + ctx.getText() + '\n');
         return new VarExprNode(new Position(ctx), ctx.Identifier().getText());
     }
 
     @Override
     public ASTNode visitConstant(YxParser.ConstantContext ctx) {
+        System.out.println("Constant " + ctx.getText() + '\n');
         return visit(ctx.literal());
     }
 
     @Override
     public ASTNode visitArrayVisit(YxParser.ArrayVisitContext ctx) {
+        System.out.println("ArrayVisit " + ctx.getText() + '\n');
         ExprNode array = (ExprNode) visit(ctx.array);
         ExprNode index = (ExprNode) visit(ctx.index);
         return new ArrayVisitExprNode(new Position(ctx), array, index);
@@ -452,6 +491,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitLiteral(YxParser.LiteralContext ctx) {
+        System.out.println("Literal " + ctx.getText() + '\n');
         if (ctx.Integer() != null) {
             return new IntLiteralExprNode(new Position(ctx), Integer.parseInt(ctx.Integer().getText()));
         } else if (ctx.True() != null) {

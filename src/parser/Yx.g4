@@ -115,24 +115,13 @@ expr
     ;
 
 // The gamma for the lexer.
-Identifier: [a-z][a-zA-Z_0-9]*;
-LBRACK:'[';
-RBRACK:']';
-
 Int:'int';
 Bool:'bool';
 Void:'void';
 Str:'string';
 
-Integer
-    :[1-9][0-9]*
-    |'0'
-    ;
-String
-   : '"' ( '\\' . | ~[\\"] )* '"'
-   ;
 True:'true';
-False:'flase';
+False:'false';
 Null:'null';
 
 If:'if';
@@ -144,6 +133,19 @@ Continue:'continue';
 Return:'return';
 New:'new';
 This:'this';
+
+Identifier: [a-z][a-zA-Z_0-9]*;
+LBRACK:'[';
+RBRACK:']';
+
+Integer
+    :[1-9][0-9]*
+    |'0'
+    ;
+
+String
+   : '"' ( '\\' . | ~[\\"] )* '"'
+   ;
 
 WhiteSpace
     :   [ \t\r\n]+

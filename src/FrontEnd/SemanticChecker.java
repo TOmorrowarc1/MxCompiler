@@ -189,8 +189,7 @@ public class SemanticChecker implements ASTNodeVisitor {
                 throw new SemanticError(node.position.toString() + " The parameter type not match.");
             }
         }
-        node.nodeInfo.setType(functionSymbolInfo.getReturnType());
-        node.nodeInfo.setIsLeftValue(false);
+        node.nodeInfo = new ExprNodeInfo(functionSymbolInfo.getReturnType(), false);
     }
 
     @Override
@@ -203,8 +202,7 @@ public class SemanticChecker implements ASTNodeVisitor {
         if (!(node.array.nodeInfo.getType() instanceof ArrayType arrayType)) {
             throw new SemanticError(node.position.toString() + " Array type not match.");
         }
-        node.nodeInfo.setType(arrayType.getElementType());
-        node.nodeInfo.setIsLeftValue(true);
+        node.nodeInfo = new ExprNodeInfo(arrayType.getElementType(), true);
     }
 
     @Override
@@ -219,13 +217,13 @@ public class SemanticChecker implements ASTNodeVisitor {
             throw new SemanticError(node.position.toString() + " No such member in the class.");
         }
         Type memberType = ((VariableSymbolInfo) (objectType.getSymbol(node.classAccess).get())).getType();
-        node.nodeInfo.setType(memberType);
-        node.nodeInfo.setIsLeftValue(true);
+        node.nodeInfo = new ExprNodeInfo(memberType, true);
     }
 
     @Override
     public void visit(UnaryExprNode node) {
         node.expression.accept(this);
+        node.nodeInfo = new ExprNodeInfo();
         if (node.operator == UnaryExprNode.UnaryOperator.LOGIC_NOT) {
             if (!node.expression.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
                 throw new SemanticError(node.position.toString() + "Type not match: the type of the expression should be bool.");
@@ -250,14 +248,12 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(NewClassExprNode node) {
-        node.nodeInfo.setType(node.classType);
-        node.nodeInfo.setIsLeftValue(false);
+        node.nodeInfo = new ExprNodeInfo(node.classType, false);
     }
 
     @Override
     public void visit(NewArrayExprNode node) {
-        node.nodeInfo.setType(node.arrayType);
-        node.nodeInfo.setIsLeftValue(false);
+        node.nodeInfo = new ExprNodeInfo(node.arrayType, false);
     }
 
     @Override
@@ -267,6 +263,7 @@ public class SemanticChecker implements ASTNodeVisitor {
         if (!node.left.nodeInfo.getType().equals(node.right.nodeInfo.getType()) && !(node.left.nodeInfo.getType() instanceof ArrayType || node.right.nodeInfo.getType().equals(PrimitiveType.NULL)) && !(node.right.nodeInfo.getType() instanceof ArrayType || node.left.nodeInfo.getType().equals(PrimitiveType.NULL))) {
             throw new SemanticError(node.position.toString() + "Types not match: types on sides of the binary operator is different.");
         }
+        node.nodeInfo = new ExprNodeInfo();
         switch (node.operator) {
             case LOGIC_AND, LOGIC_OR: {
                 if (!node.left.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
@@ -294,7 +291,6 @@ public class SemanticChecker implements ASTNodeVisitor {
                 break;
             }
         }
-        node.nodeInfo.setIsLeftValue(false);
     }
 
     @Override
@@ -308,8 +304,7 @@ public class SemanticChecker implements ASTNodeVisitor {
         if (!node.trueExpr.nodeInfo.getType().equals(node.falseExpr.nodeInfo.getType())) {
             throw new SemanticError(node.position.toString() + "Types not match: the lhs and rhs have different types");
         }
-        node.nodeInfo.setType(node.trueExpr.nodeInfo.getType());
-        node.nodeInfo.setIsLeftValue(false);
+        node.nodeInfo = new ExprNodeInfo(node.trueExpr.nodeInfo.getType(), false);
     }
 
     @Override
@@ -322,8 +317,7 @@ public class SemanticChecker implements ASTNodeVisitor {
         if (!node.left.nodeInfo.isLeftValue()) {
             throw new SemanticError(node.position.toString() + "Types not match: the left is not assignable");
         }
-        node.nodeInfo.setType(node.left.nodeInfo.getType());
-        node.nodeInfo.setIsLeftValue(false);
+        node.nodeInfo = new ExprNodeInfo(node.left.nodeInfo.getType(), false);
     }
 
     @Override
@@ -333,20 +327,17 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(IntLiteralExprNode node) {
-        node.nodeInfo.setType(PrimitiveType.INT);
-        node.nodeInfo.setIsLeftValue(false);
+        node.nodeInfo = new ExprNodeInfo(PrimitiveType.INT, false);
     }
 
     @Override
     public void visit(BoolLiteralExprNode node) {
-        node.nodeInfo.setType(PrimitiveType.BOOL);
-        node.nodeInfo.setIsLeftValue(false);
+        node.nodeInfo = new ExprNodeInfo(PrimitiveType.BOOL, false);
     }
 
     @Override
     public void visit(StringLiteralExprNode node) {
-        node.nodeInfo.setType(PrimitiveType.STRING);
-        node.nodeInfo.setIsLeftValue(false);
+        node.nodeInfo = new ExprNodeInfo(PrimitiveType.STRING, false);
     }
 
     @Override
@@ -360,7 +351,6 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(EmptyExprNode node) {
-        node.nodeInfo.setType(PrimitiveType.VOID);
-        node.nodeInfo.setIsLeftValue(false);
+        node.nodeInfo = new ExprNodeInfo(PrimitiveType.VOID, false);
     }
 }

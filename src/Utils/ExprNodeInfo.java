@@ -4,6 +4,11 @@ public class ExprNodeInfo {
     private Type exprType;
     private boolean isLeftValue;
 
+    public ExprNodeInfo() {
+        this.exprType = null;
+        this.isLeftValue = false;
+    }
+
     public ExprNodeInfo(Type exprType, boolean isLeftValue) {
         this.exprType = exprType;
         this.isLeftValue = isLeftValue;
