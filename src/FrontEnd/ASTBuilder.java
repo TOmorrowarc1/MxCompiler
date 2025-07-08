@@ -18,16 +18,18 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         List<VarDefStmtNode> defs = new ArrayList<>();
         List<FunctionDeclarationNode> functions = new ArrayList<>();
         List<ClassDeclarationNode> classes = new ArrayList<>();
-        for (YxParser.VarDeclarationContext varDeclCtx : ctx.varDeclaration()) {
-            defs.add((VarDefStmtNode) visit(varDeclCtx));
+        List<ASTNode> consequenceProgram = new ArrayList<>();
+        for (YxParser.DeclarationContext declarationContext : ctx.declaration()) {
+            if (declarationContext.varDeclaration() != null) {
+                defs.add((VarDefStmtNode) visit(declarationContext.varDeclaration()));
+            } else if (declarationContext.funcDeclaration() != null) {
+                functions.add((FunctionDeclarationNode) visit(declarationContext.funcDeclaration()));
+            } else if (declarationContext.classDeclaration() != null) {
+                classes.add((ClassDeclarationNode) visit(declarationContext.classDeclaration()));
+            }
+            consequenceProgram.add(visit(declarationContext));
         }
-        for (YxParser.FuncDeclarationContext funcDeclCtx : ctx.funcDeclaration()) {
-            functions.add((FunctionDeclarationNode) visit(funcDeclCtx));
-        }
-        for (YxParser.ClassDeclarationContext classDeclCtx : ctx.classDeclaration()) {
-            classes.add((ClassDeclarationNode) visit(classDeclCtx));
-        }
-        return new ProgramNode(new Position(ctx), defs, functions, classes);
+        return new ProgramNode(new Position(ctx), defs, functions, classes, consequenceProgram);
     }
 
     @Override

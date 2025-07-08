@@ -17,6 +17,12 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(YxParser.ProgramContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link YxParser#declaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclaration(YxParser.DeclarationContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link YxParser#baseType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

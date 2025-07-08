@@ -131,14 +131,14 @@ public class SymbolCollector implements ASTNodeVisitor {
 
     @Override
     public void visit(ProgramNode node) {
-        for (VarDefStmtNode varDefNode : node.varDeclarations) {
-            varDefNode.accept(this);
-        }
         for (FunctionDeclarationNode funcDeclarationNode : node.functions) {
             funcDeclarationNode.accept(this);
         }
         for (ClassDeclarationNode classDeclarationNode : node.classDeclarations) {
             classDeclarationNode.accept(this);
+        }
+        if (globalScope.getSymbol("main").isEmpty()) {
+            throw new SemanticError("No main function found.");
         }
     }
 

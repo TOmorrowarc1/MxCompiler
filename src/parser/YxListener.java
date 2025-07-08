@@ -18,6 +18,16 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitProgram(YxParser.ProgramContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link YxParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclaration(YxParser.DeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link YxParser#declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclaration(YxParser.DeclarationContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link YxParser#baseType}.
 	 * @param ctx the parse tree
 	 */

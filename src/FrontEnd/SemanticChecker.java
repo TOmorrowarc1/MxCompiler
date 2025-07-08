@@ -14,21 +14,15 @@ public class SemanticChecker implements ASTNodeVisitor {
     private int loopDepth;
 
     public SemanticChecker(Scope globalscope) {
-        scope = globalscope;
+        scope = new Scope(globalscope);
         currentClassType = null;
         currentReturnType = null;
     }
 
     @Override
     public void visit(ProgramNode node) {
-        for (VarDefStmtNode varDefNode : node.varDeclarations) {
-            varDefNode.accept(this);
-        }
-        for (FunctionDeclarationNode functionDeclarationNode : node.functions) {
-            functionDeclarationNode.accept(this);
-        }
-        for (ClassDeclarationNode classDeclarationNode : node.classDeclarations) {
-            classDeclarationNode.accept(this);
+        for (ASTNode declarations : node.consequenceProgram) {
+            declarations.accept(this);
         }
     }
 
@@ -99,6 +93,9 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(VarDefStmtNode node) {
+        if (node.varType.isEquivalent(PrimitiveType.VOID)) {
+            throw new SemanticError(node.position.toString() + " The variable type cannot be void.");
+        }
         VariableSymbolInfo symbolInfo = new VariableSymbolInfo(node.varType);
         for (VarDefStmtNode.DefNode defNode : node.defList) {
             scope.declareSymbol(defNode.identifier, symbolInfo);
@@ -302,7 +299,7 @@ public class SemanticChecker implements ASTNodeVisitor {
             }
             case G, GE, L, LE, PLUS: {
                 if (!node.left.nodeInfo.getType().isEquivalent(PrimitiveType.INT) && !node.left.nodeInfo.getType().isEquivalent(ClassType.STRING)) {
-                    throw new SemanticError(node.position.toString() + "Types  not match: the type should be int or string");
+                    throw new SemanticError(node.position.toString() + "Types not match: the type should be int or string");
                 }
                 if (node.operator.equals(BinaryExprNode.BinaryOperator.PLUS)) {
                     node.nodeInfo.setType(node.left.nodeInfo.getType());

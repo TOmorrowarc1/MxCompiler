@@ -3,7 +3,13 @@ grammar Yx;
 //I jump the array constant for convinience, acturally it should distiguish from block statement.
 // The gramma for the parser.
 program
-    :   (varDeclaration|funcDeclaration|classDeclaration)* EOF
+    :   (declaration)* EOF
+    ;
+
+declaration
+    :varDeclaration
+    |funcDeclaration
+    |classDeclaration
     ;
 
 baseType
