@@ -140,6 +140,10 @@ public class SymbolCollector implements ASTNodeVisitor {
         if (globalScope.getSymbol("main").isEmpty()) {
             throw new SemanticError("No main function found.");
         }
+        FunctionSymbolInfo mainFunc = (FunctionSymbolInfo) globalScope.getSymbol("main").get();
+        if (!mainFunc.getReturnType().isEquivalent(PrimitiveType.INT)) {
+            throw new SemanticError("The return type of main() must be int.");
+        }
     }
 
     @Override

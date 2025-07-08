@@ -93,6 +93,9 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(VarDefStmtNode node) {
+        if(!isTypeValid(node.varType)){
+            throw new SemanticError(node.position.toString() + "The variable type(class) is not existed.");
+        }
         if (node.varType.isEquivalent(PrimitiveType.VOID)) {
             throw new SemanticError(node.position.toString() + " The variable type cannot be void.");
         }
