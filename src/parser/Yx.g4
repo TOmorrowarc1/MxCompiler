@@ -11,7 +11,7 @@ baseType
     ;
 
 type
-    :   baseType(LBRACK']')*
+    :   baseType(LBrack RBrack)*
     ;
 
 varDef
@@ -33,7 +33,7 @@ funcDeclaration
     ;
 
 constructorDeclaration
-    :   Identifier '('')' block
+    :   Identifier '(' ')' block
     ;
 
 classMember
@@ -43,7 +43,7 @@ classMember
     ;
 
 classDeclaration
-    :   'class' Identifier '{' classMember* '}'
+    :   'class' Identifier '{' classMember* '}' ';'
     ;
 
 block
@@ -55,7 +55,7 @@ statement
     |   If '(' expr ')' trueStmt=statement
         (Else falseStmt=statement)?               # ifstmt
     |   While '(' expr ')' statement              # whilestmt
-    |   For '(' (initializationStatement=statement)';'(forConditionExpression=expr)';'(stepExpression=expr)
+    |   For '(' (initializationStatement=statement)';'(forConditionExpression=expr)';'(stepExpression=expr) ')'
         bodyStatement=statement                   # forstmt
     |   Return expr ';'                           # returnstmt
     |   (Break|Continue)';'                       # jmpstmt
@@ -77,7 +77,7 @@ argumentList
     ;
 
 newTarget
-    :   Identifier('()')?                                   # newClass
+    :   Identifier('('')')?                                   # newClass
     |   baseType('[' expr ']')*('['']')+                    # newArray
     ;
 
@@ -134,9 +134,11 @@ Return:'return';
 New:'new';
 This:'this';
 
-Identifier: [a-z][a-zA-Z_0-9]*;
-LBRACK:'[';
-RBRACK:']';
+Identifier: [a-zA-Z_][a-zA-Z_0-9]*;
+LParent:'(';
+RParent:')';
+LBrack:'[';
+RBrack:']';
 
 Integer
     :[1-9][0-9]*

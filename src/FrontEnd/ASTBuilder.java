@@ -58,7 +58,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     private Type analysisType(YxParser.TypeContext ctx) {
         System.out.println("AnalysisType " + ctx.getText() + '\n');
         Type nodeType = analysisBaseType(ctx.baseType());
-        List<TerminalNode> brackets = ctx.LBRACK();
+        List<TerminalNode> brackets = ctx.LBrack();
         int dimensions = (brackets != null) ? brackets.size() : 0;
         Type finalType = nodeType;
         for (int i = 0; i < dimensions; i++) {
