@@ -6,7 +6,6 @@ public class Scope {
     private final Map<String, SymbolInfo> symbolTable = new HashMap<>();
     private final Map<String, Type> typeTable = new HashMap<>();
     private final Scope parentScope;
-    private int loopDepth;
 
     public Scope() {
         this.parentScope = null;
@@ -60,14 +59,6 @@ public class Scope {
         typeTable.put(typeName, type);
     }
 
-    public void addLoopDepth() {
-        this.loopDepth++;
-    }
-
-    public void subLoopDepth() {
-        this.loopDepth--;
-    }
-
     public Optional<SymbolInfo> getSymbol(String symbol) {
         Scope cursor = this;
         while (cursor != null) {
@@ -88,9 +79,5 @@ public class Scope {
             cursor = cursor.parentScope;
         }
         return Optional.empty();
-    }
-
-    public int getLoopDepth() {
-        return loopDepth;
     }
 }

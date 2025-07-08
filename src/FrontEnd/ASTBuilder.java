@@ -211,7 +211,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else {
             step = new EmptyExprNode(new Position(ctx));
         }
-        return new ForStmtNode(new Position(ctx), (StmtNode) init, condition, step, body);
+        return new ForStmtNode(new Position(ctx), init, condition, step, body);
     }
 
     @Override
@@ -230,9 +230,9 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     public ASTNode visitJmpstmt(YxParser.JmpstmtContext ctx) {
         System.out.println("JmpStmt " + ctx.getText() + '\n');
         JmpStmtNode.JumpType jmpType;
-        if (ctx.getText().equals("break")) {
+        if (ctx.Break() != null) {
             jmpType = JmpStmtNode.JumpType.BREAK;
-        } else if (ctx.getText().equals("continue")) {
+        } else if (ctx.Continue() != null) {
             jmpType = JmpStmtNode.JumpType.CONTINUE;
         } else {
             throw new SemanticError("Invalid JmpStmt");

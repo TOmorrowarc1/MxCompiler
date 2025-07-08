@@ -8,7 +8,7 @@ public class ForStmtNode extends StmtNode {
     public ExprNode step;
     public StmtNode body;
 
-    public  ForStmtNode(Position position, StmtNode varStmt, ExprNode condition, ExprNode step, StmtNode body) {
+    public ForStmtNode(Position position, StmtNode varStmt, ExprNode condition, ExprNode step, StmtNode body) {
         super(position);
         this.varStmt = varStmt;
         this.condition = condition;

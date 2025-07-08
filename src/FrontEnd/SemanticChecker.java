@@ -3,12 +3,15 @@ package FrontEnd;
 import ASTNode.*;
 import Utils.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class SemanticChecker implements ASTNodeVisitor {
     private Scope scope;
     private Type currentClassType;
     private Type currentReturnType;
+    private int loopDepth;
 
     public SemanticChecker(Scope globalscope) {
         scope = globalscope;
@@ -61,15 +64,22 @@ public class SemanticChecker implements ASTNodeVisitor {
         scope = memoryScope;
     }
 
+    private boolean isTypeValid(Type type) {
+        while (type instanceof ArrayType arrayType) {
+            type = arrayType.getElementType();
+        }
+        return scope.getType(type.typeName()).isPresent();
+    }
+
     @Override
     public void visit(FunctionDeclarationNode node) {
-        if (scope.getType(node.returnType.typeName()).isEmpty()) {
+        if (!isTypeValid(node.returnType)) {
             throw new SemanticError(node.position.toString() + "The return type is not existed.");
         }
         scope = new Scope(scope);
-        currentReturnType = scope.getType(node.returnType.typeName()).get();
+        currentReturnType = node.returnType;
         for (FunctionDeclarationNode.ParameterNode parameterNode : node.parameters) {
-            if (scope.getType(parameterNode.parameterType.typeName()).isEmpty()) {
+            if (!isTypeValid(parameterNode.parameterType)) {
                 throw new SemanticError(node.position.toString() + "The parameter type is not existed.");
             }
             scope.declareSymbol(parameterNode.identifier, new VariableSymbolInfo(parameterNode.parameterType));
@@ -97,7 +107,7 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(JmpStmtNode node) {
-        if (scope.getLoopDepth() <= 0) {
+        if (this.loopDepth <= 0) {
             throw new SemanticError(node.position.toString() + " Loop depth exceeded");
         }
     }
@@ -116,30 +126,30 @@ public class SemanticChecker implements ASTNodeVisitor {
         node.varStmt.accept(this);
         node.condition.accept(this);
         node.step.accept(this);
-        if (!node.condition.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
+        if (!node.condition.nodeInfo.getType().isEquivalent(PrimitiveType.BOOL)) {
             throw new SemanticError(node.position.toString() + " Type not match: condition judgement is not a bool");
         }
-        scope.addLoopDepth();
+        this.loopDepth++;
         node.body.accept(this);
-        scope.subLoopDepth();
+        this.loopDepth--;
         scope = scope.getParentScope();
     }
 
     @Override
     public void visit(WhileStmtNode node) {
         node.condition.accept(this);
-        if (!node.condition.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
+        if (!node.condition.nodeInfo.getType().isEquivalent(PrimitiveType.BOOL)) {
             throw new SemanticError(node.position.toString() + " Type not match: condition judgement is not a bool");
         }
-        scope.addLoopDepth();
+        this.loopDepth++;
         node.body.accept(this);
-        scope.addLoopDepth();
+        this.loopDepth--;
     }
 
     @Override
     public void visit(IfStmtNode node) {
         node.condition.accept(this);
-        if (!node.condition.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
+        if (!node.condition.nodeInfo.getType().isEquivalent(PrimitiveType.BOOL)) {
             throw new SemanticError(node.position.toString() + " Type not match: condition judgement should be a bool Expr.");
         }
         scope = new Scope(scope);
@@ -162,14 +172,25 @@ public class SemanticChecker implements ASTNodeVisitor {
         FunctionSymbolInfo functionSymbolInfo;
         if (node.callee instanceof ClassAccessNode classAccessNode) {
             classAccessNode.object.accept(this);
-            if (scope.getType(classAccessNode.object.nodeInfo.getType().typeName()).isEmpty()) {
-                throw new SemanticError(node.position.toString() + " Class has not been declared");
+            if (!isTypeValid(classAccessNode.object.nodeInfo.getType())) {
+                throw new SemanticError(node.position.toString() + classAccessNode.object.nodeInfo.getType().typeName() + " Class has not been declared.");
             }
-            ClassType objectType = (ClassType) (scope.getType(classAccessNode.object.nodeInfo.getType().typeName()).get());
-            if (objectType.getSymbol(classAccessNode.classAccess).isEmpty()) {
-                throw new SemanticError(node.position.toString() + " No such method in the class.");
+            if (classAccessNode.object.nodeInfo.getType() instanceof ArrayType) {
+                if (classAccessNode.classAccess.equals("size")) {
+                    List<Type> emptyList = new ArrayList<>();
+                    functionSymbolInfo = new FunctionSymbolInfo(PrimitiveType.INT, emptyList);
+                } else {
+                    throw new SemanticError(node.position.toString() + " No such method in the class.");
+                }
+            } else if (classAccessNode.object.nodeInfo.getType() instanceof ClassType) {
+                ClassType objectType = (ClassType) (scope.getType(classAccessNode.object.nodeInfo.getType().typeName()).get());
+                if (objectType.getSymbol(classAccessNode.classAccess).isEmpty()) {
+                    throw new SemanticError(node.position.toString() + " No such method in the class.");
+                }
+                functionSymbolInfo = (FunctionSymbolInfo) objectType.getSymbol(classAccessNode.classAccess).get();
+            } else {
+                throw new SemanticError(node.position.toString() + " Name has not been declared.");
             }
-            functionSymbolInfo = (FunctionSymbolInfo) objectType.getSymbol(classAccessNode.classAccess).get();
         } else if (node.callee instanceof VarExprNode varExprNode) {
             if (scope.getSymbol(varExprNode.identifier).isEmpty()) {
                 throw new SemanticError(node.position.toString() + " Function has not been declared");
@@ -195,7 +216,7 @@ public class SemanticChecker implements ASTNodeVisitor {
     @Override
     public void visit(ArrayVisitExprNode node) {
         node.index.accept(this);
-        if (!node.index.nodeInfo.getType().equals(PrimitiveType.INT)) {
+        if (!node.index.nodeInfo.getType().isEquivalent(PrimitiveType.INT)) {
             throw new SemanticError(node.position.toString() + " Index must be int. ");
         }
         node.array.accept(this);
@@ -225,13 +246,13 @@ public class SemanticChecker implements ASTNodeVisitor {
         node.expression.accept(this);
         node.nodeInfo = new ExprNodeInfo();
         if (node.operator == UnaryExprNode.UnaryOperator.LOGIC_NOT) {
-            if (!node.expression.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
+            if (!node.expression.nodeInfo.getType().isEquivalent(PrimitiveType.BOOL)) {
                 throw new SemanticError(node.position.toString() + "Type not match: the type of the expression should be bool.");
             }
             node.nodeInfo.setType(PrimitiveType.BOOL);
             node.nodeInfo.setIsLeftValue(false);
         } else {
-            if (!node.expression.nodeInfo.getType().equals(PrimitiveType.INT)) {
+            if (!node.expression.nodeInfo.getType().isEquivalent(PrimitiveType.INT)) {
                 throw new SemanticError(node.position.toString() + "Type not match: the type of the expression should be int.");
             }
             node.nodeInfo.setType(PrimitiveType.INT);
@@ -260,30 +281,34 @@ public class SemanticChecker implements ASTNodeVisitor {
     public void visit(BinaryExprNode node) {
         node.left.accept(this);
         node.right.accept(this);
-        if (!node.left.nodeInfo.getType().equals(node.right.nodeInfo.getType()) && !(node.left.nodeInfo.getType() instanceof ArrayType || node.right.nodeInfo.getType().equals(PrimitiveType.NULL)) && !(node.right.nodeInfo.getType() instanceof ArrayType || node.left.nodeInfo.getType().equals(PrimitiveType.NULL))) {
+        if (!node.left.nodeInfo.getType().isEquivalent(node.right.nodeInfo.getType()) && !(node.left.nodeInfo.getType() instanceof ArrayType || node.right.nodeInfo.getType().isEquivalent(PrimitiveType.NULL)) && !(node.right.nodeInfo.getType() instanceof ArrayType || node.left.nodeInfo.getType().isEquivalent(PrimitiveType.NULL))) {
             throw new SemanticError(node.position.toString() + "Types not match: types on sides of the binary operator is different.");
         }
         node.nodeInfo = new ExprNodeInfo();
         switch (node.operator) {
             case LOGIC_AND, LOGIC_OR: {
-                if (!node.left.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
+                if (!node.left.nodeInfo.getType().isEquivalent(PrimitiveType.BOOL)) {
                     throw new SemanticError(node.position.toString() + "Types not match: the type should be bool");
                 }
                 node.nodeInfo.setType(PrimitiveType.BOOL);
                 break;
             }
             case SUB, MUL, DIV, MOD, OR, AND, LEFT_SHIFT, RIGHT_SHIFT: {
-                if (!node.left.nodeInfo.getType().equals(PrimitiveType.INT)) {
+                if (!node.left.nodeInfo.getType().isEquivalent(PrimitiveType.INT)) {
                     throw new SemanticError(node.position.toString() + "Types not match: the type should be int");
                 }
                 node.nodeInfo.setType(PrimitiveType.INT);
                 break;
             }
             case G, GE, L, LE, PLUS: {
-                if (!node.left.nodeInfo.getType().equals(PrimitiveType.INT) && !node.left.nodeInfo.getType().equals(ClassType.STRING)) {
+                if (!node.left.nodeInfo.getType().isEquivalent(PrimitiveType.INT) && !node.left.nodeInfo.getType().isEquivalent(ClassType.STRING)) {
                     throw new SemanticError(node.position.toString() + "Types  not match: the type should be int or string");
                 }
-                node.nodeInfo.setType(node.left.nodeInfo.getType());
+                if (node.operator.equals(BinaryExprNode.BinaryOperator.PLUS)) {
+                    node.nodeInfo.setType(node.left.nodeInfo.getType());
+                } else {
+                    node.nodeInfo.setType(PrimitiveType.BOOL);
+                }
                 break;
             }
             case EQUAL, N_EQUAL: {
@@ -298,10 +323,10 @@ public class SemanticChecker implements ASTNodeVisitor {
         node.conditionExpr.accept(this);
         node.trueExpr.accept(this);
         node.falseExpr.accept(this);
-        if (!node.conditionExpr.nodeInfo.getType().equals(PrimitiveType.BOOL)) {
+        if (!node.conditionExpr.nodeInfo.getType().isEquivalent(PrimitiveType.BOOL)) {
             throw new SemanticError(node.position.toString() + "Types not match: the conditional Expr type should be bool");
         }
-        if (!node.trueExpr.nodeInfo.getType().equals(node.falseExpr.nodeInfo.getType())) {
+        if (!node.trueExpr.nodeInfo.getType().isEquivalent(node.falseExpr.nodeInfo.getType())) {
             throw new SemanticError(node.position.toString() + "Types not match: the lhs and rhs have different types");
         }
         node.nodeInfo = new ExprNodeInfo(node.trueExpr.nodeInfo.getType(), false);
@@ -321,11 +346,11 @@ public class SemanticChecker implements ASTNodeVisitor {
     }
 
     private boolean isAssignable(Type lhs, Type rhs) {
-        if (lhs.equals(rhs)) {
+        if (lhs.isEquivalent(rhs)) {
             return true;
         }
-        if (lhs instanceof ArrayType || rhs instanceof ClassType) {
-            return rhs.equals(PrimitiveType.NULL);
+        if (lhs instanceof ArrayType || lhs instanceof ClassType) {
+            return rhs.isEquivalent(PrimitiveType.NULL);
         }
         return false;
     }
