@@ -109,11 +109,11 @@ public class SemanticChecker implements ASTNodeVisitor {
     @Override
     public void visit(VarDefStmtNode.DefNode node) {
         node.initValue.accept(this);
-        if(scope.getSymbol(node.identifier).isEmpty()) {
+        if (scope.getSymbol(node.identifier).isEmpty()) {
             throw new SemanticError(node.position.toString() + "Variable " + node.identifier + " has no declared symbol???");
         }
         VariableSymbolInfo symbol = (VariableSymbolInfo) scope.getSymbol(node.identifier).get();
-        if (!isAssignable(symbol.getType(), node.initValue.nodeInfo.getType())) {
+        if (!(node.initValue instanceof EmptyExprNode) && !isAssignable(symbol.getType(), node.initValue.nodeInfo.getType())) {
             throw new SemanticError(node.position.toString() + "The new variable type is not assignable.");
         }
     }

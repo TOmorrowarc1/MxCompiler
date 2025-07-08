@@ -89,7 +89,6 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else {
             expr = new EmptyExprNode(new Position(ctx));
         }
-
         return new VarDefStmtNode.DefNode(new Position(ctx), ctx.Identifier().getText(), expr);
     }
 
@@ -324,12 +323,15 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitNewArray(YxParser.NewArrayContext ctx) {
         System.out.println("NewArray " + ctx.getText() + '\n');
-        Type arrayType = new ArrayType(analysisBaseType(ctx.baseType()));
-        List<ExprNode> dimensions = new ArrayList<>();
-        for (YxParser.ExprContext exprContext : ctx.expr()) {
-            dimensions.add((ExprNode) visit(exprContext));
+        Type arrayType = analysisBaseType(ctx.baseType());
+        for (TerminalNode brackets : ctx.LBrack()) {
+            arrayType = new ArrayType(arrayType);
         }
-        return new NewArrayExprNode(new Position(ctx), arrayType, dimensions);
+        List<ExprNode> lengths = new ArrayList<>();
+        for (YxParser.ExprContext exprContext : ctx.expr()) {
+            lengths.add((ExprNode) visit(exprContext));
+        }
+        return new NewArrayExprNode(new Position(ctx), arrayType, lengths);
     }
 
 

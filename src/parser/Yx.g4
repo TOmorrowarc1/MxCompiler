@@ -84,7 +84,7 @@ argumentList
 
 newTarget
     :   Identifier('('')')?                                   # newClass
-    |   baseType('[' expr ']')+('['']')*                      # newArray
+    |   baseType(LBrack expr ']')+(LBrack']')*                # newArray
     ;
 
 expr
