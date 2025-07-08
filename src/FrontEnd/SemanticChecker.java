@@ -113,7 +113,7 @@ public class SemanticChecker implements ASTNodeVisitor {
     @Override
     public void visit(ForStmtNode node) {
         scope = new Scope(scope);
-        node.varDefStmt.accept(this);
+        node.varStmt.accept(this);
         node.condition.accept(this);
         node.step.accept(this);
         if (!node.condition.nodeInfo.getType().equals(PrimitiveType.BOOL)) {

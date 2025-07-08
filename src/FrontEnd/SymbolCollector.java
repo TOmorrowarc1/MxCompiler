@@ -33,6 +33,10 @@ public class SymbolCollector implements ASTNodeVisitor {
     }
 
     @Override
+    public void visit(NullLiteralExprNode node) {
+    }
+
+    @Override
     public void visit(BoolLiteralExprNode node) {
     }
 
@@ -143,7 +147,7 @@ public class SymbolCollector implements ASTNodeVisitor {
         if (!node.constructorName.equals(currentClass)) {
             throw new SemanticError(node.position.toString() + "The name of constructure should be the name of the class.");
         }
-        ClassType classType=new ClassType(node.constructorName);
+        ClassType classType = new ClassType(node.constructorName);
         List<Type> parameterType = new ArrayList<>();
         currentScope.declareSymbol(node.constructorName, new FunctionSymbolInfo(classType, parameterType));
     }

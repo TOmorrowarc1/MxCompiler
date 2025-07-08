@@ -211,7 +211,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else {
             step = new EmptyExprNode(new Position(ctx));
         }
-        return new ForStmtNode(new Position(ctx), (VarDefStmtNode) init, condition, step, body);
+        return new ForStmtNode(new Position(ctx), (StmtNode) init, condition, step, body);
     }
 
     @Override
