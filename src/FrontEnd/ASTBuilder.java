@@ -44,7 +44,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         } else if (ctx.Bool() != null) {
             nodeType = PrimitiveType.BOOL;
         } else if (ctx.Str() != null) {
-            nodeType = PrimitiveType.STRING;
+            nodeType = ClassType.STRING;
         } else if (ctx.Void() != null) {
             nodeType = PrimitiveType.VOID;
         } else if (ctx.Identifier() != null) {

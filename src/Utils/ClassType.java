@@ -1,5 +1,7 @@
 package Utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ClassType implements Type {
@@ -14,6 +16,12 @@ public class ClassType implements Type {
     public ClassType(String className, Scope classScope) {
         this.className = className;
         this.classScope = classScope;
+    }
+
+    public void declareSymbol(String symbolName, SymbolInfo symbol) {
+        if (classScope != null) {
+            classScope.declareSymbol(symbolName, symbol);
+        }
     }
 
     public Optional<SymbolInfo> getSymbol(String symbol) {
@@ -36,4 +44,26 @@ public class ClassType implements Type {
     public boolean isEquivalent(Type other) {
         return other instanceof ClassType && className.equals(other.typeName());
     }
+
+    public static final ClassType STRING = new ClassType("String");
+
+    static {
+        Scope stringScope = new Scope();
+        List<Type> lengthList = new ArrayList<>();
+        FunctionSymbolInfo length = new FunctionSymbolInfo(PrimitiveType.INT, lengthList);
+        STRING.declareSymbol("length", length);
+        List<Type> parseIntList = new ArrayList<>();
+        FunctionSymbolInfo parseInt = new FunctionSymbolInfo(PrimitiveType.INT, parseIntList);
+        STRING.declareSymbol("parseInt", parseInt);
+        List<Type> ordList = new ArrayList<>();
+        ordList.add(PrimitiveType.INT);
+        FunctionSymbolInfo ord = new FunctionSymbolInfo(PrimitiveType.INT, ordList);
+        STRING.declareSymbol("ord", ord);
+        List<Type> subStringList = new ArrayList<>();
+        subStringList.add(PrimitiveType.INT);
+        subStringList.add(PrimitiveType.INT);
+        FunctionSymbolInfo subString = new FunctionSymbolInfo(new ClassType("String"), subStringList);
+        STRING.declareSymbol("subString", subString);
+    }
+
 }

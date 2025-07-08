@@ -280,7 +280,7 @@ public class SemanticChecker implements ASTNodeVisitor {
                 break;
             }
             case G, GE, L, LE, PLUS: {
-                if (!node.left.nodeInfo.getType().equals(PrimitiveType.INT) && !node.left.nodeInfo.getType().equals(PrimitiveType.STRING)) {
+                if (!node.left.nodeInfo.getType().equals(PrimitiveType.INT) && !node.left.nodeInfo.getType().equals(ClassType.STRING)) {
                     throw new SemanticError(node.position.toString() + "Types  not match: the type should be int or string");
                 }
                 node.nodeInfo.setType(node.left.nodeInfo.getType());
@@ -337,7 +337,7 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(StringLiteralExprNode node) {
-        node.nodeInfo = new ExprNodeInfo(PrimitiveType.STRING, false);
+        node.nodeInfo = new ExprNodeInfo(ClassType.STRING, false);
     }
 
     @Override
