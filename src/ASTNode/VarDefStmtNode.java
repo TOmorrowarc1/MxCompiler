@@ -23,6 +23,7 @@ public class VarDefStmtNode extends StmtNode {
     public static class DefNode extends ASTNode {
         public final String identifier;
         public final ExprNode initValue;
+        public Type type;
 
         public DefNode(Position position, String name, ExprNode initValue) {
             super(position);

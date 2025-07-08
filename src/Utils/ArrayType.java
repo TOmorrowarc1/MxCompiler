@@ -15,7 +15,7 @@ public class ArrayType implements Type {
 
     @Override
     public boolean isEquivalent(Type other) {
-        return other instanceof ArrayType && typeName().equals(other.typeName());
+        return other instanceof ArrayType arrayType && elementType.isEquivalent(arrayType.elementType);
     }
 
     public Type getElementType() {

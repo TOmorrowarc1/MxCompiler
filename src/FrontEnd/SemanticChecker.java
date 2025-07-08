@@ -44,7 +44,8 @@ public class SemanticChecker implements ASTNodeVisitor {
             throw new SemanticError(node.position.toString() + "Class " + node.className + " has not been declared??? ");
         }
         ClassType classType = (ClassType) scope.getType(node.className).get();
-        scope = classType.getClassScope();
+        //Distinguish the symbol collect and the semantic check scope, so as global declarations.
+        scope = new Scope(classType.getClassScope());
         currentClassType = classType;
         for (VarDefStmtNode varDefs : node.varDefs) {
             varDefs.accept(this);
@@ -101,19 +102,16 @@ public class SemanticChecker implements ASTNodeVisitor {
         }
         VariableSymbolInfo symbolInfo = new VariableSymbolInfo(node.varType);
         for (VarDefStmtNode.DefNode defNode : node.defList) {
-            scope.declareSymbol(defNode.identifier, symbolInfo);
+            defNode.type = node.varType;
             defNode.accept(this);
+            scope.declareSymbol(defNode.identifier, symbolInfo);
         }
     }
 
     @Override
     public void visit(VarDefStmtNode.DefNode node) {
         node.initValue.accept(this);
-        if (scope.getSymbol(node.identifier).isEmpty()) {
-            throw new SemanticError(node.position.toString() + "Variable " + node.identifier + " has no declared symbol???");
-        }
-        VariableSymbolInfo symbol = (VariableSymbolInfo) scope.getSymbol(node.identifier).get();
-        if (!(node.initValue instanceof EmptyExprNode) && !isAssignable(symbol.getType(), node.initValue.nodeInfo.getType())) {
+        if (!(node.initValue instanceof EmptyExprNode) && !isAssignable(node.type, node.initValue.nodeInfo.getType())) {
             throw new SemanticError(node.position.toString() + "The new variable type is not assignable.");
         }
     }
