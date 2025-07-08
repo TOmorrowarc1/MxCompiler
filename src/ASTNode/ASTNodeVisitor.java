@@ -23,6 +23,8 @@ public interface ASTNodeVisitor {
 
     void visit(VarDefStmtNode node);
 
+    void visit(VarDefStmtNode.DefNode node);
+
     void visit(ExprStmtNode node);
 
     void visit(EmptyStmtNode node);

@@ -97,6 +97,10 @@ public class SymbolCollector implements ASTNodeVisitor {
     }
 
     @Override
+    public void visit(VarDefStmtNode.DefNode node) {
+    }
+
+    @Override
     public void visit(ReturnStmtNode node) {
     }
 
