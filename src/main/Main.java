@@ -31,10 +31,11 @@ public class Main {
             ProgramNode ASTRoot = (ProgramNode) astBuilder.visit(parserTree);
             new SymbolCollector(globalScope).visit(ASTRoot);
             new SemanticChecker(globalScope).visit(ASTRoot);
-
-        } catch (SemanticError err) {
+        } catch (Exception err) {
+            System.err.println("DEBUG: Hooray! Caught an exception inside the catch block.");
             System.out.println(err.getMessage());
             System.exit(1);
         }
+        System.err.println("DEBUG: Oh no! The code has escaped the try-catch block.");
     }
 }
