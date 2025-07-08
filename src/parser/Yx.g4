@@ -63,7 +63,7 @@ statement
     |   While '(' expr ')' statement              # whilestmt
     |   For '(' (initializationStatement=statement)(forConditionExpression=expr)';'(stepExpression=expr) ')'
         bodyStatement=statement                   # forstmt
-    |   Return expr ';'                           # returnstmt
+    |   Return expr? ';'                          # returnstmt
     |   (Break|Continue)';'                       # jmpstmt
     |   varDeclaration                            # varDefstmt
     |   expr';'                                   # expressionstmt
