@@ -500,6 +500,8 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
             return new BoolLiteralExprNode(new Position(ctx), false);
         } else if (ctx.String() != null) {
             return new StringLiteralExprNode(new Position(ctx), ctx.String().getText());
+        } else if (ctx.Null() != null) {
+            return new NullLiteralExprNode(new Position(ctx));
         }
         throw new SemanticError("Invalid literal type");
     }

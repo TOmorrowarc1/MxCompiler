@@ -78,7 +78,7 @@ argumentList
 
 newTarget
     :   Identifier('('')')?                                   # newClass
-    |   baseType('[' expr ']')*('['']')+                    # newArray
+    |   baseType('[' expr ']')+('['']')*                      # newArray
     ;
 
 expr

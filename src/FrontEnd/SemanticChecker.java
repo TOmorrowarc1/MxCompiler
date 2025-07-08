@@ -105,7 +105,7 @@ public class SemanticChecker implements ASTNodeVisitor {
     @Override
     public void visit(ReturnStmtNode node) {
         node.expression.accept(this);
-        if (!node.expression.nodeInfo.getType().equals(currentReturnType)) {
+        if (!isAssignable(currentReturnType, node.expression.nodeInfo.getType())) {
             throw new SemanticError(node.position.toString() + " Type not match: return value should be " + currentReturnType.toString() + ".");
         }
     }
@@ -185,7 +185,7 @@ public class SemanticChecker implements ASTNodeVisitor {
             parameter.accept(this);
         }
         for (int i = 0; i < node.parameters.size(); i++) {
-            if (!node.parameters.get(i).nodeInfo.getType().equals(functionSymbolInfo.getParametersType().get(i))) {
+            if (!isAssignable(node.parameters.get(i).nodeInfo.getType(), functionSymbolInfo.getParametersType().get(i))) {
                 throw new SemanticError(node.position.toString() + " The parameter type not match.");
             }
         }
@@ -311,13 +311,23 @@ public class SemanticChecker implements ASTNodeVisitor {
     public void visit(AssignExprNode node) {
         node.left.accept(this);
         node.right.accept(this);
-        if (!node.left.nodeInfo.getType().equals(node.right.nodeInfo.getType())) {
+        if (!isAssignable(node.left.nodeInfo.getType(), node.right.nodeInfo.getType())) {
             throw new SemanticError(node.position.toString() + "Types not match: assign the wrong type to left.");
         }
         if (!node.left.nodeInfo.isLeftValue()) {
             throw new SemanticError(node.position.toString() + "Types not match: the left is not assignable");
         }
         node.nodeInfo = new ExprNodeInfo(node.left.nodeInfo.getType(), false);
+    }
+
+    private boolean isAssignable(Type lhs, Type rhs) {
+        if (lhs.equals(rhs)) {
+            return true;
+        }
+        if (lhs instanceof ArrayType || rhs instanceof ClassType) {
+            return rhs.equals(PrimitiveType.NULL);
+        }
+        return false;
     }
 
     @Override
@@ -338,6 +348,11 @@ public class SemanticChecker implements ASTNodeVisitor {
     @Override
     public void visit(StringLiteralExprNode node) {
         node.nodeInfo = new ExprNodeInfo(ClassType.STRING, false);
+    }
+
+    @Override
+    public void visit(NullLiteralExprNode node) {
+        node.nodeInfo = new ExprNodeInfo(PrimitiveType.NULL, false);
     }
 
     @Override
