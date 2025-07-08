@@ -48,7 +48,6 @@ public class ClassType implements Type {
     public static final ClassType STRING = new ClassType("String");
 
     static {
-        Scope stringScope = new Scope();
         List<Type> lengthList = new ArrayList<>();
         FunctionSymbolInfo length = new FunctionSymbolInfo(PrimitiveType.INT, lengthList);
         STRING.declareSymbol("length", length);
