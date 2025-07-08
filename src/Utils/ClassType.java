@@ -10,7 +10,7 @@ public class ClassType implements Type {
 
     public ClassType(String className) {
         this.className = className;
-        this.classScope = null;
+        this.classScope = new Scope();
     }
 
     public ClassType(String className, Scope classScope) {
@@ -45,7 +45,7 @@ public class ClassType implements Type {
         return other instanceof ClassType && className.equals(other.typeName());
     }
 
-    public static final ClassType STRING = new ClassType("String");
+    public static final ClassType STRING = new ClassType("string");
 
     static {
         List<Type> lengthList = new ArrayList<>();
@@ -61,8 +61,8 @@ public class ClassType implements Type {
         List<Type> subStringList = new ArrayList<>();
         subStringList.add(PrimitiveType.INT);
         subStringList.add(PrimitiveType.INT);
-        FunctionSymbolInfo subString = new FunctionSymbolInfo(new ClassType("String"), subStringList);
-        STRING.declareSymbol("subString", subString);
+        FunctionSymbolInfo subString = new FunctionSymbolInfo(new ClassType("string"), subStringList);
+        STRING.declareSymbol("substring", subString);
     }
 
 }
