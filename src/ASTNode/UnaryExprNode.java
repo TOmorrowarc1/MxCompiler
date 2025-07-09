@@ -4,7 +4,7 @@ import Utils.Position;
 
 public class UnaryExprNode extends ExprNode {
     public enum UnaryOperator {
-        SELF_ADD, SELF_SUB, MINUS, LOGIC_NOT, NOT
+        POST_SELF_ADD, POST_SELF_SUB, PRE_SELF_ADD, PRE_SELF_SUB, MINUS, LOGIC_NOT, NOT
     }
 
     public UnaryOperator operator;

@@ -277,9 +277,9 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         ExprNode expr = (ExprNode) visit(ctx.expr());
         UnaryExprNode.UnaryOperator unaryOperator;
         if (ctx.op.getText().equals("++")) {
-            unaryOperator = UnaryExprNode.UnaryOperator.SELF_ADD;
+            unaryOperator = UnaryExprNode.UnaryOperator.POST_SELF_ADD;
         } else if (ctx.op.getText().equals("--")) {
-            unaryOperator = UnaryExprNode.UnaryOperator.SELF_SUB;
+            unaryOperator = UnaryExprNode.UnaryOperator.POST_SELF_SUB;
         } else {
             throw new SemanticError("Invalid binary operator");
 
@@ -348,11 +348,11 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
         UnaryExprNode.UnaryOperator unaryOperator;
         switch (ctx.op.getText()) {
             case "++": {
-                unaryOperator = UnaryExprNode.UnaryOperator.SELF_ADD;
+                unaryOperator = UnaryExprNode.UnaryOperator.PRE_SELF_ADD;
                 break;
             }
             case "--": {
-                unaryOperator = UnaryExprNode.UnaryOperator.SELF_SUB;
+                unaryOperator = UnaryExprNode.UnaryOperator.PRE_SELF_SUB;
                 break;
             }
             case "-": {

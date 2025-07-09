@@ -280,9 +280,9 @@ public class SemanticChecker implements ASTNodeVisitor {
                 throw new SemanticError(node.position.toString() + "Type not match: the type of the expression should be int.");
             }
             node.nodeInfo.setType(PrimitiveType.INT);
-            if (node.operator == UnaryExprNode.UnaryOperator.SELF_ADD || node.operator == UnaryExprNode.UnaryOperator.SELF_SUB) {
+            if (node.operator == UnaryExprNode.UnaryOperator.PRE_SELF_ADD || node.operator == UnaryExprNode.UnaryOperator.PRE_SELF_SUB) {
                 if (!node.expression.nodeInfo.isLeftValue()) {
-                    throw new SemanticError(node.position.toString() + "A right value should not be ++/--");
+                    throw new SemanticError(node.position.toString() + "A right value should not be subject of ++/--");
                 }
                 node.nodeInfo.setIsLeftValue(true);
             } else {
