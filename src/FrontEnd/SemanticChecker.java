@@ -43,6 +43,9 @@ public class SemanticChecker implements ASTNodeVisitor {
         if (scope.getType(node.className).isEmpty()) {
             throw new SemanticError(node.position.toString() + "Class " + node.className + " has not been declared??? ");
         }
+        if (scope.getSymbol(node.className).isPresent()) {
+            throw new SemanticError(node.position.toString() + " The class name and the function name is same.");
+        }
         ClassType classType = (ClassType) scope.getType(node.className).get();
         //Distinguish the symbol collect and the semantic check scope, so as global declarations.
         scope = new Scope(classType.getClassScope());
@@ -66,6 +69,13 @@ public class SemanticChecker implements ASTNodeVisitor {
         return scope.getType(type.typeName()).isPresent();
     }
 
+    private Type getBaseType(Type type) {
+        while (type instanceof ArrayType arrayType) {
+            type = arrayType.getElementType();
+        }
+        return type;
+    }
+
     @Override
     public void visit(FunctionDeclarationNode node) {
         if (!isTypeValid(node.returnType)) {
@@ -75,7 +85,10 @@ public class SemanticChecker implements ASTNodeVisitor {
         currentReturnType = node.returnType;
         for (FunctionDeclarationNode.ParameterNode parameterNode : node.parameters) {
             if (!isTypeValid(parameterNode.parameterType)) {
-                throw new SemanticError(node.position.toString() + "The parameter type is not existed.");
+                throw new SemanticError(node.position.toString() + " The parameter type is not existed.");
+            }
+            if (getBaseType(parameterNode.parameterType).isEquivalent(PrimitiveType.VOID)) {
+                throw new SemanticError(node.position.toString() + " The parameter type should not be void.");
             }
             scope.declareSymbol(parameterNode.identifier, new VariableSymbolInfo(parameterNode.parameterType));
         }
@@ -97,7 +110,7 @@ public class SemanticChecker implements ASTNodeVisitor {
         if (!isTypeValid(node.varType)) {
             throw new SemanticError(node.position.toString() + "The variable type(class) is not existed.");
         }
-        if (node.varType.isEquivalent(PrimitiveType.VOID)) {
+        if (getBaseType(node.varType).isEquivalent(PrimitiveType.VOID)) {
             throw new SemanticError(node.position.toString() + " The variable type cannot be void.");
         }
         VariableSymbolInfo symbolInfo = new VariableSymbolInfo(node.varType);

@@ -148,6 +148,9 @@ public class SymbolCollector implements ASTNodeVisitor {
         if (!mainFunc.getReturnType().isEquivalent(PrimitiveType.INT)) {
             throw new SemanticError("The return type of main() must be int.");
         }
+        if (!mainFunc.getParametersType().isEmpty()) {
+            throw new SemanticError("The parameters of main() must be empty.");
+        }
     }
 
     @Override
