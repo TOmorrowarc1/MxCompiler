@@ -268,7 +268,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitSubExpr(YxParser.SubExprContext ctx) {
         System.out.println("SubExprVisit " + ctx.getText() + '\n');
-        return visit(ctx.expr());
+        return new SubExprNode(new Position(ctx), (ExprNode) visit(ctx.expr()));
     }
 
     @Override

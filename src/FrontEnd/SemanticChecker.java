@@ -203,6 +203,12 @@ public class SemanticChecker implements ASTNodeVisitor {
     }
 
     @Override
+    public void visit(SubExprNode node) {
+        node.exprNode.accept(this);
+        node.nodeInfo = node.exprNode.nodeInfo;
+    }
+
+    @Override
     public void visit(FunctionCallExprNode node) {
         FunctionSymbolInfo functionSymbolInfo;
         if (node.callee instanceof ClassAccessNode classAccessNode) {
@@ -255,6 +261,9 @@ public class SemanticChecker implements ASTNodeVisitor {
             throw new SemanticError(node.position.toString() + " Index must be int. ");
         }
         node.array.accept(this);
+        if (node.array instanceof NewArrayExprNode) {
+            throw new SemanticError(node.position.toString() + " The array creating as a new value cannot be visited.");
+        }
         if (!(node.array.nodeInfo.getType() instanceof ArrayType arrayType)) {
             throw new SemanticError(node.position.toString() + " Array type not match.");
         }
@@ -314,9 +323,9 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(NewArrayExprNode node) {
-        for(ExprNode length : node.lengths) {
+        for (ExprNode length : node.lengths) {
             length.accept(this);
-            if(!length.nodeInfo.getType().isEquivalent(PrimitiveType.INT)) {
+            if (!length.nodeInfo.getType().isEquivalent(PrimitiveType.INT)) {
                 throw new SemanticError(node.position.toString() + "Type not match: the length of the array should be int.");
             }
         }

@@ -27,6 +27,8 @@ public interface ASTNodeVisitor {
 
     void visit(ExprStmtNode node);
 
+    void visit(SubExprNode node);
+
     void visit(EmptyStmtNode node);
 
     void visit(AssignExprNode node);
