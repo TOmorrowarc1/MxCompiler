@@ -25,6 +25,9 @@ public class Main {
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
             YxParser parser = new YxParser (tokens);
+
+            parser.removeErrorListeners();
+            parser.addErrorListener(SyntaxErrorListener.INSTANCE);
             ParseTree parserTree = parser.program();
 
             ASTBuilder astBuilder = new ASTBuilder();
@@ -32,10 +35,8 @@ public class Main {
             new SymbolCollector(globalScope).visit(ASTRoot);
             new SemanticChecker(globalScope).visit(ASTRoot);
         } catch (Exception err) {
-            System.err.println("DEBUG: Hooray! Caught an exception inside the catch block.");
             System.out.println(err.getMessage());
             System.exit(1);
         }
-        System.err.println("DEBUG: Oh no! The code has escaped the try-catch block.");
     }
 }
