@@ -32,7 +32,7 @@ public class SemanticChecker implements ASTNodeVisitor {
             throw new SemanticError(node.position.toString() + " The name of constructor function is uncorresponding.");
         }
         scope = new Scope(scope);
-        currentReturnType = null;
+        currentReturnType = PrimitiveType.VOID;
         node.body.accept(this);
         scope = scope.getParentScope();
     }
@@ -140,7 +140,13 @@ public class SemanticChecker implements ASTNodeVisitor {
     @Override
     public void visit(ReturnStmtNode node) {
         node.expression.accept(this);
-        if (!isAssignable(currentReturnType, node.expression.nodeInfo.getType())) {
+        Type realReturnType;
+        if (node.expression instanceof EmptyExprNode) {
+            realReturnType = PrimitiveType.VOID;
+        } else {
+            realReturnType = node.expression.nodeInfo.getType();
+        }
+        if (!isAssignable(currentReturnType, realReturnType)) {
             throw new SemanticError(node.position.toString() + " Type not match: return value should be " + currentReturnType.toString() + ".");
         }
     }
