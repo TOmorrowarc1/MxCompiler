@@ -173,7 +173,9 @@ public class SemanticChecker implements ASTNodeVisitor {
             throw new SemanticError(node.position.toString() + " Type not match: condition judgement is not a bool");
         }
         this.loopDepth++;
+        scope = new Scope(scope);
         node.body.accept(this);
+        scope = scope.getParentScope();
         this.loopDepth--;
     }
 
@@ -185,6 +187,8 @@ public class SemanticChecker implements ASTNodeVisitor {
         }
         scope = new Scope(scope);
         node.thenStmt.accept(this);
+        scope = scope.getParentScope();
+        scope = new Scope(scope);
         node.elseStmt.accept(this);
         scope = scope.getParentScope();
     }
@@ -293,6 +297,11 @@ public class SemanticChecker implements ASTNodeVisitor {
                 }
                 node.nodeInfo.setIsLeftValue(true);
             } else {
+                if (node.operator == UnaryExprNode.UnaryOperator.POST_SELF_ADD || node.operator == UnaryExprNode.UnaryOperator.POST_SELF_SUB) {
+                    if (!node.expression.nodeInfo.isLeftValue()) {
+                        throw new SemanticError(node.position.toString() + "A right value should not be subject of ++/--");
+                    }
+                }
                 node.nodeInfo.setIsLeftValue(false);
             }
         }

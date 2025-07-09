@@ -140,7 +140,7 @@ Return:'return';
 New:'new';
 This:'this';
 
-Identifier: [a-zA-Z_][a-zA-Z_0-9]*;
+Identifier: [a-zA-Z][a-zA-Z_0-9]*;
 LParent:'(';
 RParent:')';
 LBrack:'[';

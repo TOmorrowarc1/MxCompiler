@@ -21,19 +21,22 @@ public class Main {
         }
         try {
             YxLexer lexer = new YxLexer(CharStreams.fromStream(input));
+            lexer.removeErrorListeners();
+            lexer.addErrorListener(SyntaxErrorListener.INSTANCE);
 
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-            YxParser parser = new YxParser (tokens);
-
+            YxParser parser = new YxParser(tokens);
             parser.removeErrorListeners();
             parser.addErrorListener(SyntaxErrorListener.INSTANCE);
+
             ParseTree parserTree = parser.program();
 
             ASTBuilder astBuilder = new ASTBuilder();
             ProgramNode ASTRoot = (ProgramNode) astBuilder.visit(parserTree);
             new SymbolCollector(globalScope).visit(ASTRoot);
             new SemanticChecker(globalScope).visit(ASTRoot);
+
         } catch (Exception err) {
             System.out.println(err.getMessage());
             System.exit(1);
