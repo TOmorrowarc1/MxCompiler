@@ -441,6 +441,10 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
                 binaryOperator = BinaryExprNode.BinaryOperator.OR;
                 break;
             }
+            case "^": {
+                binaryOperator = BinaryExprNode.BinaryOperator.XOR;
+                break;
+            }
             case "&&": {
                 binaryOperator = BinaryExprNode.BinaryOperator.LOGIC_AND;
                 break;

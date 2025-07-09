@@ -4,7 +4,7 @@ import Utils.Position;
 
 public class BinaryExprNode extends ExprNode {
     public enum BinaryOperator {
-        LOGIC_OR, LOGIC_AND, OR, AND, EQUAL, N_EQUAL, GE, LE, G, L, LEFT_SHIFT, RIGHT_SHIFT, PLUS, SUB, MUL, DIV, MOD
+        LOGIC_OR, LOGIC_AND, OR, AND, XOR, EQUAL, N_EQUAL, GE, LE, G, L, LEFT_SHIFT, RIGHT_SHIFT, PLUS, SUB, MUL, DIV, MOD
     }
 
     public BinaryOperator operator;

@@ -318,7 +318,7 @@ public class SemanticChecker implements ASTNodeVisitor {
                 node.nodeInfo.setType(PrimitiveType.BOOL);
                 break;
             }
-            case SUB, MUL, DIV, MOD, OR, AND, LEFT_SHIFT, RIGHT_SHIFT: {
+            case SUB, MUL, DIV, MOD, OR, AND, XOR, LEFT_SHIFT, RIGHT_SHIFT: {
                 if (!node.left.nodeInfo.getType().isEquivalent(PrimitiveType.INT)) {
                     throw new SemanticError(node.position.toString() + "Types not match: the type should be int");
                 }
