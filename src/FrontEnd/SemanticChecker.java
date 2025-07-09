@@ -314,6 +314,12 @@ public class SemanticChecker implements ASTNodeVisitor {
 
     @Override
     public void visit(NewArrayExprNode node) {
+        for(ExprNode length : node.lengths) {
+            length.accept(this);
+            if(!length.nodeInfo.getType().isEquivalent(PrimitiveType.INT)) {
+                throw new SemanticError(node.position.toString() + "Type not match: the length of the array should be int.");
+            }
+        }
         node.nodeInfo = new ExprNodeInfo(node.arrayType, false);
     }
 
