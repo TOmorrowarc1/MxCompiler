@@ -61,7 +61,7 @@ statement
     |   If '(' expr ')' trueStmt=statement
         (Else falseStmt=statement)?               # ifstmt
     |   While '(' expr ')' statement              # whilestmt
-    |   For '(' (initializationStatement=statement)(forConditionExpression=expr)';'(stepExpression=expr) ')'
+    |   For '(' (initializationStatement=statement)(forConditionExpression=expr)?';'(stepExpression=expr)? ')'
         bodyStatement=statement                   # forstmt
     |   Return expr? ';'                          # returnstmt
     |   (Break|Continue)';'                       # jmpstmt

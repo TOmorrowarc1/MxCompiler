@@ -44,9 +44,10 @@ public class SemanticChecker implements ASTNodeVisitor {
             throw new SemanticError(node.position.toString() + "Class " + node.className + " has not been declared??? ");
         }
         if (scope.getSymbol(node.className).isPresent()) {
-            throw new SemanticError(node.position.toString() + " The class name and the function name is same.");
+            throw new SemanticError(node.position.toString() + " The class name and the function name should not be same.");
         }
         ClassType classType = (ClassType) scope.getType(node.className).get();
+        classType.getClassScope().setParentScope(scope);
         //Distinguish the symbol collect and the semantic check scope, so as global declarations.
         scope = new Scope(classType.getClassScope());
         currentClassType = classType;
@@ -150,7 +151,7 @@ public class SemanticChecker implements ASTNodeVisitor {
         node.varStmt.accept(this);
         node.condition.accept(this);
         node.step.accept(this);
-        if (!node.condition.nodeInfo.getType().isEquivalent(PrimitiveType.BOOL)) {
+        if (!node.condition.nodeInfo.getType().isEquivalent(PrimitiveType.BOOL) && !(node.condition instanceof EmptyExprNode)) {
             throw new SemanticError(node.position.toString() + " Type not match: condition judgement is not a bool");
         }
         this.loopDepth++;
@@ -162,7 +163,7 @@ public class SemanticChecker implements ASTNodeVisitor {
     @Override
     public void visit(WhileStmtNode node) {
         node.condition.accept(this);
-        if (!node.condition.nodeInfo.getType().isEquivalent(PrimitiveType.BOOL)) {
+        if (!node.condition.nodeInfo.getType().isEquivalent(PrimitiveType.BOOL) && !(node.condition instanceof EmptyExprNode)) {
             throw new SemanticError(node.position.toString() + " Type not match: condition judgement is not a bool");
         }
         this.loopDepth++;

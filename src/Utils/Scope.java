@@ -5,7 +5,7 @@ import java.util.*;
 public class Scope {
     private final Map<String, SymbolInfo> symbolTable = new HashMap<>();
     private final Map<String, Type> typeTable = new HashMap<>();
-    private final Scope parentScope;
+    private Scope parentScope;
 
     public Scope() {
         this.parentScope = null;
@@ -43,6 +43,10 @@ public class Scope {
 
     public Scope getParentScope() {
         return parentScope;
+    }
+
+    public void setParentScope(Scope parentScope) {
+        this.parentScope = parentScope;
     }
 
     public void declareSymbol(String symbol, SymbolInfo symbolInfo) {
