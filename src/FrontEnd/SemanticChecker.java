@@ -366,7 +366,7 @@ public class SemanticChecker implements ASTNodeVisitor {
         if (!node.conditionExpr.nodeInfo.getType().isEquivalent(PrimitiveType.BOOL)) {
             throw new SemanticError(node.position.toString() + "Types not match: the conditional Expr type should be bool");
         }
-        if (!node.trueExpr.nodeInfo.getType().isEquivalent(node.falseExpr.nodeInfo.getType())) {
+        if (!isAssignable(node.trueExpr.nodeInfo.getType(), node.falseExpr.nodeInfo.getType()) && !isAssignable(node.falseExpr.nodeInfo.getType(), node.trueExpr.nodeInfo.getType())) {
             throw new SemanticError(node.position.toString() + "Types not match: the lhs and rhs have different types");
         }
         node.nodeInfo = new ExprNodeInfo(node.trueExpr.nodeInfo.getType(), false);

@@ -324,7 +324,7 @@ public class ASTBuilder extends YxBaseVisitor<ASTNode> {
     public ASTNode visitNewArray(YxParser.NewArrayContext ctx) {
         System.out.println("NewArray " + ctx.getText() + '\n');
         Type arrayType = analysisBaseType(ctx.baseType());
-        for (TerminalNode brackets : ctx.LBrack()) {
+        for (int i = 0; i < ctx.LBrack().size(); i++) {
             arrayType = new ArrayType(arrayType);
         }
         List<ExprNode> lengths = new ArrayList<>();
