@@ -247,7 +247,7 @@ public class SemanticChecker implements ASTNodeVisitor {
             parameter.accept(this);
         }
         for (int i = 0; i < node.parameters.size(); i++) {
-            if (!isAssignable(node.parameters.get(i).nodeInfo.getType(), functionSymbolInfo.getParametersType().get(i))) {
+            if (!isAssignable(functionSymbolInfo.getParametersType().get(i), node.parameters.get(i).nodeInfo.getType())) {
                 throw new SemanticError(node.position.toString() + " The parameter type not match.");
             }
         }

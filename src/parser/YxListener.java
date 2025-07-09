@@ -266,18 +266,6 @@ public interface YxListener extends ParseTreeListener {
 	 */
 	void exitArgumentList(YxParser.ArgumentListContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code newClass}
-	 * labeled alternative in {@link YxParser#newTarget}.
-	 * @param ctx the parse tree
-	 */
-	void enterNewClass(YxParser.NewClassContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code newClass}
-	 * labeled alternative in {@link YxParser#newTarget}.
-	 * @param ctx the parse tree
-	 */
-	void exitNewClass(YxParser.NewClassContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code newArray}
 	 * labeled alternative in {@link YxParser#newTarget}.
 	 * @param ctx the parse tree
@@ -289,6 +277,18 @@ public interface YxListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNewArray(YxParser.NewArrayContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code newClass}
+	 * labeled alternative in {@link YxParser#newTarget}.
+	 * @param ctx the parse tree
+	 */
+	void enterNewClass(YxParser.NewClassContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code newClass}
+	 * labeled alternative in {@link YxParser#newTarget}.
+	 * @param ctx the parse tree
+	 */
+	void exitNewClass(YxParser.NewClassContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code newExpr}
 	 * labeled alternative in {@link YxParser#expr}.

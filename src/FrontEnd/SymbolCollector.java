@@ -175,11 +175,20 @@ public class SymbolCollector implements ASTNodeVisitor {
         for (VarDefStmtNode varDefNode : node.varDefs) {
             varDefNode.accept(this);
         }
-        for (ConstructorDeclarationNode constructorDeclarationNode : node.constructors) {
-            constructorDeclarationNode.accept(this);
+        if (node.constructors.isEmpty()) {
+            ClassType classType = new ClassType(node.className);
+            List<Type> parameterType = new ArrayList<>();
+            currentScope.declareSymbol(node.className, new FunctionSymbolInfo(classType, parameterType));
+        } else {
+            for (ConstructorDeclarationNode constructorDeclarationNode : node.constructors) {
+                constructorDeclarationNode.accept(this);
+            }
         }
         for (FunctionDeclarationNode functionDeclarationNode : node.functionDefs) {
             functionDeclarationNode.accept(this);
+            if (functionDeclarationNode.name.equals(currentClass)) {
+                throw new SemanticError(node.position.toString() + "The constructor should not return type.");
+            }
         }
         ClassType classType = new ClassType(node.className, classScope);
         currentScope = globalScope;

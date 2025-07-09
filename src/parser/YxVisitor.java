@@ -164,19 +164,19 @@ public interface YxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArgumentList(YxParser.ArgumentListContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code newClass}
-	 * labeled alternative in {@link YxParser#newTarget}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNewClass(YxParser.NewClassContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code newArray}
 	 * labeled alternative in {@link YxParser#newTarget}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitNewArray(YxParser.NewArrayContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code newClass}
+	 * labeled alternative in {@link YxParser#newTarget}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNewClass(YxParser.NewClassContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code newExpr}
 	 * labeled alternative in {@link YxParser#expr}.

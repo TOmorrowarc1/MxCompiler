@@ -305,18 +305,6 @@ public class YxBaseListener implements YxListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNewClass(YxParser.NewClassContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNewClass(YxParser.NewClassContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterNewArray(YxParser.NewArrayContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -324,6 +312,18 @@ public class YxBaseListener implements YxListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitNewArray(YxParser.NewArrayContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNewClass(YxParser.NewClassContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNewClass(YxParser.NewClassContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
